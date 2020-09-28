@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            function showWines() {
+                var htmlstring = "";
+                htmlstring += "<h2>COUNTRIES</h2>";
+                htmlstring += "<ol>"
+                {% for country in countries %}
+                    htmlstring += "<li>{{country.name}}</li>"
+                {% endfor %}
+                htmlstring += "</ol>"
+                
+                htmlstring += "<h2>REGIONS</h2>";
+                htmlstring += "<ol>"
+                {% for region in regions %}
+                    htmlstring += "<li>{{region.name}}</li>"
+                {% endfor %}
+                htmlstring += "</ol>"
+                
+                htmlstring += "<h2>USERS</h2>";
+                htmlstring += "<ol>"
+                {% for user in users %}
+                    htmlstring += "<li>{{user.username}}</li>"
+                {% endfor %}
+                htmlstring += "</ol>"
+                
+                htmlstring += "<h2>WINES</h2>";
+                {% for wine in wines %}
+                    htmlstring += "<ol><li><strong>{{wine.name}}</strong><ul>";
+                    htmlstring += "<li>{{wine.country.name}}</li>"
+                    htmlstring += "<li>{{wine.region.name}}</li>"
+                    htmlstring += "<li>{{wine.description}}</li>"
+                    htmlstring += "<li>${{wine.price}}</li>"
+                    htmlstring += "<li>{{wine.rating}}</li>"
+                    htmlstring += "<li>{{wine.year}}</li>"
+                    htmlstring += "<li>{{wine.abv}}</li>"
+                    htmlstring += "<li>{{wine.date_tasted.strftime('%Y-%m-%d')}}</li>"
+                    htmlstring += "<li>{{wine.user.username}}</li>"
+                    htmlstring += "</ul></li></ol>"
+                {% endfor %}
+
+                winelist.innerHTML = htmlstring;
+            }
+        </script>
+    </head>
+    <body>
+        <h1>The Wine App II</h1>
+        
+        <div id="winelist">
+            <script>showWines();</script>
+        </div>
+        
+    </body>
+</html>
