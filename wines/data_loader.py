@@ -36,18 +36,18 @@ session.commit()
 
 
 # Set up regions
-region1 = Region1(
+region1 = Region(
     name = "Burgundy",
     country_id = 1,
     country = country1
     )
-region2 = Region2(
-    name = "Bordeaux"
+region2 = Region(
+    name = "Bordeaux",
     country_id = 1,
     country = country1
     )
-region3 = Region3(
-    name = "Chianti"
+region3 = Region(
+    name = "Chianti",
     country_id = 2,
     country = country2
     )
@@ -66,7 +66,7 @@ wine1 = Wine(
     rating = 90, 
     year = 2017,
     abv = 13.5,
-    date_tasted = "2020-09-22"
+    date_tasted = "2020-09-22",
     country_id = 1, 
     country = country1,
     region_id = 2,

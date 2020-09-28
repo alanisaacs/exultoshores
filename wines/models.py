@@ -43,7 +43,7 @@ class Wine(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     description = Column(String(5000))
-    price = Column(String(8))
+    price = Column(Float)
     rating = Column(Integer)
     year = Column(Integer)
     abv = Column(Float)
