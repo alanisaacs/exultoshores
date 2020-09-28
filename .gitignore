@@ -2,3 +2,4 @@
 **.vscode/
 **__pycache__/
 wines/views-test.py
+**logs/
