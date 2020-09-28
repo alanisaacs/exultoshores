@@ -2,7 +2,7 @@
 
 """Create database tables for the Wine App"""
 
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, Float, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -42,10 +42,11 @@ class Wine(Base):
     __tablename__ = 'wine'
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
-    description = Column(Text)
+    description = Column(String(5000))
     price = Column(String(8))
     rating = Column(Integer)
     year = Column(Integer)
+    abv = Column(Float)
     date_tasted = Column(Date)
     country_id = Column(Integer, ForeignKey('country.id'))
     country = relationship(Country)
@@ -56,6 +57,6 @@ class Wine(Base):
 
 
 # Start running on postgresql
-engine = create_engine('postgresql://postgres:7liminE##@localhost/wines')
+engine = create_engine('postgresql://winedbuser:winedbuser@localhost/winedb')
 
 Base.metadata.create_all(engine)
