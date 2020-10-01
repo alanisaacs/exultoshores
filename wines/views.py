@@ -5,12 +5,13 @@
 import sys
 from flask import (Flask,
                    render_template,
-                   session as login_session)
+                   session as login_session,
+                   url_for)
 from sqlalchemy import (create_engine,
                         asc)
 from sqlalchemy.orm import sessionmaker
 from models import (Base,
-                    User,
+                    Sommelier,
                     Country,
                     Region,
                     Wine)
@@ -31,15 +32,16 @@ def showHome():
     session = DBSession()
     countries = session.query(Country).order_by(asc(Country.name))
     regions = session.query(Region).order_by(asc(Region.name))
-    users = session.query(User).order_by(asc(User.username))
+    sommeliers = session.query(Sommelier).order_by(asc(Sommelier.username))
     wines = session.query(Wine)
     session.close()
     return render_template('home.html',
                            countries=countries,
                            regions=regions,
-                           users=users,
+                           sommeliers=sommeliers,
                            wines=wines)
 
 
 if __name__ == '__main__':
+    app.debug = True
     app.run()

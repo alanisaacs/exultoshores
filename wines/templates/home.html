@@ -1,43 +1,47 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
         <script>
             function showWines() {
                 var htmlstring = "";
                 htmlstring += "<h2>COUNTRIES</h2>";
-                htmlstring += "<ol>"
+                htmlstring += "<ol>";
                 {% for country in countries %}
-                    htmlstring += "<li>{{country.name}}</li>"
+                    htmlstring += "<li>{{country.name}}</li>";
                 {% endfor %}
-                htmlstring += "</ol>"
+                htmlstring += "</ol>";
                 
                 htmlstring += "<h2>REGIONS</h2>";
-                htmlstring += "<ol>"
+                htmlstring += "<ol>";
                 {% for region in regions %}
-                    htmlstring += "<li>{{region.name}}</li>"
+                    htmlstring += "<li>{{region.name}}</li>";
                 {% endfor %}
-                htmlstring += "</ol>"
+                htmlstring += "</ol>";
                 
-                htmlstring += "<h2>USERS</h2>";
-                htmlstring += "<ol>"
-                {% for user in users %}
-                    htmlstring += "<li>{{user.username}}</li>"
+                htmlstring += "<h2>SOMMELIERS</h2>";
+                htmlstring += "<ol>";
+                {% for sommelier in sommeliers %}
+                    htmlstring += "<img src={{sommelier.picture}} " + 
+                        "width='100' height='100'>" +
+                        "<br>{{sommelier.username}}";
                 {% endfor %}
-                htmlstring += "</ol>"
+                htmlstring += "</ol>";
                 
                 htmlstring += "<h2>WINES</h2>";
                 {% for wine in wines %}
-                    htmlstring += "<ol><li><strong>{{wine.name}}</strong><ul>";
-                    htmlstring += "<li>{{wine.country.name}}</li>"
-                    htmlstring += "<li>{{wine.region.name}}</li>"
-                    htmlstring += "<li>{{wine.description}}</li>"
-                    htmlstring += "<li>${{wine.price}}</li>"
-                    htmlstring += "<li>{{wine.rating}}</li>"
-                    htmlstring += "<li>{{wine.year}}</li>"
-                    htmlstring += "<li>{{wine.abv}}</li>"
-                    htmlstring += "<li>{{wine.date_tasted.strftime('%Y-%m-%d')}}</li>"
-                    htmlstring += "<li>{{wine.user.username}}</li>"
-                    htmlstring += "</ul></li></ol>"
+                    htmlstring += "<ol><li><strong>{{wine.name}}</strong><ul>" +
+                        "<li>{{wine.country.name}}</li>" +
+                        "<li>{{wine.region.name}}</li>" +
+                        "<li>{{wine.description}}</li>" +
+                        "<li>${{wine.price}}</li>" +
+                        "<li>{{wine.rating}}</li>" +
+                        "<li>{{wine.year}}</li>" +
+                        "<li>{{wine.abv}}</li>" +
+                        "<li><img src=/static/{{wine.label_photo}}></li>" +
+                        "<li>{{wine.date_tasted.strftime('%Y-%m-%d')}}</li>" +
+                        "<li>{{wine.sommelier.username}}</li>" +
+                        "</ul></li></ol>";
                 {% endfor %}
 
                 winelist.innerHTML = htmlstring;
@@ -46,6 +50,9 @@
     </head>
     <body>
         <h1>The Wine App II</h1>
+        <div class="subhead">
+            An Exult-O-Shores Production
+        </div>
         
         <div id="winelist">
             <script>showWines();</script>

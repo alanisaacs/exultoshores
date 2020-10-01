@@ -5,7 +5,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
  
-from models import User, Country, Region, Wine
+from models import Sommelier, Country, Region, Wine
  
  # Connect to database
 engine = create_engine('postgresql://winedbuser:winedbuser@localhost/winedb')
@@ -14,14 +14,14 @@ session = DBSession()
 
 
 # Add default user
-user1 = User(
-    username = "Default",
+sommelier1 = Sommelier(
+    username = "Default_Sommelier",
     password = "Default",
     email = "default@exultoshores.com",
-    picture = "https://photos.app.goo.gl/Z9ytt5motCPeHaHk9"
+    picture = "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg"
 )
 
-session.add(user1)
+session.add(sommelier1)
 session.commit()
 
 # Set up countries
@@ -67,12 +67,13 @@ wine1 = Wine(
     year = 2017,
     abv = 13.5,
     date_tasted = "2020-09-22",
+    label_photo = "bois.jpg",
     country_id = 1, 
     country = country1,
     region_id = 2,
     region = region2,
-    user_id = 1,
-    user = user1
+    sommelier_id = 1,
+    sommelier = sommelier1
     )
 session.add(wine1)
 session.commit()

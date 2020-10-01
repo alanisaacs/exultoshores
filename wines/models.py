@@ -10,9 +10,9 @@ from sqlalchemy import create_engine
 Base = declarative_base()
 
 
-class User(Base):
+class Sommelier(Base):
     """Registered user information"""
-    __tablename__ = 'user'
+    __tablename__ = 'sommelier'
 
     id = Column(Integer, primary_key=True)
     username = Column(String(80), nullable=False)
@@ -41,22 +41,26 @@ class Wine(Base):
     """Data for each wine"""
     __tablename__ = 'wine'
     id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+    name = Column(String(256), nullable=False)
     description = Column(String(5000))
     price = Column(Float(2))
     rating = Column(Integer)
     year = Column(Integer)
     abv = Column(Float(1))
     date_tasted = Column(Date)
+    label_photo = Column(String(128))
     country_id = Column(Integer, ForeignKey('country.id'))
     country = relationship(Country)
     region_id = Column(Integer, ForeignKey('region.id'))
     region = relationship(Region)
-    user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship(User)
+    sommelier_id = Column(Integer, ForeignKey('sommelier.id'))
+    sommelier = relationship(Sommelier)
 
 
 # Start running on postgresql
 engine = create_engine('postgresql://winedbuser:winedbuser@localhost/winedb')
 
 Base.metadata.create_all(engine)
+
+if __name__ == '__main__':
+    print("Models created.")
