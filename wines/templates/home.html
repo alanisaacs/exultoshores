@@ -15,7 +15,8 @@
                 htmlstring += "<h2>REGIONS</h2>";
                 htmlstring += "<ol>";
                 {% for region in regions %}
-                    htmlstring += "<li>{{region.name}}</li>";
+                    htmlstring += "<li>{{region.country.name}}: " +
+                        "{{region.name}}</li>";
                 {% endfor %}
                 htmlstring += "</ol>";
                 
@@ -49,10 +50,16 @@
         </script>
     </head>
     <body>
-        <h1>The Wine App II</h1>
+        <h1>The Wine App</h1>
         <div class="subhead">
             An Exult-O-Shores Production
         </div>
+
+        <p>
+            <a href="/country/new">Create a New Country</a> |
+            <a href="/region/new">Create a New Region</a> |
+            <a href="/wine/new">Create a New Wine</a>
+        </p>
         
         <div id="winelist">
             <script>showWines();</script>
