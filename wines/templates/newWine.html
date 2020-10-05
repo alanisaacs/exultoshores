@@ -2,24 +2,36 @@
 <html>
     <head>
         <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+        <script>
+            function populateRegion(x) {
+                // Display regions in dropdown associated with the country selected by user
+                let selectedCountryID = document.getElementById('country_id').value;
+                let eid = document.getElementById('region_id');
+                eid.innerHTML = "<option value='none'>--select--</option>"
+                {% for region in regions %}
+                    if ({{region.country_id}} == selectedCountryID) { 
+                        eid.innerHTML += "<option value={{region.id}}>{{region.name}}</option>"
+                    }
+                {% endfor %}
+            }
+        </script>
     </head>
     <body>
         <p>Create a new wine in the database:</p>
             <form action="" method = "post">
                 <p>
                     <label for="country_id">Country:</label>
-                        <select name="country_id">
-                        {% for country in countries %}
-                            <option value={{country.id}}>{{country.name}}</option>
-                        {% endfor %}
+                        <select name="country_id" id="country_id" onchange="populateRegion()">
+                            <option value="none">--select--</option>
+                            {% for country in countries %}
+                                <option value={{country.id}}>{{country.name}}</option>
+                            {% endfor %}
                         </select>
                 </p>
                 <p>
                     <label for="region_id">Region:</label>
-                        <select name="region_id">
-                        {% for region in regions %}
-                            <option value={{region.id}}>{{region.name}}</option>
-                        {% endfor %}
+                        <select name="region_id" id="region_id">
+                            <option value="none">--select country--</option>
                         </select>
                 </p>
                 <p>
@@ -66,5 +78,7 @@
                 </p>    
             </form>
         <p><a href="/">Back to home page</a></p>
+
+    
     </body>
 </html>
