@@ -44,6 +44,27 @@ def showHome():
                            wines=wines)
 
 
+# Create and edit both countries and regions
+@app.route('/manageCountryRegion', methods=['GET', 'POST'])
+def manageCountryRegion():
+    """Create and edit both countries and regions"""
+    session = DBSession()
+    countries = session.query(Country).order_by(asc(Country.name))
+    regions = session.query(Region).order_by(asc(Region.name))
+    deletableCountries = session.query(Country).join(Region, full = True).filter(Region.country_id == None).all()
+    if request.method == 'POST':
+        newCountry = Country(name=request.form['name'])
+        session.add(newCountry)
+        session.commit()
+        session.close()
+        return redirect(url_for('manageCountryRegion'))
+    else:
+        return render_template('manageCountryRegion.html',
+                           countries=countries,
+                           regions=regions,
+                           deletableCountries=deletableCountries)
+
+
 # Create a new country
 @app.route('/country/new', methods=['GET', 'POST'])
 def newCountry():
@@ -54,7 +75,7 @@ def newCountry():
         session.add(newCountry)
         session.commit()
         session.close()
-        return redirect(url_for('showHome'))
+        return redirect(url_for('manageCountryRegion'))
     else:
         return render_template('newCountry.html')
 
@@ -72,7 +93,7 @@ def newRegion():
         session.add(newRegion)
         session.commit()
         session.close()
-        return redirect(url_for('showHome'))
+        return redirect(url_for('manageCountryRegion'))
     else:
         session.close()
         return render_template('newRegion.html',
@@ -107,6 +128,22 @@ def newWine():
     else:
         session.close()
         return render_template('newWine.html', countries=countries, regions=regions)
+
+
+# Delete an unassociated (no regions or wines) country
+@app.route('/deleteCountry', methods=['GET', 'POST'])
+def deleteCountry():
+    """Delete a country"""
+    if request.method == 'POST':
+        countryID = request.form['country_id']
+        session = DBSession()
+        countryToDelete = session.query(Country).filter_by(id=countryID).one_or_none()
+        session.delete(countryToDelete)
+        session.commit()
+        session.close()
+        return redirect(url_for('manageCountryRegion'))
+    else:
+        return render_template('manageCountryRegion.html')
 
 
 if __name__ == '__main__':

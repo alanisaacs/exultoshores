@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+    <body>
+        <h1>Manage Countries and Regions</h1>
+        <h2>Existing Countries and Regions</h2>
+        <table>
+            <tr>
+                <th>Country</th>
+                <th>Region</th>
+            </tr>
+            {% for country in countries %}
+                <tr>
+                    <td>{{country.name}}</td>
+                    <td>
+                    {% for region in regions %}
+                        {% if country.id == region.country_id %}
+                            {{region.name}} <br>
+                        {% endif %}
+                    {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <h2>Create a New Country</h2>
+            <form action="/country/new" method = "post">
+                <label for="name">Name:</label>
+                <input type ="text" maxlength="100" name="name" required>
+                <button type="submit" id="submit">Create Country</button>
+            </form>
+
+        <h2>Delete a Country</h2>
+        <div class="subhead">Only countries without associated regions or wines can be deleted.</div>
+            <form action="/deleteCountry" method = "post">
+                <label for="country_id">Name:</label>
+                    <select name="country_id">
+                        {% for country in deletableCountries %}
+                            <option value={{country.id}}>{{country.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" id="submit">Delete Country</button>
+            </form>
+
+        <h2>Create a New Region</h2>
+        <form action="/region/new" method = "post">
+            <p>
+                <label for="country_id">Country:</label>
+                    <select name="country_id">
+                    {% for country in countries %}
+                        <option value={{country.id}}>{{country.name}}</option>
+                    {% endfor %}
+                    </select>
+                <label for="name">Name:</label>
+                <input type="text" maxlength="100" name="name" required>
+                <button type="submit" id="submit">Create Region</button>
+            </p>    
+        </form>
+    <p><a href="/">Back to home page</a></p>
+    </body>
+</html>
