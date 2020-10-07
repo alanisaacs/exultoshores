@@ -16,6 +16,10 @@ h2 {
   font-size: 1.2em;
 }
 
+h3 {
+  
+}
+
 .subhead {
   color: green;  
   text-align: center;
@@ -26,4 +30,25 @@ table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
   padding: 10px;
+}
+
+.wineItem {
+  border-top: 3px solid blue;
+  clear: left;
+  padding: 5px 5px;
+}
+
+.wineLabel {
+  
+}
+
+.wineInfo {
+
+}
+
+img {
+  width: 10%;
+  height: 10%;
+  float: left;
+  padding-right: 12px;
 }

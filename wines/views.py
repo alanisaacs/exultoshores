@@ -52,6 +52,7 @@ def manageCountryRegion():
     countries = session.query(Country).order_by(asc(Country.name))
     regions = session.query(Region).order_by(asc(Region.name))
     deletableCountries = session.query(Country).join(Region, full = True).filter(Region.country_id == None).all()
+    deletableRegions = session.query(Region).join(Wine, full = True).filter(Wine.region_id == None).all()
     if request.method == 'POST':
         newCountry = Country(name=request.form['name'])
         session.add(newCountry)
@@ -62,7 +63,8 @@ def manageCountryRegion():
         return render_template('manageCountryRegion.html',
                            countries=countries,
                            regions=regions,
-                           deletableCountries=deletableCountries)
+                           deletableCountries=deletableCountries,
+                           deletableRegions=deletableRegions)
 
 
 # Create a new country
@@ -139,6 +141,22 @@ def deleteCountry():
         session = DBSession()
         countryToDelete = session.query(Country).filter_by(id=countryID).one_or_none()
         session.delete(countryToDelete)
+        session.commit()
+        session.close()
+        return redirect(url_for('manageCountryRegion'))
+    else:
+        return render_template('manageCountryRegion.html')
+
+
+# Delete an unassociated (no wines) region
+@app.route('/deleteRegion', methods=['GET', 'POST'])
+def deleteRegion():
+    """Delete a region"""
+    if request.method == 'POST':
+        regionID = request.form['region_id']
+        session = DBSession()
+        regionToDelete = session.query(Region).filter_by(id=regionID).one_or_none()
+        session.delete(regionToDelete)
         session.commit()
         session.close()
         return redirect(url_for('manageCountryRegion'))

@@ -5,44 +5,28 @@
         <script>
             function showWines() {
                 var htmlstring = "";
-                htmlstring += "<h2>COUNTRIES</h2>";
-                htmlstring += "<ol>";
-                {% for country in countries %}
-                    htmlstring += "<li>{{country.name}}</li>";
-                {% endfor %}
-                htmlstring += "</ol>";
-                
-                htmlstring += "<h2>REGIONS</h2>";
-                htmlstring += "<ol>";
-                {% for region in regions %}
-                    htmlstring += "<li>{{region.country.name}}: " +
-                        "{{region.name}}</li>";
-                {% endfor %}
-                htmlstring += "</ol>";
-                
-                htmlstring += "<h2>SOMMELIERS</h2>";
-                htmlstring += "<ol>";
-                {% for sommelier in sommeliers %}
-                    htmlstring += "<img src={{sommelier.picture}} " + 
-                        "width='100' height='100'>" +
-                        "<br>{{sommelier.username}}";
-                {% endfor %}
-                htmlstring += "</ol>";
-                
                 htmlstring += "<h2>WINES</h2>";
                 {% for wine in wines %}
-                    htmlstring += "<ol><li><strong>{{wine.name}}</strong><ul>" +
-                        "<li>{{wine.country.name}}</li>" +
-                        "<li>{{wine.region.name}}</li>" +
-                        "<li>{{wine.description}}</li>" +
-                        "<li>${{wine.price}}</li>" +
-                        "<li>{{wine.rating}}</li>" +
-                        "<li>{{wine.year}}</li>" +
-                        "<li>{{wine.abv}}</li>" +
-                        "<li><img src=/static/{{wine.label_photo}}></li>" +
-                        "<li>{{wine.date_tasted.strftime('%Y-%m-%d')}}</li>" +
-                        "<li>{{wine.sommelier.username}}</li>" +
-                        "</ul></li></ol>";
+                    htmlstring += 
+                        "<div class=wineItem>" +
+                            "<div class=wineLabel>" + 
+                                "<img src=/static/{{wine.label_photo}}>" + 
+                            "</div>" +
+                            "<div class=wineInfo>" +
+                                "<p><strong>{{wine.name}}</strong></p>" +
+                                "<p>{{wine.description}}</p>" +
+                                "<p>" +
+                                "{{wine.year}} " +
+                                "{{wine.country.name}} " +
+                                "{{wine.region.name}}<br> " +
+                                "${{wine.price}} " +
+                                "{{wine.rating}} points " +
+                                "{{wine.abv}} abv <br>" +
+                                "tasted on {{wine.date_tasted.strftime('%Y-%m-%d')}} " +
+                                "by {{wine.sommelier.username}}" +
+                                "</p>" +
+                            "</div>" +
+                        "</div>";
                 {% endfor %}
 
                 winelist.innerHTML = htmlstring;
