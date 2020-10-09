@@ -4,6 +4,11 @@
         <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
         <script>
             function showWines() {
+                // for wine in wines
+                //     var x = "wine|tojson";
+                //     console.log(x);
+                // endfor
+                
                 var htmlstring = "";
                 htmlstring += "<h2>WINES</h2>";
                 {% for wine in wines %}
@@ -31,6 +36,12 @@
 
                 winelist.innerHTML = htmlstring;
             }
+
+            /* THIS WORKS TO REPLACE "None" WITH ""
+                            if ("wine.year" != "None") { note double braces around wine.year
+                                htmlstring += "wine.year";
+                            }; 
+            */
         </script>
     </head>
     <body>
@@ -41,11 +52,23 @@
 
         <p>
             <a href="/manageCountryRegion">Manage Countries & Regions</a> |
-            <a href="/wine/new">Create a New Wine</a>
+            <a href="/wine/new">Create a New Wine</a> |
+            <a href="/wineTable">Edit Wines</a>
         </p>
         
         <div id="winelist">
+
             <script>showWines();</script>
+
+            <!--THIS WORKS BUT WHAT A PAIN
+             for wine in wines 
+                 if wine.year == None 
+                    <p>EMPTY STRING</p>
+                 else 
+                    <p>wine.year</p>
+                 endif 
+             endfor 
+            -->
         </div>
         
     </body>

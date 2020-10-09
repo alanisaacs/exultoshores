@@ -8,7 +8,7 @@
                 // Only show regions that have no wines associated with them
                 let selectedCountryID = document.getElementById('country_id').value;
                 let eid = document.getElementById('region_id');
-                eid.innerHTML = "<option value='none'>--select--</option>"
+                eid.innerHTML = "<option value=''>--select--</option>"
                 {% for region in deletableRegions %}
                     if ({{region.country_id}} == selectedCountryID) { 
                         eid.innerHTML += "<option value={{region.id}}>{{region.name}}</option>"

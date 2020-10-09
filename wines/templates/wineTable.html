@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+    <body>
+        <h1>All Wines in Database</h1>
+        <h2>Select a Wine to Edit</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Country</th>
+                <th>Region</th>
+                <th>Wine</th>
+                <th>Action</th>
+            </tr>
+            {% for wine in wines %}
+                <tr>
+                    <td>{{wine.id}}</td>
+                    <td>{{wine.country.name}}</td>
+                    <td>{{wine.region.name}}</td>
+                    <td>{{wine.name}}</td>
+                    <td>edit button</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <p><a href="/">Back to home page</a></p>
+    
+    </body>
+</html>

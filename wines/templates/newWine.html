@@ -7,7 +7,7 @@
                 // Display regions in dropdown associated with the country selected by user
                 let selectedCountryID = document.getElementById('country_id').value;
                 let eid = document.getElementById('region_id');
-                eid.innerHTML = "<option value='none'>--select--</option>"
+                eid.innerHTML = "<option value=''>--select--</option>"
                 {% for region in regions %}
                     if ({{region.country_id}} == selectedCountryID) { 
                         eid.innerHTML += "<option value={{region.id}}>{{region.name}}</option>"
@@ -20,56 +20,56 @@
         <p>Create a new wine in the database:</p>
             <form action="" method = "post">
                 <p>
-                    <label for="country_id">Country:</label>
-                        <select name="country_id" id="country_id" onchange="populateRegion()">
-                            <option value="none">--select--</option>
+                    <label for="country_id">Country*:</label>
+                        <select name="country_id" id="country_id" onchange="populateRegion()" required>
+                            <option value="">--select--</option>
                             {% for country in countries %}
                                 <option value={{country.id}}>{{country.name}}</option>
                             {% endfor %}
                         </select>
                 </p>
                 <p>
-                    <label for="region_id">Region:</label>
-                        <select name="region_id" id="region_id">
-                            <option value="none">--select country--</option>
+                    <label for="region_id">Region*:</label>
+                        <select name="region_id" id="region_id" required>
+                            <option value="">--select country--</option>
                         </select>
                 </p>
                 <p>
-                    <label for="name">Name:</label>
-                    <input type="text" maxlength="500" name="name" required>
+                    <label for="name">Name*:</label>
+                    <input type="text" maxlength="500" name="name" required value="Test name.">
                 </p>
                 <p>
                     <label for="year">Year:</label>
-                    <input type="text" maxlength="100" name="year" required>
+                    <input type="text" maxlength="100" name="year" value="">
                 </p>
                 <p>
                     <label for="price">Price:</label>
-                    <input type="text" maxlength="100" name="price">
+                    <input type="text" maxlength="100" name="price" value="19.99">
                 </p>
                 <p>
                     <label for="rating">Rating (0-100):</label>
-                    <input type="text" maxlength="100" name="rating">
+                    <input type="text" maxlength="100" name="rating" value="90">
                 </p>
                 <p>
                     <label for="abv">ABV (NN.N):</label>
-                    <input type="text" maxlength="100" name="abv">
+                    <input type="text" maxlength="100" name="abv" value="14.5">
                 </p>
                 <p>
                     <label for="date_tasted">Date Tasted (MM-DD-YYYY):</label>
-                    <input type="text" maxlength="100" name="date_tasted">
+                    <input type="text" maxlength="100" name="date_tasted" value="11-11-2011">
                 </p>
                 <p>
                     <label for="label_photo">Label Photo (name of file):</label>
-                    <input type="text" maxlength="100" name="label_photo">
+                    <input type="text" maxlength="100" name="label_photo" value="photo">
                 </p>
                 <p>
                     <label for="description">Description:</label>
                         <textarea maxlength="1000" name="description" 
-                        cols="50" rows="6"></textarea>
+                        cols="50" rows="6">Test description.</textarea>
                 </p>
                 <p>
                     <label for="sommelier_id">Sommelier ID (1)</label>
-                    <input type="text" maxlength="8" name="sommelier_id">
+                    <input type="text" maxlength="8" name="sommelier_id" value="1">
                 </p>
                 <p>
                     <button type="submit" id="submit" type="submit">

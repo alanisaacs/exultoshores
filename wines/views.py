@@ -10,7 +10,8 @@ from flask import (Flask,
                    request,
                    redirect)
 from sqlalchemy import (create_engine,
-                        asc)
+                        asc,
+                        null)
 from sqlalchemy.orm import sessionmaker
 from models import (Base,
                     Sommelier,
@@ -36,12 +37,38 @@ def showHome():
     regions = session.query(Region).order_by(asc(Region.name))
     sommeliers = session.query(Sommelier).order_by(asc(Sommelier.username))
     wines = session.query(Wine)
+    for wine in wines:
+        wine.year = 2222
+    # Replace <None> values in wine fields with empty strings
+    # Otherwise sqlalchemy will display the string "None"
+    # UNFORTUNATELY CHANGING VALUE DOESN'T STICK
+    # for wine in wines:
+    #     print("========== TOP OF WINE RECORD ==========")
+    #     for k in vars(wine):
+    #         if not vars(wine)[k]: 
+    #             vars(wine)[k] = "UNDEFINED"        
+    #         print("%s: %s" % (k, vars(wine)[k]))  
+    # wine.year = 2222 doesn't stick either
+
     session.close()
     return render_template('home.html',
                            countries=countries,
                            regions=regions,
                            sommeliers=sommeliers,
                            wines=wines)
+
+
+# Display a table of all wines for editing purposes
+@app.route('/wineTable')
+def showWineTable():
+    """Display wine table"""
+    session = DBSession()
+    wines = session.query(Wine)
+    countries = session.query(Country).order_by(asc(Country.name))
+    regions = session.query(Region).order_by(asc(Region.name))
+    session.close()
+    return render_template('wineTable.html',
+                          wines=wines)
 
 
 # Create and edit both countries and regions
@@ -109,19 +136,30 @@ def newWine():
     session = DBSession()
     countries = session.query(Country).order_by(asc(Country.name))
     regions = session.query(Region).order_by(asc(Region.name))
+    # Replace any empty strings in the form fields with <None> 
+    # Note: <None> is inserted into the db as NULL
+    # Note: <None> will display in html as the string "None"
+    fields = {}
     if request.method == 'POST':
+        for i, j in request.form.items():
+            if j:
+                fields[i] = j
+            else:
+                fields[i] = None
+        print(fields)
         newWine = Wine(
-            country_id=request.form['country_id'],
-            region_id=request.form['region_id'],
-            name=request.form['name'],
-            year=request.form['year'],
-            price=request.form['price'],
-            rating=request.form['rating'],
-            abv=request.form['abv'],
-            date_tasted=request.form['date_tasted'],
-            label_photo=request.form['label_photo'],
-            description=request.form['description'],
-            sommelier_id=request.form['sommelier_id']
+            
+            country_id=fields['country_id'],
+            region_id=fields['region_id'],
+            name=fields['name'],
+            year=fields['year'],
+            price=fields['price'],
+            rating=fields['rating'],
+            abv=fields['abv'],
+            date_tasted=fields['date_tasted'],
+            label_photo=fields['label_photo'],
+            description=fields['description'],
+            sommelier_id=fields['sommelier_id']
             )
         session.add(newWine)
         session.commit()
