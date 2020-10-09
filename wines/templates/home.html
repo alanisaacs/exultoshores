@@ -4,11 +4,6 @@
         <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
         <script>
             function showWines() {
-                // for wine in wines
-                //     var x = "wine|tojson";
-                //     console.log(x);
-                // endfor
-                
                 var htmlstring = "";
                 htmlstring += "<h2>WINES</h2>";
                 {% for wine in wines %}
@@ -26,22 +21,20 @@
                                 "{{wine.region.name}}<br> " +
                                 "${{wine.price}} " +
                                 "{{wine.rating}} points " +
-                                "{{wine.abv}} abv <br>" +
-                                "tasted on {{wine.date_tasted.strftime('%Y-%m-%d')}} " +
-                                "by {{wine.sommelier.username}}" +
+                                "{{wine.abv}} abv <br>";
+                                // Avoid blank date_tested values breaking display
+                                {% if wine.date_tasted %}
+                                    htmlstring += "tasted on {{wine.date_tasted.strftime('%Y-%m-%d')}} ";
+                                {% else %}
+                                    htmlstring += "None";
+                                {% endif %}
+                                htmlstring += "by {{wine.sommelier.username}}" +
                                 "</p>" +
                             "</div>" +
                         "</div>";
                 {% endfor %}
-
                 winelist.innerHTML = htmlstring;
             }
-
-            /* THIS WORKS TO REPLACE "None" WITH ""
-                            if ("wine.year" != "None") { note double braces around wine.year
-                                htmlstring += "wine.year";
-                            }; 
-            */
         </script>
     </head>
     <body>
@@ -60,15 +53,6 @@
 
             <script>showWines();</script>
 
-            <!--THIS WORKS BUT WHAT A PAIN
-             for wine in wines 
-                 if wine.year == None 
-                    <p>EMPTY STRING</p>
-                 else 
-                    <p>wine.year</p>
-                 endif 
-             endfor 
-            -->
         </div>
         
     </body>

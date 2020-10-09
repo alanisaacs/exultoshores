@@ -28,7 +28,6 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 
 
-# Display home web page
 @app.route('/')
 def showHome():
     """Display home page"""
@@ -37,19 +36,6 @@ def showHome():
     regions = session.query(Region).order_by(asc(Region.name))
     sommeliers = session.query(Sommelier).order_by(asc(Sommelier.username))
     wines = session.query(Wine)
-    # for wine in wines:
-    #     wine.year = 2222
-    # Replace <None> values in wine fields with empty strings
-    # Otherwise sqlalchemy will display the string "None"
-    # UNFORTUNATELY CHANGING VALUE DOESN'T STICK
-    # for wine in wines:
-    #     print("========== TOP OF WINE RECORD ==========")
-    #     for k in vars(wine):
-    #         if not vars(wine)[k]: 
-    #             vars(wine)[k] = "UNDEFINED"        
-    #         print("%s: %s" % (k, vars(wine)[k]))  
-    # wine.year = 2222 doesn't stick either
-
     session.close()
     return render_template('home.html',
                            countries=countries,
