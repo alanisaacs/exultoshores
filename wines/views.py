@@ -37,8 +37,8 @@ def showHome():
     regions = session.query(Region).order_by(asc(Region.name))
     sommeliers = session.query(Sommelier).order_by(asc(Sommelier.username))
     wines = session.query(Wine)
-    for wine in wines:
-        wine.year = 2222
+    # for wine in wines:
+    #     wine.year = 2222
     # Replace <None> values in wine fields with empty strings
     # Otherwise sqlalchemy will display the string "None"
     # UNFORTUNATELY CHANGING VALUE DOESN'T STICK
@@ -200,6 +200,22 @@ def deleteRegion():
         return redirect(url_for('manageCountryRegion'))
     else:
         return render_template('manageCountryRegion.html')
+
+
+# Delete a wine from the wine table
+@app.route('/deleteWine', methods=['GET', 'POST'])
+def deleteWine():
+    """Delete a wine"""
+    if request.method == 'POST':
+        wineid = request.form['wineid']
+        session = DBSession()
+        wineToDelete = session.query(Wine).filter_by(id=wineid).one_or_none()
+        session.delete(wineToDelete)
+        session.commit()
+        session.close()
+        return redirect(url_for('showWineTable'))
+    else:
+        return render_template('wineTable.html')
 
 
 if __name__ == '__main__':

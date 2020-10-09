@@ -20,7 +20,11 @@
                     <td>{{wine.country.name}}</td>
                     <td>{{wine.region.name}}</td>
                     <td>{{wine.name}}</td>
-                    <td>edit button</td>
+                    <td>
+                        <form action="/deleteWine" method="post">
+                            <button type="submit" id="submit" name="wineid" value="{{wine.id}}">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
