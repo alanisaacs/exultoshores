@@ -17,10 +17,13 @@
             {% for wine in wines %}
                 <tr>
                     <td>{{wine.id}}</td>
-                    <td>{{wine.country.name}}</td>
-                    <td>{{wine.region.name}}</td>
+                    <td>{{wine.country_id}}</td>
+                    <td>{{wine.region_id}}</td>
                     <td>{{wine.name}}</td>
                     <td>
+                        <form action="/editWine" method="post">
+                            <button type="submit" id="submit" name="wineid" value="{{wine.id}}">Edit</button>
+                        </form>
                         <form action="/deleteWine" method="post">
                             <button type="submit" id="submit" name="wineid" value="{{wine.id}}">Delete</button>
                         </form>

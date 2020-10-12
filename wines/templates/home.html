@@ -13,12 +13,15 @@
                                 "<img src=/static/{{wine.label_photo}}>" + 
                             "</div>" +
                             "<div class=wineInfo>" +
-                                "<p><strong>{{wine.name}}</strong></p>" +
-                                "<p>{{wine.description}}</p>" +
-                                "<p>" +
+                                "<p><strong>{{wine.name}}</strong></p>";
+                                var s = "{{wine.description}}";
+                                var t = s.replace(/&lt;/g, "<");
+                                var u = t.replace(/&gt;/g, ">");
+                                htmlstring += "<p>" + u + "</p>";
+                                htmlstring += "<p>" +
                                 "{{wine.year}} " +
-                                "{{wine.country.name}} " +
-                                "{{wine.region.name}}<br> " +
+                                "{{wine.country_id}} " +
+                                "{{wine.region_id}}<br> " +
                                 "${{wine.price}} " +
                                 "{{wine.rating}} points " +
                                 "{{wine.abv}} abv <br>";
@@ -26,9 +29,9 @@
                                 {% if wine.date_tasted %}
                                     htmlstring += "tasted on {{wine.date_tasted.strftime('%Y-%m-%d')}} ";
                                 {% else %}
-                                    htmlstring += "None";
+                                    htmlstring += "No date";
                                 {% endif %}
-                                htmlstring += "by {{wine.sommelier.username}}" +
+                                htmlstring += "by {{wine.sommelier_id}}" +
                                 "</p>" +
                             "</div>" +
                         "</div>";
@@ -50,9 +53,7 @@
         </p>
         
         <div id="winelist">
-
             <script>showWines();</script>
-
         </div>
         
     </body>

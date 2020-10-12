@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+        <script>
+
+        </script>
+    </head>
+    <body>
+        <h2>Edit a wine record in the database:</h2>
+        
+        <form action="/updateWine" method="POST">
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>                     
+            {% for k in wineToEdit %}
+                <tr>
+                    <td>{{k}}</td>
+                    <td>
+                        <input type="text" maxlength="100" name="{{k}}"
+                            value="{{wineToEdit[k]}}">
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        </form>
+
+
+        <p><a href="/">Back to home page</a></p>
+
+    
+    </body>
+</html>
