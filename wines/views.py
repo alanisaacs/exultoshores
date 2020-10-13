@@ -11,6 +11,7 @@ from flask import (Flask,
                    redirect)
 from sqlalchemy import (create_engine,
                         asc,
+                        desc,
                         null)
 from sqlalchemy.orm import sessionmaker
 from models import (Base,
@@ -28,30 +29,31 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 
 
+# Display all the wines in the db on the home page
 @app.route('/')
 def showHome():
     """Display home page"""
     session = DBSession()
-    # countries = session.query(Country).order_by(asc(Country.name)).all()
-    # regions = session.query(Region).order_by(asc(Region.name)).all()
-    # sommeliers = session.query(Sommelier).order_by(asc(Sommelier.username)).all()
-    wines = session.query(Wine).all()
+    # QUERY so that result is a list with element 0 a Wine object
+    # and the other three elements are the relations to it.
+    # Note that sommelier_id could be None (NULL in DB) so 
+    # we need an outer join to keep the Wine object in that case
+    wines = session.query(Wine, Country.name, Region.name, Sommelier.username).join(
+                        Country, Wine.country_id==Country.id).join(
+                        Region, Wine.region_id==Region.id).outerjoin(
+                        Sommelier, Wine.sommelier_id==Sommelier.id).order_by(
+                        desc(Wine.id)).all()
     session.close()
     # Replace new line (\r\n) characters in description with <br>
     # print("======= DEBUG DESCRIPTION =======")
     for wine in wines:
-        s = (wine.description).replace("\r\n", "<br>")
+        s = (wine[0].description).replace("\r\n", "<br>")
         # print("s = %s" % s)
         # c = [ letter for letter in s ]
         # print("c = %s" % c)
-        wine.description = s
+        wine[0].description = s
         # print("done replacing")
-
-            
     return render_template('home.html',
-                        #    countries=countries,
-                        #    regions=regions,
-                        #    sommeliers=sommeliers,
                            wines=wines)
 
 
@@ -60,16 +62,15 @@ def showHome():
 def showWineTable():
     """Display wine table"""
     session = DBSession()
-    wines = session.query(Wine).all()
-    # countries = session.query(Country).order_by(asc(Country.name))
-    # regions = session.query(Region).order_by(asc(Region.name))
-    # sommeliers = session.query(Sommelier).order_by(asc(Sommelier.username))
+    # QUERY so that result is a list with element 0 a Wine object
+    # and the other two elements are the relations to it.
+    wines = session.query(Wine, Country.name, Region.name).join(
+                        Country, Wine.country_id==Country.id).join(
+                        Region, Wine.region_id==Region.id).order_by(
+                        desc(Wine.id)).all()
     session.close()
     return render_template('wineTable.html',
                           wines=wines)
-                        #   countries=countries,
-                        #   regions=regions,
-                        #   sommeliers=sommeliers)
 
 
 # Display a single wine for editing
@@ -161,7 +162,7 @@ def newWine():
     regions = session.query(Region).order_by(asc(Region.name)).all()
     # Replace any empty strings in the form fields with <None> 
     # Note: <None> is inserted into the db as NULL
-    # Note: <None> will display in html as the string "None"
+    # Note: <None> will display in html as the string "None" by defaule
     fields = {}
     if request.method == 'POST':
         for i, j in request.form.items():
@@ -169,7 +170,7 @@ def newWine():
                 fields[i] = j
             else:
                 fields[i] = None
-        print(fields)
+        print("FIELDS = %s" % fields)
         newWine = Wine(
             country_id=fields['country_id'],
             region_id=fields['region_id'],
