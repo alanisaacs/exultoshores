@@ -12,7 +12,8 @@ from flask import (Flask,
 from sqlalchemy import (create_engine,
                         asc,
                         desc,
-                        null)
+                        null,
+                        update)
 from sqlalchemy.orm import sessionmaker
 from models import (Base,
                     Sommelier,
@@ -74,24 +75,56 @@ def showWineTable():
 
 
 # Display a single wine for editing
-@app.route('/editWine', methods=['GET', 'POST'])
-def editWine():
-    """Edit a single wine"""
+@app.route('/showOneWine', methods=['GET', 'POST'])
+def showOneWine():
+    """Display a single wine"""
     if request.method == 'POST':
-        print("======= IN POST ======= ")
+        print("======= IN SHOWONEWINE POST ======= ")
         print("REQUEST.WINEID = %s" % request.form['wineid'])
         session = DBSession()
-        wineToEdit = session.query(Wine).filter(Wine.id == request.form['wineid']).one_or_none()
+        wineToEdit = session.query(Wine).\
+            filter(Wine.id == request.form['wineid']).\
+            one_or_none()
         session.close()
         # can't iterate through single wine in template
         # so copying into a dictionary
+        print("WINETOEDIT = %s" % wineToEdit)
         wineDict = {}
         wineDict = (vars(wineToEdit))
-        # print(wineDict)
-        return render_template('editWine.html', wineToEdit=wineDict)
+        print("WINEDICT = %s" % wineDict)
+        return render_template('showOneWine.html', wineToEdit=wineDict)
     else:
-        print("======= IN GET ======= ")
-        return render_template('editWine.html')
+        print("======= IN SHOWONEWINE GET ======= ")
+        return render_template('showOneWine.html')
+
+    
+# Update wine record with values from showOneWine view
+@app.route('/updateWine', methods=['GET', 'POST'])
+def updateWine():
+    """Update a wine record"""
+    if request.method == 'POST':
+        print("======= IN UPDATEWINE POST ======= ")
+        print("REQUEST.WINEID = %s" % request.form['id'])
+        session = DBSession()
+        wineToUpdate = session.query(Wine).\
+            filter(Wine.id==request.form['id']).\
+            update(
+                {'year': request.form['year']}
+            )
+        session.commit()
+        wineToEdit = session.query(Wine).\
+            filter(Wine.id == request.form['id']).\
+            one_or_none()
+        session.close()
+        print("WINETOEDIT = %s" % wineToEdit)
+        wineDict = {}
+        wineDict = (vars(wineToEdit))
+        print("WINEDICT = %s" % wineDict)
+        return render_template('showOneWine.html', wineToEdit=wineDict)
+    else:
+        print("======= IN UPDATEWINE GET ======= ")
+        # need to grab values from db as in showOneWine if this is ever called
+        return render_template('showOneWine.html')
 
 
 # Create and edit both countries and regions
@@ -130,7 +163,8 @@ def newCountry():
         session.close()
         return redirect(url_for('manageCountryRegion'))
     else:
-        return render_template('newCountry.html')
+        # this should never happen
+        return render_template('manageCountryRegion.html')
 
 
 # Create a new region
@@ -149,8 +183,7 @@ def newRegion():
         return redirect(url_for('manageCountryRegion'))
     else:
         session.close()
-        return render_template('newRegion.html',
-                               countries=countries)
+        return render_template('manageCountryRegion.html')
 
 
 # Add a wine to the database
