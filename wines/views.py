@@ -46,14 +46,11 @@ def showHome():
                         desc(Wine.id)).all()
     session.close()
     # Replace new line (\r\n) characters in description with <br>
-    # print("======= DEBUG DESCRIPTION =======")
     for wine in wines:
-        s = (wine[0].description).replace("\r\n", "<br>")
-        # print("s = %s" % s)
-        # c = [ letter for letter in s ]
-        # print("c = %s" % c)
-        wine[0].description = s
-        # print("done replacing")
+        s = (wine[0].description)
+        if s: # filter out null values
+            s = s.replace("\r\n", "<br>")
+            wine[0].description = s
     return render_template('home.html',
                            wines=wines)
 
@@ -79,20 +76,29 @@ def showWineTable():
 def showOneWine():
     """Display a single wine"""
     if request.method == 'POST':
-        print("======= IN SHOWONEWINE POST ======= ")
-        print("REQUEST.WINEID = %s" % request.form['wineid'])
         session = DBSession()
+        # QUERY one wine by id; result is a Wine object
         wineToEdit = session.query(Wine).\
             filter(Wine.id == request.form['wineid']).\
             one_or_none()
         session.close()
         # can't iterate through single wine in template
-        # so copying into a dictionary
-        print("WINETOEDIT = %s" % wineToEdit)
+        # so copying attributes (vars) into a dictionary
         wineDict = {}
         wineDict = (vars(wineToEdit))
-        print("WINEDICT = %s" % wineDict)
-        return render_template('showOneWine.html', wineToEdit=wineDict)
+        # remove var that isn't part of data
+        wineDict.pop('_sa_instance_state')
+        # treat description separately to display on top of page
+        wineDescription = wineDict.pop('description')
+        # display any None (null) values as blank spaces
+        # then it is easy to convert them to NULL again
+        # on their way back to the database
+        # (see newwine view)
+        for w in wineDict:
+            if wineDict[w] == None:
+                wineDict[w] = ""
+        return render_template('showOneWine.html', 
+            wineToEdit=wineDict, wineDescription=wineDescription)
     else:
         print("======= IN SHOWONEWINE GET ======= ")
         return render_template('showOneWine.html')
@@ -103,24 +109,42 @@ def showOneWine():
 def updateWine():
     """Update a wine record"""
     if request.method == 'POST':
-        print("======= IN UPDATEWINE POST ======= ")
-        print("REQUEST.WINEID = %s" % request.form['id'])
+        # Convert blank strings in form to None (NULL)
+        # TODO: consolidate with new wine view
+        fields = {}
+        for i, j in request.form.items():
+            if j:
+                fields[i] = j
+            else:
+                fields[i] = None
         session = DBSession()
+        # QUERY the wine record by id
+        # note the result is itself a query
         wineToUpdate = session.query(Wine).\
-            filter(Wine.id==request.form['id']).\
-            update(
-                {'year': request.form['year']}
-            )
+            filter(Wine.id==request.form['id'])
+        # update everything in the form
+        # TODO: only update changed items
+        for i in fields:
+            wineToUpdate.update({
+                i: fields[i]
+            })
         session.commit()
+        # QUERY again wine by id, closing transaction this time
         wineToEdit = session.query(Wine).\
             filter(Wine.id == request.form['id']).\
             one_or_none()
         session.close()
-        print("WINETOEDIT = %s" % wineToEdit)
+        # copy to dict like in showOneWine
+        # TODO: consolidate into function
         wineDict = {}
         wineDict = (vars(wineToEdit))
-        print("WINEDICT = %s" % wineDict)
-        return render_template('showOneWine.html', wineToEdit=wineDict)
+        wineDict.pop('_sa_instance_state')
+        # TODO: also consolidate this
+        for w in wineDict:
+            if wineDict[w] == None:
+                wineDict[w] = ""
+        wineDescription = wineDict.pop('description')
+        return render_template('showOneWine.html', wineToEdit=wineDict, wineDescription=wineDescription)
     else:
         print("======= IN UPDATEWINE GET ======= ")
         # need to grab values from db as in showOneWine if this is ever called
@@ -195,7 +219,7 @@ def newWine():
     regions = session.query(Region).order_by(asc(Region.name)).all()
     # Replace any empty strings in the form fields with <None> 
     # Note: <None> is inserted into the db as NULL
-    # Note: <None> will display in html as the string "None" by defaule
+    # Note: <None> will display in html as the string "None" by default
     fields = {}
     if request.method == 'POST':
         for i, j in request.form.items():
@@ -203,7 +227,7 @@ def newWine():
                 fields[i] = j
             else:
                 fields[i] = None
-        print("FIELDS = %s" % fields)
+        # print("FIELDS = %s" % fields)
         newWine = Wine(
             country_id=fields['country_id'],
             region_id=fields['region_id'],

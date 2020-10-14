@@ -55,8 +55,8 @@
                     <input type="text" maxlength="100" name="abv">
                 </p>
                 <p>
-                    <label for="date_tasted">Date Tasted (MM-DD-YYYY):</label>
-                    <input type="text" maxlength="100" name="date_tasted">
+                    <label for="date_tasted">Date Tasted (YYYY-MM-DD):</label>
+                    <input type="text" maxlength="100" name="date_tasted" id="date_tasted">
                 </p>
                 <p>
                     <label for="label_photo">Label Photo (name of file):</label>
@@ -68,8 +68,8 @@
                             cols="50" rows="6"></textarea>
                 </p>
                 <p>
-                    <label for="sommelier_id">Sommelier ID (1)</label>
-                    <input type="text" maxlength="8" name="sommelier_id">
+                    <label for="sommelier_id">Sommelier ID (must be 1)</label>
+                    <input type="text" maxlength="8" name="sommelier_id" value="1" readonly>
                 </p>
                 <p>
                     <button type="submit" id="submit">
@@ -77,6 +77,10 @@
                     </button>
                 </p>    
             </form>
+            <script>
+                var d = new Date().toISOString().split('T')[0];
+                document.getElementById("date_tasted").value = d;
+            </script>
         <p><a href="/">Back to home page</a></p>
 
     

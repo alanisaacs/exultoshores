@@ -14,7 +14,14 @@
             <tr>
                 <th>Field</th>
                 <th>Value</th>
-            </tr>                     
+            </tr>          
+            <tr>
+                <td>Description</td>
+                <td><textarea maxlength="1000" name="description" 
+                        cols="100" rows="12"> {{wineDescription}}
+                    </textarea>
+                </td>
+            </tr>           
             {% for k in wineToEdit %}
                 <tr>
                     <td>{{k}}</td>

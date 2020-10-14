@@ -14,7 +14,7 @@
                                 "<img src=/static/{{wine[0].label_photo}}>" + 
                             "</div>" +
                             "<div class=wineInfo>" +
-                                "<p><strong>{{wine.name}}</strong></p>";
+                                "<p><strong>{{wine[0].name}}</strong></p>";
                                 // replace escapes for lt & gt with actual chars
                                 // so <br> is treated as a tag not part of the string
                                 var s = "{{wine[0].description}}";
