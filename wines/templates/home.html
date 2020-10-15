@@ -10,9 +10,11 @@
                 // wine is a list: [wineobject, countryname, regionname, som.username]
                     htmlstring += 
                         "<div class=wineItem>" +
-                            "<div class=wineLabel>" + 
-                                "<img src=/static/{{wine[0].label_photo}}>" + 
-                            "</div>" +
+                            "<div class=wineLabel>";
+                                {% if wine[0].label_photo %}
+                                    htmlstring += "<img src=/static/{{wine[0].label_photo}}>";
+                                {% endif %}
+                            htmlstring += "</div>" +
                             "<div class=wineInfo>" +
                                 "<p><strong>{{wine[0].name}}</strong></p>";
                                 // replace escapes for lt & gt with actual chars
@@ -22,19 +24,21 @@
                                 var u = t.replace(/&gt;/g, ">");
                                 htmlstring += "<p>" + u + "</p>";
                                 htmlstring += "<p>" +
-                                "{{wine[0].year}} " +
-                                "{{wine[1]}} " + // country name
-                                "{{wine[2]}}<br> " + // region name
-                                "${{wine[0].price}} " +
+                                "{{wine[0].year}} - " +
+                                "{{wine[1]}} - " + // country name
+                                "{{wine[2]}} - " + // region name
+                                "{{wine[0].appellation}}<br> " +
                                 "{{wine[0].rating}} points " +
+                                "${{wine[0].price}} " +
                                 "{{wine[0].abv}} abv <br>";
                                 // Avoid blank date_tested values breaking display
                                 {% if wine[0].date_tasted %}
-                                    htmlstring += "tasted on {{wine[0].date_tasted.strftime('%Y-%m-%d')}} ";
+                                    htmlstring += "First tasted on {{wine[0].date_tasted.strftime('%Y-%m-%d')}}. ";
                                 {% else %}
-                                    htmlstring += "No date";
+                                    htmlstring += "No first taste date. ";
                                 {% endif %}
-                                htmlstring += "by {{wine[3]}}" + // sommelier name
+                                htmlstring += "Times Tasted: {{wine[0].times_tasted}}.<br>" +
+                                "Purchased at {{wine[0].purchased_at}}. Entered by {{wine[3]}}." + // sommelier name
                                 "</p>" +
                             "</div>" +
                         "</div>";

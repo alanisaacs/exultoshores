@@ -27,11 +27,9 @@ session.commit()
 # Set up countries
 country1 = Country(name = "France")
 country2 = Country(name = "Italy")
-country3 = Country(name = "USA")
 
 session.add(country1)
 session.add(country2)
-session.add(country3)
 session.commit()
 
 
@@ -46,32 +44,29 @@ region2 = Region(
     country_id = 1,
     country = country1
     )
-region3 = Region(
-    name = "Chianti",
-    country_id = 2,
-    country = country2
-    )
 
 session.add(region1)
 session.add(region2)
-session.add(region3)
 session.commit()
 
 
 # Add a wine
 wine1 = Wine(
-    name = "Bois-Malot, Bordeaux Sup\u00e9rieur", 
-    description = "K&L: Located in St-Loubes and situated on the shoreline of the Dordogne River. The soils are clay and light limestone with a subsoil of red pebbles and clay. The blend is 50% Cabernet Sauvignon, 30% Merlot, and 20% Cabernet Franc. It was aged for 18 months in large vats and then an additional 6 months in oak.", 
-    price = 29.99, 
-    rating = 90, 
+    name = "Dubois Bernard & Fils Chorey-les-Beaune \"Clos Margot\"", 
+    description = "Leather coin purse, beef jerky, with copper pennies. Blackberry compost.\r\n\r\nNice structure, though acidity fades into the distance with an unexpected pithy aftertaste (\"till the diminution of space had pointed him sharp as my needle\"—Cymbeline I.3.23).\r\n\r\n Pairs with rack of lamb with cocoa rub, or duck with berry compote.", 
+    appellation = "Chorey-les-Beaune",
+    price = 33.99, 
+    rating = 89, 
     year = 2017,
-    abv = 13.5,
-    date_tasted = "2020-09-22",
-    label_photo = "bois.jpg",
+    abv = 13.0,
+    date_tasted = "2020-08-20",
+    times_tasted = 1,
+    label_photo = None,
+    purchased_at = None,
     country_id = 1, 
     country = country1,
-    region_id = 2,
-    region = region2,
+    region_id = 1,
+    region = region1,
     sommelier_id = 1,
     sommelier = sommelier1
     )
