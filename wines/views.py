@@ -43,7 +43,7 @@ def showHome():
                         Country, Wine.country_id==Country.id).join(
                         Region, Wine.region_id==Region.id).outerjoin(
                         Sommelier, Wine.sommelier_id==Sommelier.id).order_by(
-                        desc(Wine.id)).all()
+                        desc(Wine.rating)).all()
     session.close()
     # Replace new line (\r\n) characters in description with <br>
     for wine in wines:
@@ -231,13 +231,16 @@ def newWine():
         newWine = Wine(
             country_id=fields['country_id'],
             region_id=fields['region_id'],
+            appellation=fields['appellation'],
             name=fields['name'],
             year=fields['year'],
             price=fields['price'],
             rating=fields['rating'],
             abv=fields['abv'],
             date_tasted=fields['date_tasted'],
+            times_tasted=fields['times_tasted'],
             label_photo=fields['label_photo'],
+            purchased_at=fields['purchased_at'],
             description=fields['description'],
             sommelier_id=fields['sommelier_id']
             )

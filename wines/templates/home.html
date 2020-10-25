@@ -23,11 +23,11 @@
                                 var t = s.replace(/&lt;/g, "<");
                                 var u = t.replace(/&gt;/g, ">");
                                 htmlstring += "<p>" + u + "</p>";
-                                htmlstring += "<p>" +
+                                htmlstring += "<p><strong>" +
                                 "{{wine[0].year}} - " +
                                 "{{wine[1]}} - " + // country name
                                 "{{wine[2]}} - " + // region name
-                                "{{wine[0].appellation}}<br> " +
+                                "{{wine[0].appellation}}</strong><br> " +
                                 "{{wine[0].rating}} points " +
                                 "${{wine[0].price}} " +
                                 "{{wine[0].abv}} abv <br>";
