@@ -26,8 +26,12 @@
                                 htmlstring += "<p><strong>" +
                                 "{{wine[0].year}} - " +
                                 "{{wine[1]}} - " + // country name
-                                "{{wine[2]}} - " + // region name
-                                "{{wine[0].appellation}}</strong><br> " +
+                                "{{wine[2]}}"; // region name
+                                var a = "{{wine[0].appellation}}";
+                                if (a != "None") { // don't show blank appellations
+                                    htmlstring += " - " + a; 
+                                }
+                                htmlstring += "</strong><br> " +
                                 "{{wine[0].rating}} points " +
                                 "${{wine[0].price}} " +
                                 "{{wine[0].abv}} abv <br>";

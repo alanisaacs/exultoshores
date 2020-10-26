@@ -11,7 +11,11 @@
                 <th>ID</th>
                 <th>Country</th>
                 <th>Region</th>
-                <th>Wine</th>
+                <th>Appellation</th>
+                <th>Name</th>
+                <th>Year</th>
+                <th>Price</th>
+                <th>Rating</th>
                 <th>Action</th>
             </tr>
             {% for wine in wines %}
@@ -19,7 +23,11 @@
                     <td>{{wine[0].id}}</td>
                     <td>{{wine[1]}}</td>
                     <td>{{wine[2]}}</td>
+                    <td>{{wine[0].appellation}}</td>
                     <td>{{wine[0].name}}</td>
+                    <td>{{wine[0].year}}</td>
+                    <td>{{wine[0].price}}</td>
+                    <td>{{wine[0].rating}}</td>
                     <td>
                         <form action="/showOneWine" method="post">
                             <button type="submit" id="submit" name="wineid" value="{{wine[0].id}}">Edit</button>
