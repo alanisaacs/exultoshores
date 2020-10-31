@@ -144,7 +144,8 @@ def updateWine():
             if wineDict[w] == None:
                 wineDict[w] = ""
         wineDescription = wineDict.pop('description')
-        return render_template('showOneWine.html', wineToEdit=wineDict, wineDescription=wineDescription)
+        return redirect(url_for('showHome'))
+        # return render_template('showOneWine.html', wineToEdit=wineDict, wineDescription=wineDescription)
     else:
         print("======= IN UPDATEWINE GET ======= ")
         # need to grab values from db as in showOneWine if this is ever called

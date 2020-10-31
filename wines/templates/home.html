@@ -31,8 +31,9 @@
                                 if (a != "None") { // don't show blank appellations
                                     htmlstring += " - " + a; 
                                 }
-                                htmlstring += "</strong><br> " +
-                                "{{wine[0].rating}} points " +
+                                htmlstring += "</strong><br>" +
+                                "<span class='wineRating'>" +
+                                "{{wine[0].rating}}</span> points " +
                                 "${{wine[0].price}} " +
                                 "{{wine[0].abv}} abv <br>";
                                 // Avoid blank date_tested values breaking display

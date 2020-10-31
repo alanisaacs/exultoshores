@@ -46,6 +46,11 @@ table, th, td {
 
 }
 
+.wineRating {
+  display: inline;
+  background-color: palegreen;
+}
+
 img {
   width: 25%;
   height: 25%;
