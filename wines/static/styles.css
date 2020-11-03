@@ -46,9 +46,20 @@ table, th, td {
 
 }
 
-.wineRating {
-  display: inline;
-  background-color: palegreen;
+.wineInfoTitle {
+  margin: 3px;
+  font-weight: bold;
+}
+
+.wineInfoLine {
+  margin: 3px;
+}
+
+.wineInfoRating {
+  border: 2px solid purple;
+  padding: 2px;
+  margin: 2px;
+  /*background-color: palegreen;*/
 }
 
 img {
