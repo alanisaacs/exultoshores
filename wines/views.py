@@ -100,6 +100,7 @@ def showOneWine():
         return render_template('showOneWine.html', 
             wineToEdit=wineDict, wineDescription=wineDescription)
     else:
+        # this case never happens
         print("======= IN SHOWONEWINE GET ======= ")
         return render_template('showOneWine.html')
 
