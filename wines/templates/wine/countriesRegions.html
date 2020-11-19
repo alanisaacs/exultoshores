@@ -40,7 +40,7 @@
         </table>
 
         <h2>Create a New Country</h2>
-            <form action="/country/new" method = "post">
+            <form action="/wine/countryNew" method = "post">
                 <label for="name">Name:</label>
                 <input type ="text" maxlength="100" name="name" required>
                 <button type="submit" id="submit">Create Country</button>
@@ -48,7 +48,7 @@
 
         <h2>Delete a Country</h2>
             <div class="subhead">Only countries without associated regions or wines can be deleted.</div>
-            <form action="/deleteCountry" method = "post">
+            <form action="/wine/countryDelete" method = "post">
                 <label for="country_id">Name:</label>
                     <select name="country_id">
                         {% for country in deletableCountries %}
@@ -59,7 +59,7 @@
             </form>
 
         <h2>Create a New Region</h2>
-            <form action="/region/new" method = "post">
+            <form action="/wine/regionNew" method = "post">
                 <p>
                     <label for="country_id">Country:</label>
                         <select name="country_id">
@@ -75,7 +75,7 @@
 
         <h2>Delete a Region</h2>
             <div class="subhead">Only regions without associated wines can be deleted.</div>
-            <form action="/deleteRegion" method = "post">
+            <form action="/wine/regionDelete" method = "post">
                 <p>
                     <label for="country_id">Country:</label>
                         <select name="country_id" id="country_id" onchange="populateRegionToDelete()">
@@ -92,6 +92,6 @@
                 </p>    
             </form>
 
-    <p><a href="/">Back to home page</a></p>
+    <p><a href="/wine">Back to Wine App Home</a></p>
     </body>
 </html>

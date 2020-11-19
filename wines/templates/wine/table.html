@@ -29,10 +29,10 @@
                     <td>{{wine[0].price}}</td>
                     <td>{{wine[0].rating}}</td>
                     <td>
-                        <form action="/showOneWine" method="post">
+                        <form action="/wine/wineOne" method="post">
                             <button type="submit" id="submit" name="wineid" value="{{wine[0].id}}">Edit</button>
                         </form>
-                        <form action="/deleteWine" method="post">
+                        <form action="/wine/wineDelete" method="post">
                             <button type="submit" id="submit" name="wineid" value="{{wine[0].id}}">Delete</button>
                         </form>
                     </td>
@@ -40,7 +40,7 @@
             {% endfor %}
         </table>
 
-        <p><a href="/">Back to home page</a></p>
+        <p><a href="/wine">Back to Wine App Home</a></p>
     
     </body>
 </html>

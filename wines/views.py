@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Create web views for the Wine App"""
+"""Create web views for Exult-O-Shores"""
 
 import sys
 from flask import (Flask,
@@ -24,16 +24,22 @@ from models import (Base,
 # Create Flask app
 app = Flask(__name__)
 
-# Connect to Database and create database session
+# Connect to Wine App Database and create database session
 engine = create_engine('postgresql://winedbuser:winedbuser@localhost/winedb')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 
 
-# Display all the wines in the db on the home page
+# Display front end for the whole site
 @app.route('/')
-def showHome():
-    """Display home page"""
+def showSiteIndex():
+    """Display exultoshores.com index page"""
+    return render_template('index.html')
+
+# Display Wine App home page, showing all the wines in the db
+@app.route('/wine')
+def wineHome():
+    """Display Wine App home page"""
     session = DBSession()
     # QUERY so that result is a list with element 0 a Wine object
     # and the other three elements are the relations to it.
@@ -51,13 +57,13 @@ def showHome():
         if s: # filter out null values
             s = s.replace("\r\n", "<br>")
             wine[0].description = s
-    return render_template('home.html',
+    return render_template('wine/home.html',
                            wines=wines)
 
 
-# Display a table of all wines for editing purposes
-@app.route('/wineTable')
-def showWineTable():
+# Display a table of all wines
+@app.route('/wine/table')
+def wineTable():
     """Display wine table"""
     session = DBSession()
     # QUERY so that result is a list with element 0 a Wine object
@@ -67,13 +73,13 @@ def showWineTable():
                         Region, Wine.region_id==Region.id).order_by(
                         desc(Wine.id)).all()
     session.close()
-    return render_template('wineTable.html',
+    return render_template('wine/table.html',
                           wines=wines)
 
 
 # Display a single wine for editing
-@app.route('/showOneWine', methods=['GET', 'POST'])
-def showOneWine():
+@app.route('/wine/wineOne', methods=['GET', 'POST'])
+def wineOne():
     """Display a single wine"""
     if request.method == 'POST':
         session = DBSession()
@@ -97,17 +103,17 @@ def showOneWine():
         for w in wineDict:
             if wineDict[w] == None:
                 wineDict[w] = ""
-        return render_template('showOneWine.html', 
+        return render_template('wine/wineOne.html', 
             wineToEdit=wineDict, wineDescription=wineDescription)
     else:
         # this case never happens
         print("======= IN SHOWONEWINE GET ======= ")
-        return render_template('showOneWine.html')
+        return render_template('wine/wineOne.html')
 
     
-# Update wine record with values from showOneWine view
-@app.route('/updateWine', methods=['GET', 'POST'])
-def updateWine():
+# Update wine record with values from wineOne view
+@app.route('/wine/wineUpdate', methods=['GET', 'POST'])
+def wineUpdate():
     """Update a wine record"""
     if request.method == 'POST':
         # Convert blank strings in form to None (NULL)
@@ -145,18 +151,17 @@ def updateWine():
             if wineDict[w] == None:
                 wineDict[w] = ""
         wineDescription = wineDict.pop('description')
-        return redirect(url_for('showHome'))
-        # return render_template('showOneWine.html', wineToEdit=wineDict, wineDescription=wineDescription)
+        return redirect(url_for('wineHome'))
     else:
         print("======= IN UPDATEWINE GET ======= ")
-        # need to grab values from db as in showOneWine if this is ever called
-        return render_template('showOneWine.html')
+        # need to grab values from db as in wineOne if this is ever called
+        return render_template('wine/wineOne.html')
 
 
-# Create and edit both countries and regions
-@app.route('/manageCountryRegion', methods=['GET', 'POST'])
-def manageCountryRegion():
-    """Create and edit both countries and regions"""
+# Show counties and regions with create, edit and delete links
+@app.route('/wine/countriesRegions', methods=['GET', 'POST'])
+def wineCountriesRegions():
+    """Manage countries and regions"""
     session = DBSession()
     countries = session.query(Country).order_by(asc(Country.name)).all()
     regions = session.query(Region).order_by(asc(Region.name)).all()
@@ -167,10 +172,10 @@ def manageCountryRegion():
         session.add(newCountry)
         session.commit()
         session.close()
-        return redirect(url_for('manageCountryRegion'))
+        return redirect(url_for('wineCountriesRegions'))
     else:
         session.close()
-        return render_template('manageCountryRegion.html',
+        return render_template('wine/countriesRegions.html',
                            countries=countries,
                            regions=regions,
                            deletableCountries=deletableCountries,
@@ -178,8 +183,8 @@ def manageCountryRegion():
 
 
 # Create a new country
-@app.route('/country/new', methods=['GET', 'POST'])
-def newCountry():
+@app.route('/wine/countryNew', methods=['GET', 'POST'])
+def wineCountryNew():
     """Create a new country"""
     if request.method == 'POST':
         newCountry = Country(name=request.form['name'])
@@ -187,15 +192,15 @@ def newCountry():
         session.add(newCountry)
         session.commit()
         session.close()
-        return redirect(url_for('manageCountryRegion'))
+        return redirect(url_for('wineCountriesRegions'))
     else:
         # this should never happen
-        return render_template('manageCountryRegion.html')
+        return render_template('wine/countriesRegions.html')
 
 
 # Create a new region
-@app.route('/region/new', methods=['GET', 'POST'])
-def newRegion():
+@app.route('/wine/regionNew', methods=['GET', 'POST'])
+def wineRegionNew():
     """Create a new region"""
     session = DBSession()
     countries = session.query(Country).order_by(asc(Country.name)).all()
@@ -206,15 +211,15 @@ def newRegion():
         session.add(newRegion)
         session.commit()
         session.close()
-        return redirect(url_for('manageCountryRegion'))
+        return redirect(url_for('wineCountriesRegions'))
     else:
         session.close()
-        return render_template('manageCountryRegion.html')
+        return render_template('wine/countriesRegions.html')
 
 
 # Add a wine to the database
-@app.route('/wine/new', methods=['GET', 'POST'])
-def newWine():
+@app.route('/wine/wineNew', methods=['GET', 'POST'])
+def wineNew():
     """Create a new wine"""
     session = DBSession()
     countries = session.query(Country).order_by(asc(Country.name)).all()
@@ -249,15 +254,15 @@ def newWine():
         session.add(newWine)
         session.commit()
         session.close()
-        return redirect(url_for('showHome'))
+        return redirect(url_for('wineHome'))
     else:
         session.close()
-        return render_template('newWine.html', countries=countries, regions=regions)
+        return render_template('wine/wineNew.html', countries=countries, regions=regions)
 
 
 # Delete an unassociated (no regions or wines) country
-@app.route('/deleteCountry', methods=['GET', 'POST'])
-def deleteCountry():
+@app.route('/wine/countryDelete', methods=['GET', 'POST'])
+def wineCountryDelete():
     """Delete a country"""
     if request.method == 'POST':
         countryID = request.form['country_id']
@@ -266,14 +271,14 @@ def deleteCountry():
         session.delete(countryToDelete)
         session.commit()
         session.close()
-        return redirect(url_for('manageCountryRegion'))
+        return redirect(url_for('wineCountriesRegions'))
     else:
-        return render_template('manageCountryRegion.html')
+        return render_template('wine/countriesRegions.html')
 
 
 # Delete an unassociated (no wines) region
-@app.route('/deleteRegion', methods=['GET', 'POST'])
-def deleteRegion():
+@app.route('/wine/regionDelete', methods=['GET', 'POST'])
+def wineRegionDelete():
     """Delete a region"""
     if request.method == 'POST':
         regionID = request.form['region_id']
@@ -282,30 +287,25 @@ def deleteRegion():
         session.delete(regionToDelete)
         session.commit()
         session.close()
-        return redirect(url_for('manageCountryRegion'))
+        return redirect(url_for('wineCountriesRegions'))
     else:
-        return render_template('manageCountryRegion.html')
+        return render_template('wine/countriesRegions.html')
 
 
 # Delete a wine from the wine table
-@app.route('/deleteWine', methods=['GET', 'POST'])
-def deleteWine():
+@app.route('/wine/wineDelete', methods=['GET', 'POST'])
+def wineDelete():
     """Delete a wine"""
     if request.method == 'POST':
         wineid = request.form['wineid']
-        # print("WINEID = %s" % wineid)
         session = DBSession()
         wineToDelete = session.query(Wine).filter_by(id=wineid).one_or_none()
-        # print("QUERY COMPLETED WITH: %s" % wineToDelete)
         session.delete(wineToDelete)
-        # print("DELETE CALLED. DESCRIPTION: %s" % wineToDelete.description)
         session.commit()
-        # print("DELETE COMMITTED NOW")
         session.close()
-        # print("DONE WITH DB SESSION")
-        return redirect(url_for('showWineTable'))
+        return redirect(url_for('wineTable'))
     else:
-        return render_template('wineTable.html')
+        return render_template('wine/table.html')
 
 
 if __name__ == '__main__':
