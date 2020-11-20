@@ -1,6 +1,6 @@
 **.venv/
 **.vscode/
 **__pycache__/
-wines/views-test.py
-wines/templates/home-test.html
+views-test.py
 **logs/
+**sqlfiles/
