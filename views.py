@@ -36,6 +36,7 @@ def showSiteIndex():
     """Display exultoshores.com index page"""
     return render_template('index.html')
 
+
 # Display Wine App home page, showing all the wines in the db
 @app.route('/wine')
 def wineHome():
@@ -78,40 +79,38 @@ def wineTable():
 
 
 # Display a single wine for editing
-@app.route('/wine/wineOne', methods=['GET', 'POST'])
-def wineOne():
-    """Display a single wine"""
-    if request.method == 'POST':
-        session = DBSession()
-        # QUERY one wine by id; result is a Wine object
-        wineToEdit = session.query(Wine).\
-            filter(Wine.id == request.form['wineid']).\
-            one_or_none()
-        session.close()
-        # can't iterate through single wine in template
-        # so copying attributes (vars) into a dictionary
-        wineDict = {}
-        wineDict = (vars(wineToEdit))
-        # remove var that isn't part of data
-        wineDict.pop('_sa_instance_state')
-        # treat description separately to display on top of page
-        wineDescription = wineDict.pop('description')
-        # display any None (null) values as blank spaces
-        # then it is easy to convert them to NULL again
-        # on their way back to the database
-        # (see newwine view)
-        for w in wineDict:
-            if wineDict[w] == None:
-                wineDict[w] = ""
-        return render_template('wine/wineOne.html', 
-            wineToEdit=wineDict, wineDescription=wineDescription)
-    else:
-        # this case never happens
-        print("======= IN SHOWONEWINE GET ======= ")
-        return render_template('wine/wineOne.html')
+@app.route('/wine/wineEdit')
+def wineEdit():
+    """Display a single wine for editing"""
+    # Display wine for editing
+    session = DBSession()
+    # QUERY one wine by id (id is passed in query string)
+    # Result is a Wine object
+    wineid = request.args.get("wineid")
+    wineToEdit = session.query(Wine).\
+        filter(Wine.id == wineid).\
+        one_or_none()
+    session.close()
+    # can't iterate through single wine in template
+    # so copying attributes (vars) into a dictionary
+    wineDict = {}
+    wineDict = (vars(wineToEdit))
+    # remove var that isn't part of data
+    wineDict.pop('_sa_instance_state')
+    # treat description separately to display on top of page
+    wineDescription = wineDict.pop('description')
+    # display any None (null) values as blank spaces
+    # then it is easy to convert them to NULL again
+    # on their way back to the database
+    # (see newwine view)
+    for w in wineDict:
+        if wineDict[w] == None:
+            wineDict[w] = ""
+    return render_template('wine/wineEdit.html', 
+        wineToEdit=wineDict, wineDescription=wineDescription)
 
-    
-# Update wine record with values from wineOne view
+
+# Update wine record with values from wineEdit form view
 @app.route('/wine/wineUpdate', methods=['GET', 'POST'])
 def wineUpdate():
     """Update a wine record"""
@@ -153,9 +152,8 @@ def wineUpdate():
         wineDescription = wineDict.pop('description')
         return redirect(url_for('wineHome'))
     else:
-        print("======= IN UPDATEWINE GET ======= ")
-        # need to grab values from db as in wineOne if this is ever called
-        return render_template('wine/wineOne.html')
+        # Route should only be called with POST
+        return render_template('error.html')
 
 
 # Show counties and regions with create, edit and delete links
@@ -293,19 +291,17 @@ def wineRegionDelete():
 
 
 # Delete a wine from the wine table
-@app.route('/wine/wineDelete', methods=['GET', 'POST'])
+@app.route('/wine/wineDelete')
 def wineDelete():
     """Delete a wine"""
-    if request.method == 'POST':
-        wineid = request.form['wineid']
-        session = DBSession()
-        wineToDelete = session.query(Wine).filter_by(id=wineid).one_or_none()
-        session.delete(wineToDelete)
-        session.commit()
-        session.close()
-        return redirect(url_for('wineTable'))
-    else:
-        return render_template('wine/table.html')
+    # Fetch wine's ID from query_string
+    wineid = request.args.get("wineid")
+    session = DBSession()
+    wineToDelete = session.query(Wine).filter_by(id=wineid).one_or_none()
+    session.delete(wineToDelete)
+    session.commit()
+    session.close()
+    return redirect(url_for('wineTable'))
 
 
 if __name__ == '__main__':

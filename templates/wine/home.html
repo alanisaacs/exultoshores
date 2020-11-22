@@ -12,7 +12,8 @@
                     htmlstring += "<div class=wineItem>" +
                         "<div class=wineLabel>";
                             {% if wine[0].label_photo %}
-                                htmlstring += "<img src=/static/{{wine[0].label_photo}}>";
+                                var photo_url = "{{url_for('static', filename=wine[0].label_photo)}}";
+                                htmlstring += "<img src=" + photo_url + ">";
                             {% endif %}
                         htmlstring += "</div>" +
                         "<div class=wineInfo>" +
@@ -44,7 +45,7 @@
                                 "${{wine[0].price}} " +
                                 "{{wine[0].abv}} abv" + 
                             "</div>";
-                            console.log(ratingColor);
+                            // console.log(ratingColor);
                             // Display Third Line of Information
                             htmlstring += "<div class='wineInfoLine'>";
                                 // Avoid blank date_tested values breaking display
@@ -57,7 +58,10 @@
                             "</div>";
                             // Display Fourth Line of Information
                             htmlstring += "<div class='wineInfoLine'>" +    
-                                "Purchased at {{wine[0].purchased_at}}. Entered by {{wine[3]}}." + // sommelier name
+                                "Purchased at {{wine[0].purchased_at}}. Entered by {{wine[3]}}. "; // sommelier name
+                                // Include Edit Button; Wine ID will be passed in a query string
+                                var url_string = "{{url_for('wineEdit', wineid=wine[0].id)}}";
+                                htmlstring += "<button><a href=" + url_string + ">Edit</a></button>" +
                             "</div>" +
                         "</div>" +
                     "</div>";
