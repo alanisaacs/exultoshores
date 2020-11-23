@@ -3,8 +3,8 @@
     <head>
         <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
         <script>
-            function populateRegion(x) {
-                // Display regions in dropdown associated with the country selected by user
+            // Display regions in dropdown associated with the country selected by user
+             function populateRegion(x) {
                 let selectedCountryID = document.getElementById('country_id').value;
                 let eid = document.getElementById('region_id');
                 eid.innerHTML = "<option value=''>--select--</option>"
@@ -13,12 +13,25 @@
                         eid.innerHTML += "<option value={{region.id}}>{{region.name}}</option>"
                     }
                 {% endfor %}
-            }
+            };
+            // Warn user before leaving the page in case they have unsaved entries
+            // Current browsers won't call if nothing on page changed
+            // Flag will avoid the warning when form is submitted
+            let leavingWithoutSubmitting = true;
+            let setSubmittingFlag = () => { leavingWithoutSubmitting = false; };
+            window.addEventListener("beforeunload", function (e) {
+                if (leavingWithoutSubmitting) {
+                    e.preventDefault();
+                    // return value needs to be set for this to work (not null or undefined)
+                    // plus some old browsers show the message
+                    e.returnValue = "Are you sure you want to leave the page? Unsaved data will be lost.";
+                }
+            });
         </script>
     </head>
     <body>
         <p>Create a new wine in the database:</p>
-            <form action="" method = "post">
+            <form action="" method="post">
                 <p>
                     <label for="country_id">Country*:</label>
                         <select name="country_id" id="country_id" onchange="populateRegion()" required>
@@ -84,7 +97,7 @@
                     <input type="text" maxlength="8" name="sommelier_id" value="1" readonly>
                 </p>
                 <p>
-                    <button type="submit" id="submit">
+                    <button type="submit" id="submit" onclick=setSubmittingFlag()>
                         Create
                     </button>
                 </p>    

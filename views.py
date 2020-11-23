@@ -232,7 +232,6 @@ def wineNew():
                 fields[i] = j
             else:
                 fields[i] = None
-        # print("FIELDS = %s" % fields)
         newWine = Wine(
             country_id=fields['country_id'],
             region_id=fields['region_id'],
