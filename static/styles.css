@@ -59,7 +59,6 @@ table, th, td {
   border: 2px solid purple;
   padding: 2px;
   margin: 2px;
-  /*background-color: palegreen;*/
 }
 
 img {
@@ -68,4 +67,43 @@ img {
   float: left;
   padding-right: 12px;
   padding-bottom: 5px;
+}
+
+.button {
+  color: white;
+  background-color: black;
+  padding: 0px 6px;
+  border-radius: 4px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.button_edit {
+  background-color: #ffffbb; 
+  color: purple; 
+}
+
+.button_edit:hover {
+  background-color: plum;
+}
+
+.button_edit:active {
+  background-color: purple;
+  color: plum;
+}
+
+.button_delete {
+  background-color: silver; 
+  color: #303030; 
+}
+
+.button_delete:hover {
+  background-color: #979297;
+}
+
+.button_delete:active {
+  background-color: #303030;
+  color: #979797;
 }

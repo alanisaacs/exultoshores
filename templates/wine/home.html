@@ -61,7 +61,7 @@
                                 "Purchased at {{wine[0].purchased_at}}. Entered by {{wine[3]}}. "; // sommelier name
                                 // Include Edit Button; Wine ID will be passed in a query string
                                 var url_string = "{{url_for('wineEdit', wineid=wine[0].id)}}";
-                                htmlstring += "<button><a href=" + url_string + ">Edit</a></button>" +
+                                htmlstring += "<a href=" + url_string + " class='button button_edit'>Edit</a>" +
                             "</div>" +
                         "</div>" +
                     "</div>";
