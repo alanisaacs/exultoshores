@@ -13,7 +13,22 @@
                         eid.innerHTML += "<option value={{region.id}}>{{region.name}}</option>"
                     }
                 {% endfor %}
-            };
+            }
+
+            // Format the local time as yyyy-MM-dd
+            function formatLocalDate() {
+                // Get datetime in local timezone
+                let d = new Date();
+                // Find the offset between local and UTC, in minutes
+                const offset = d.getTimezoneOffset();
+                // Adjust the date by substracting the offset in milliseconds
+                d  = new Date(d.getTime() - (offset*60*1000));
+                // Now convert date to ISO format and timezone;
+                // Conversion will add back the offset
+                // Resulting in local datetime formatted as ISO
+                return d.toISOString().split('T')[0];
+            }
+
             // Warn user before leaving the page in case they have unsaved entries
             // Current browsers won't call if nothing on page changed
             // Flag will avoid the warning when form is submitted
@@ -22,9 +37,10 @@
             window.addEventListener("beforeunload", function (e) {
                 if (leavingWithoutSubmitting) {
                     e.preventDefault();
-                    // return value needs to be set for this to work (not null or undefined)
+                    // return value needs to be set for Chrome to work
                     // plus some old browsers show the message
-                    e.returnValue = "Are you sure you want to leave the page? Unsaved data will be lost.";
+                    e.returnValue = "Are you sure you want to leave the page?" +
+                        "Unsaved data will be lost.";
                 }
             });
         </script>
@@ -103,11 +119,9 @@
                 </p>    
             </form>
             <script>
-                var d = new Date().toISOString().split('T')[0];
-                document.getElementById("date_tasted").value = d;
+                document.getElementById("date_tasted").value = formatLocalDate();
             </script>
         <p><a href="/">Back to home page</a></p>
 
-    
     </body>
 </html>
