@@ -8,7 +8,8 @@ from flask import (Flask,
                    session as login_session,
                    url_for,
                    request,
-                   redirect)
+                   redirect,
+                   flash)
 from sqlalchemy import (create_engine,
                         asc,
                         desc,
@@ -58,8 +59,10 @@ def wineHome():
         if s: # filter out null values
             s = s.replace("\r\n", "<br>")
             wine[0].description = s
+    # If user is logged in pass name to page, otherwise "None"
+    userLoggedIn = login_session.get('username')
     return render_template('wine/home.html',
-                           wines=wines)
+                           wines=wines, userLoggedIn=userLoggedIn)
 
 
 # Display a table of all wines
@@ -303,7 +306,37 @@ def wineDelete():
     return redirect(url_for('wineTable'))
 
 
+# Log In Existing User
+@app.route('/wine/login', methods=['GET', 'POST'])
+def wineLogin():
+    """Log in as existing user"""
+    # Simplest flow
+    # Validate submission
+    session = DBSession()
+    if request.method == 'POST':
+        getSom = session.query(Sommelier).\
+            filter_by(username = request.form['username'],\
+                password = request.form['password']).\
+            one_or_none()
+        if getSom:
+            login_session['username'] = request.form['username']
+            flash("===LOGIN SUCCESSFUL===", "messageSuccess")
+            return render_template('wine/login.html')
+        else:
+            flash("===LOGIN FAILED! PLEASE TRY AGAIN===", "messageError")
+            return render_template('wine/login.html')
+    # Display form
+    else:
+        return render_template('wine/login.html')
+
+# Log out user
+@app.route('/wine/logout')
+def wineLogout():
+    # remove the username from the session if it's there
+    login_session.pop('username', None)
+    return redirect(url_for('wineHome'))
+
 if __name__ == '__main__':
-    app.secret_key = 'dev_key'
+    app.secret_key = 'sd8f7w4qotgSUF'
     app.debug = True
     app.run()

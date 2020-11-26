@@ -107,3 +107,13 @@ img {
   background-color: #303030;
   color: #979797;
 }
+
+.messageError {
+  color: red;
+  font-weight: bold;
+}
+
+.messageSuccess {
+  color: green;
+  font-weight: bold;
+}
