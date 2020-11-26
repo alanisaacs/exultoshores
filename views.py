@@ -77,8 +77,10 @@ def wineTable():
                         Region, Wine.region_id==Region.id).order_by(
                         desc(Wine.id)).all()
     session.close()
+    # If user is logged in pass name to page, otherwise "None"
+    userLoggedIn = login_session.get('username')
     return render_template('wine/table.html',
-                          wines=wines)
+                          wines=wines, userLoggedIn=userLoggedIn)
 
 
 # Display a single wine for editing
