@@ -16,7 +16,7 @@ class Sommelier(Base):
 
     id = Column(Integer, primary_key=True)
     username = Column(String(80), nullable=False)
-    password = Column(String(80))
+    password = Column(String(1024))
     email = Column(String(250))
     picture = Column(String(500))
 

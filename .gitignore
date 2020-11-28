@@ -1,6 +1,7 @@
 **.venv/
 **.vscode/
 **__pycache__/
-views-test.py
+test-views.py
+templates/test-home.html
 **logs/
 **sqlfiles/

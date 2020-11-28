@@ -21,6 +21,8 @@ from models import (Base,
                     Country,
                     Region,
                     Wine)
+import hashlib
+import uuid
 
 # Create Flask app
 app = Flask(__name__)
@@ -314,13 +316,13 @@ def wineLogin():
     """Log in as existing user"""
     # Simplest flow
     # Validate submission
-    session = DBSession()
     if request.method == 'POST':
-        getSom = session.query(Sommelier).\
-            filter_by(username = request.form['username'],\
-                password = request.form['password']).\
-            one_or_none()
-        if getSom:
+        session = DBSession()
+        # get Sommelier associated with user in db
+        som = session.query(Sommelier).filter_by(username = request.form['username']).one_or_none()
+        # confirm password matches hashed version
+        pwMatch = check_password(som.password, request.form['password'])
+        if pwMatch:
             login_session['username'] = request.form['username']
             flash("===LOGIN SUCCESSFUL===", "messageSuccess")
             return render_template('wine/login.html')
@@ -334,9 +336,44 @@ def wineLogin():
 # Log out user
 @app.route('/wine/logout')
 def wineLogout():
-    # remove the username from the session if it's there
+    """ Remove the username from the session if it's there """
     login_session.pop('username', None)
     return redirect(url_for('wineHome'))
+
+# Create new user
+@app.route('/wine/wineNewUser', methods=['POST'])
+def wineNewUser():
+    """ Create new user with hashed password in db """
+    if request.method == 'POST':
+        # hash password with salt
+        hashed_pw = hash_password(request.form['password'])
+        # create new user in database
+        session = DBSession()
+        newuser = Sommelier(
+            username = request.form['username'],
+            password = hashed_pw,
+            email = request.form['email'],
+            picture = request.form['picture']
+        )
+        session.add(newuser)
+        session.commit()
+        session.close()
+        login_session['username'] = request.form['username']
+        flash("===ACCOUNT SUCCESSFULLY CREATED===", "messageSuccess")
+        return render_template('wine/login.html')
+    else:
+        return render_template('error.html')
+
+
+def hash_password(password):
+    salt = uuid.uuid4().hex
+    return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
+
+
+def check_password(hashed_password, user_password):
+    password, salt = hashed_password.split(':')
+    return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
+ 
 
 if __name__ == '__main__':
     app.secret_key = 'sd8f7w4qotgSUF'
