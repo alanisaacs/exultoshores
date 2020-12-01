@@ -2,30 +2,27 @@
 
 """Create web views for Exult-O-Shores"""
 
-import hashlib
 import sys
-import uuid
 
-from flask import (Flask,
-                   render_template,
-                   session as login_session,
-                   url_for,
-                   request,
+from flask import (flash,
+                   Flask,
                    redirect,
-                   flash)
-from sqlalchemy import (create_engine,
-                        asc,
+                   render_template,
+                   request,
+                   session as login_session,
+                   url_for)
+from sqlalchemy import (asc,
                         desc,
                         null,
                         update)
-from sqlalchemy.orm import sessionmaker
 
 from auth.routes import auth_bp
 from labels.routes import labels_bp
 from models import (Base,
-                    Sommelier,
                     Country,
+                    open_db_session,
                     Region,
+                    Sommelier,
                     Wine)
 
 # Create Flask app
@@ -34,11 +31,6 @@ app = Flask(__name__)
 # Register Blueprints
 app.register_blueprint(auth_bp)
 app.register_blueprint(labels_bp)
-
-# Connect to Wine App Database and create database session
-engine = create_engine('postgresql://winedbuser:winedbuser@localhost/winedb')
-Base.metadata.bind = engine
-DBSession = sessionmaker(bind=engine)
 
 # Display front end for the whole site
 @app.route('/')
@@ -51,17 +43,17 @@ def showSiteIndex():
 @app.route('/wine')
 def wineHome():
     """Display Wine App home page"""
-    session = DBSession()
+    DBSession = open_db_session()
     # QUERY so that result is a list with element 0 a Wine object
     # and the other three elements are the relations to it.
     # Note that sommelier_id could be None (NULL in DB) so 
     # we need an outer join to keep the Wine object in that case
-    wines = session.query(Wine, Country.name, Region.name, Sommelier.username).join(
+    wines = DBSession.query(Wine, Country.name, Region.name, Sommelier.username).join(
                         Country, Wine.country_id==Country.id).join(
                         Region, Wine.region_id==Region.id).outerjoin(
                         Sommelier, Wine.sommelier_id==Sommelier.id).order_by(
                         desc(Wine.rating)).all()
-    session.close()
+    DBSession.close()
     # Replace new line (\r\n) characters in description with <br>
     for wine in wines:
         s = (wine[0].description)
@@ -78,14 +70,14 @@ def wineHome():
 @app.route('/wine/table')
 def wineTable():
     """Display wine table"""
-    session = DBSession()
+    DBSession = open_db_session()
     # QUERY so that result is a list with element 0 a Wine object
     # and the other two elements are the relations to it.
-    wines = session.query(Wine, Country.name, Region.name).join(
+    wines = DBSession.query(Wine, Country.name, Region.name).join(
                         Country, Wine.country_id==Country.id).join(
                         Region, Wine.region_id==Region.id).order_by(
                         desc(Wine.id)).all()
-    session.close()
+    DBSession.close()
     # If user is logged in pass name to page, otherwise "None"
     userLoggedIn = login_session.get('username')
     return render_template('wine/table.html',
@@ -97,14 +89,14 @@ def wineTable():
 def wineEdit():
     """Display a single wine for editing"""
     # Display wine for editing
-    session = DBSession()
+    DBSession = open_db_session()
     # QUERY one wine by id (id is passed in query string)
     # Result is a Wine object
     wineid = request.args.get("wineid")
-    wineToEdit = session.query(Wine).\
+    wineToEdit = DBSession.query(Wine).\
         filter(Wine.id == wineid).\
         one_or_none()
-    session.close()
+    DBSession.close()
     # can't iterate through single wine in template
     # so copying attributes (vars) into a dictionary
     wineDict = {}
@@ -137,10 +129,10 @@ def wineUpdate():
                 fields[i] = j
             else:
                 fields[i] = None
-        session = DBSession()
+        DBSession = open_db_session()
         # QUERY the wine record by id
         # note the result is itself a query
-        wineToUpdate = session.query(Wine).\
+        wineToUpdate = DBSession.query(Wine).\
             filter(Wine.id==request.form['id'])
         # update everything in the form
         # TODO: only update changed items
@@ -148,12 +140,12 @@ def wineUpdate():
             wineToUpdate.update({
                 i: fields[i]
             })
-        session.commit()
+        DBSession.commit()
         # QUERY again wine by id, closing transaction this time
-        wineToEdit = session.query(Wine).\
+        wineToEdit = DBSession.query(Wine).\
             filter(Wine.id == request.form['id']).\
             one_or_none()
-        session.close()
+        DBSession.close()
         # copy to dict like in showOneWine
         # TODO: consolidate into function
         wineDict = {}
@@ -174,19 +166,19 @@ def wineUpdate():
 @app.route('/wine/countriesRegions', methods=['GET', 'POST'])
 def wineCountriesRegions():
     """Manage countries and regions"""
-    session = DBSession()
-    countries = session.query(Country).order_by(asc(Country.name)).all()
-    regions = session.query(Region).order_by(asc(Region.name)).all()
-    deletableCountries = session.query(Country).join(Region, full = True).filter(Region.country_id == None).all()
-    deletableRegions = session.query(Region).join(Wine, full = True).filter(Wine.region_id == None).all()
+    DBSession = open_db_session()
+    countries = DBSession.query(Country).order_by(asc(Country.name)).all()
+    regions = DBSession.query(Region).order_by(asc(Region.name)).all()
+    deletableCountries = DBSession.query(Country).join(Region, full = True).filter(Region.country_id == None).all()
+    deletableRegions = DBSession.query(Region).join(Wine, full = True).filter(Wine.region_id == None).all()
     if request.method == 'POST':
         newCountry = Country(name=request.form['name'])
-        session.add(newCountry)
-        session.commit()
-        session.close()
+        DBSession.add(newCountry)
+        DBSession.commit()
+        DBSession.close()
         return redirect(url_for('wineCountriesRegions'))
     else:
-        session.close()
+        DBSession.close()
         return render_template('wine/countriesRegions.html',
                            countries=countries,
                            regions=regions,
@@ -200,10 +192,10 @@ def wineCountryNew():
     """Create a new country"""
     if request.method == 'POST':
         newCountry = Country(name=request.form['name'])
-        session = DBSession()
-        session.add(newCountry)
-        session.commit()
-        session.close()
+        DBSession = open_db_session()
+        DBSession.add(newCountry)
+        DBSession.commit()
+        DBSession.close()
         return redirect(url_for('wineCountriesRegions'))
     else:
         # this should never happen
@@ -214,18 +206,18 @@ def wineCountryNew():
 @app.route('/wine/regionNew', methods=['GET', 'POST'])
 def wineRegionNew():
     """Create a new region"""
-    session = DBSession()
-    countries = session.query(Country).order_by(asc(Country.name)).all()
+    DBSession = open_db_session()
+    countries = DBSession.query(Country).order_by(asc(Country.name)).all()
     if request.method == 'POST':
         newRegion = Region(
             country_id=request.form['country_id'],
             name=request.form['name'])
-        session.add(newRegion)
-        session.commit()
-        session.close()
+        DBSession.add(newRegion)
+        DBSession.commit()
+        DBSession.close()
         return redirect(url_for('wineCountriesRegions'))
     else:
-        session.close()
+        DBSession.close()
         return render_template('wine/countriesRegions.html')
 
 
@@ -233,9 +225,9 @@ def wineRegionNew():
 @app.route('/wine/wineNew', methods=['GET', 'POST'])
 def wineNew():
     """Create a new wine"""
-    session = DBSession()
-    countries = session.query(Country).order_by(asc(Country.name)).all()
-    regions = session.query(Region).order_by(asc(Region.name)).all()
+    DBSession = open_db_session()
+    countries = DBSession.query(Country).order_by(asc(Country.name)).all()
+    regions = DBSession.query(Region).order_by(asc(Region.name)).all()
     # Replace any empty strings in the form fields with <None> 
     # Note: <None> is inserted into the db as NULL
     # Note: <None> will display in html as the string "None" by default
@@ -262,12 +254,12 @@ def wineNew():
             description=fields['description'],
             sommelier_id=fields['sommelier_id']
             )
-        session.add(newWine)
-        session.commit()
-        session.close()
+        DBSession.add(newWine)
+        DBSession.commit()
+        DBSession.close()
         return redirect(url_for('wineHome'))
     else:
-        session.close()
+        DBSession.close()
         return render_template('wine/wineNew.html', countries=countries, regions=regions)
 
 
@@ -277,11 +269,11 @@ def wineCountryDelete():
     """Delete a country"""
     if request.method == 'POST':
         countryID = request.form['country_id']
-        session = DBSession()
-        countryToDelete = session.query(Country).filter_by(id=countryID).one_or_none()
-        session.delete(countryToDelete)
-        session.commit()
-        session.close()
+        DBSession = open_db_session()
+        countryToDelete = DBSession.query(Country).filter_by(id=countryID).one_or_none()
+        DBSession.delete(countryToDelete)
+        DBSession.commit()
+        DBSession.close()
         return redirect(url_for('wineCountriesRegions'))
     else:
         return render_template('wine/countriesRegions.html')
@@ -293,11 +285,11 @@ def wineRegionDelete():
     """Delete a region"""
     if request.method == 'POST':
         regionID = request.form['region_id']
-        session = DBSession()
-        regionToDelete = session.query(Region).filter_by(id=regionID).one_or_none()
-        session.delete(regionToDelete)
-        session.commit()
-        session.close()
+        DBSession = open_db_session()
+        regionToDelete = DBSession.query(Region).filter_by(id=regionID).one_or_none()
+        DBSession.delete(regionToDelete)
+        DBSession.commit()
+        DBSession.close()
         return redirect(url_for('wineCountriesRegions'))
     else:
         return render_template('wine/countriesRegions.html')
@@ -309,79 +301,13 @@ def wineDelete():
     """Delete a wine"""
     # Fetch wine's ID from query_string
     wineid = request.args.get("wineid")
-    session = DBSession()
-    wineToDelete = session.query(Wine).filter_by(id=wineid).one_or_none()
-    session.delete(wineToDelete)
-    session.commit()
-    session.close()
+    DBSession = open_db_session()
+    wineToDelete = DBSession.query(Wine).filter_by(id=wineid).one_or_none()
+    DBSession.delete(wineToDelete)
+    DBSession.commit()
+    DBSession.close()
     return redirect(url_for('wineTable'))
 
-
-# # Log In Existing User
-# @app.route('/wine/login', methods=['GET', 'POST'])
-# def wineLogin():
-#     """Log in as existing user"""
-#     print("IN VIEWS VERSION")
-#     # Simplest flow
-#     # Validate submission
-#     if request.method == 'POST':
-#         session = DBSession()
-#         # get Sommelier associated with user in db
-#         som = session.query(Sommelier).filter_by(username = request.form['username']).one_or_none()
-#         # confirm password matches hashed version
-#         pwMatch = check_password(som.password, request.form['password'])
-#         if pwMatch:
-#             login_session['username'] = request.form['username']
-#             flash("===LOGIN SUCCESSFUL===", "messageSuccess")
-#             return render_template('wine/login.html')
-#         else:
-#             flash("===LOGIN FAILED! PLEASE TRY AGAIN===", "messageError")
-#             return render_template('wine/login.html')
-#     # Display form
-#     else:
-#         return render_template('wine/login.html')
-
-# # Log out user
-# @app.route('/wine/logout')
-# def wineLogout():
-#     """ Remove the username from the session if it's there """
-#     login_session.pop('username', None)
-#     return redirect(url_for('wineHome'))
-
-# # Create new user
-# @app.route('/wine/wineNewUser', methods=['POST'])
-# def wineNewUser():
-#     """ Create new user with hashed password in db """
-#     if request.method == 'POST':
-#         # hash password with salt
-#         hashed_pw = hash_password(request.form['password'])
-#         # create new user in database
-#         session = DBSession()
-#         newuser = Sommelier(
-#             username = request.form['username'],
-#             password = hashed_pw,
-#             email = request.form['email'],
-#             picture = request.form['picture']
-#         )
-#         session.add(newuser)
-#         session.commit()
-#         session.close()
-#         login_session['username'] = request.form['username']
-#         flash("===ACCOUNT SUCCESSFULLY CREATED===", "messageSuccess")
-#         return render_template('wine/login.html')
-#     else:
-#         return render_template('error.html')
-
-
-# def hash_password(password):
-#     salt = uuid.uuid4().hex
-#     return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
-
-
-# def check_password(hashed_password, user_password):
-#     password, salt = hashed_password.split(':')
-#     return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
- 
 
 if __name__ == '__main__':
     app.secret_key = 'sd8f7w4qotgSUF'
