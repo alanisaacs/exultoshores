@@ -2,7 +2,10 @@
 
 """Create web views for Exult-O-Shores"""
 
+import hashlib
 import sys
+import uuid
+
 from flask import (Flask,
                    render_template,
                    session as login_session,
@@ -16,16 +19,19 @@ from sqlalchemy import (create_engine,
                         null,
                         update)
 from sqlalchemy.orm import sessionmaker
+
 from models import (Base,
                     Sommelier,
                     Country,
                     Region,
                     Wine)
-import hashlib
-import uuid
+from labels.routes import labels_bp
 
 # Create Flask app
 app = Flask(__name__)
+
+# Register Blueprints
+app.register_blueprint(labels_bp)
 
 # Connect to Wine App Database and create database session
 engine = create_engine('postgresql://winedbuser:winedbuser@localhost/winedb')

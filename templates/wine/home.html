@@ -12,7 +12,7 @@
                     htmlstring += "<div class=wineItem>" +
                         "<div class=wineLabel>";
                             {% if wine[0].label_photo %}
-                                var photo_url = "{{url_for('static', filename=wine[0].label_photo)}}";
+                                var photo_url = "{{url_for('labels_bp.static', filename=wine[0].label_photo)}}";
                                 htmlstring += "<img src=" + photo_url + ">";
                             {% endif %}
                         htmlstring += "</div>" +
