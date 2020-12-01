@@ -20,24 +20,25 @@ from sqlalchemy import (create_engine,
                         update)
 from sqlalchemy.orm import sessionmaker
 
+from auth.routes import auth_bp
+from labels.routes import labels_bp
 from models import (Base,
                     Sommelier,
                     Country,
                     Region,
                     Wine)
-from labels.routes import labels_bp
 
 # Create Flask app
 app = Flask(__name__)
 
 # Register Blueprints
+app.register_blueprint(auth_bp)
 app.register_blueprint(labels_bp)
 
 # Connect to Wine App Database and create database session
 engine = create_engine('postgresql://winedbuser:winedbuser@localhost/winedb')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
-
 
 # Display front end for the whole site
 @app.route('/')
@@ -316,69 +317,70 @@ def wineDelete():
     return redirect(url_for('wineTable'))
 
 
-# Log In Existing User
-@app.route('/wine/login', methods=['GET', 'POST'])
-def wineLogin():
-    """Log in as existing user"""
-    # Simplest flow
-    # Validate submission
-    if request.method == 'POST':
-        session = DBSession()
-        # get Sommelier associated with user in db
-        som = session.query(Sommelier).filter_by(username = request.form['username']).one_or_none()
-        # confirm password matches hashed version
-        pwMatch = check_password(som.password, request.form['password'])
-        if pwMatch:
-            login_session['username'] = request.form['username']
-            flash("===LOGIN SUCCESSFUL===", "messageSuccess")
-            return render_template('wine/login.html')
-        else:
-            flash("===LOGIN FAILED! PLEASE TRY AGAIN===", "messageError")
-            return render_template('wine/login.html')
-    # Display form
-    else:
-        return render_template('wine/login.html')
+# # Log In Existing User
+# @app.route('/wine/login', methods=['GET', 'POST'])
+# def wineLogin():
+#     """Log in as existing user"""
+#     print("IN VIEWS VERSION")
+#     # Simplest flow
+#     # Validate submission
+#     if request.method == 'POST':
+#         session = DBSession()
+#         # get Sommelier associated with user in db
+#         som = session.query(Sommelier).filter_by(username = request.form['username']).one_or_none()
+#         # confirm password matches hashed version
+#         pwMatch = check_password(som.password, request.form['password'])
+#         if pwMatch:
+#             login_session['username'] = request.form['username']
+#             flash("===LOGIN SUCCESSFUL===", "messageSuccess")
+#             return render_template('wine/login.html')
+#         else:
+#             flash("===LOGIN FAILED! PLEASE TRY AGAIN===", "messageError")
+#             return render_template('wine/login.html')
+#     # Display form
+#     else:
+#         return render_template('wine/login.html')
 
-# Log out user
-@app.route('/wine/logout')
-def wineLogout():
-    """ Remove the username from the session if it's there """
-    login_session.pop('username', None)
-    return redirect(url_for('wineHome'))
+# # Log out user
+# @app.route('/wine/logout')
+# def wineLogout():
+#     """ Remove the username from the session if it's there """
+#     login_session.pop('username', None)
+#     return redirect(url_for('wineHome'))
 
-# Create new user
-@app.route('/wine/wineNewUser', methods=['POST'])
-def wineNewUser():
-    """ Create new user with hashed password in db """
-    if request.method == 'POST':
-        # hash password with salt
-        hashed_pw = hash_password(request.form['password'])
-        # create new user in database
-        session = DBSession()
-        newuser = Sommelier(
-            username = request.form['username'],
-            password = hashed_pw,
-            email = request.form['email'],
-            picture = request.form['picture']
-        )
-        session.add(newuser)
-        session.commit()
-        session.close()
-        login_session['username'] = request.form['username']
-        flash("===ACCOUNT SUCCESSFULLY CREATED===", "messageSuccess")
-        return render_template('wine/login.html')
-    else:
-        return render_template('error.html')
-
-
-def hash_password(password):
-    salt = uuid.uuid4().hex
-    return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
+# # Create new user
+# @app.route('/wine/wineNewUser', methods=['POST'])
+# def wineNewUser():
+#     """ Create new user with hashed password in db """
+#     if request.method == 'POST':
+#         # hash password with salt
+#         hashed_pw = hash_password(request.form['password'])
+#         # create new user in database
+#         session = DBSession()
+#         newuser = Sommelier(
+#             username = request.form['username'],
+#             password = hashed_pw,
+#             email = request.form['email'],
+#             picture = request.form['picture']
+#         )
+#         session.add(newuser)
+#         session.commit()
+#         session.close()
+#         login_session['username'] = request.form['username']
+#         flash("===ACCOUNT SUCCESSFULLY CREATED===", "messageSuccess")
+#         return render_template('wine/login.html')
+#     else:
+#         return render_template('error.html')
 
 
-def check_password(hashed_password, user_password):
-    password, salt = hashed_password.split(':')
-    return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
+# def hash_password(password):
+#     salt = uuid.uuid4().hex
+#     return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
+
+
+# def check_password(hashed_password, user_password):
+#     password, salt = hashed_password.split(':')
+#     return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
  
 
 if __name__ == '__main__':

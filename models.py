@@ -6,6 +6,8 @@ from sqlalchemy import Column, ForeignKey, Integer, String, Float, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
 
 Base = declarative_base()
 
@@ -65,5 +67,13 @@ engine = create_engine('postgresql://winedbuser:winedbuser@localhost/winedb')
 
 Base.metadata.create_all(engine)
 
+# If running as a module provide session opener
+if __name__ != '__main__':
+    open_db_session = sessionmaker(bind=engine)
+    # ---- To open session use this syntax ----
+    # from models import open_db_session
+    # DBSession = openDBSession()
+
+# If running as a script create models only
 if __name__ == '__main__':
     print("Models created.")
