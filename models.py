@@ -69,6 +69,8 @@ Base.metadata.create_all(engine)
 
 ########## DEBUGGING ONLY ##########
 import logging
+for handler in logging.root.handlers[:]:
+    logging.root.removeHandler(handler)
 logging.basicConfig(filename='debugging_only.log', level=logging.DEBUG)
 logging.warning("===== LOGGING IS ON =====")
 logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO) 
