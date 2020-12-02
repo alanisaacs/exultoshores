@@ -62,7 +62,7 @@
                                 // Include Edit Button if user is logged in
                                 // Wine ID will be passed in a query string
                                 {% if userLoggedIn %} 
-                                    var url_string = "{{url_for('wineEdit', wineid=wine[0].id)}}";
+                                    var url_string = "{{url_for('wine_bp.wineEdit', wineid=wine[0].id)}}";
                                     htmlstring += "<a href=" + url_string + " class='button button_edit'>Edit</a>";
                                 {% endif %}
                             htmlstring += "</div>" +

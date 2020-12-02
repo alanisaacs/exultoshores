@@ -1,3 +1,5 @@
+""" Views and logic for EOS authentication """
+
 import hashlib
 import uuid
 from flask import (Blueprint,
@@ -18,6 +20,7 @@ auth_bp = Blueprint(
     static_url_path='/auth/static',
     template_folder='templates'
     )
+
 
 # Log In Existing User
 @auth_bp.route('/wine/login', methods=['GET', 'POST'])
@@ -43,12 +46,14 @@ def wineLogin():
     else:
         return render_template('/login.html')
 
+
 # Log out user
 @auth_bp.route('/wine/logout')
 def wineLogout():
     """ Remove the username from the session if it's there """
     login_session.pop('username', None)
-    return redirect(url_for('wineHome'))
+    return redirect(url_for('wine_bp.wineHome'))
+
 
 # Create new user
 @auth_bp.route('/wine/wineNewUser', methods=['POST'])

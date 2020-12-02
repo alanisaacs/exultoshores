@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Create database tables for the Wine App"""
+"""Manage database and models for EOS"""
 
 from sqlalchemy import Column, ForeignKey, Integer, String, Float, Date
 from sqlalchemy.ext.declarative import declarative_base

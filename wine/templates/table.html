@@ -30,8 +30,8 @@
                     <td>{{wine[0].rating}}</td>
                     <td>
                         {% if userLoggedIn %} 
-                            <a href="{{url_for('wineEdit', wineid=wine[0].id)}}" class="button button_edit">Edit </a>
-                            <a href="{{url_for('wineDelete', wineid=wine[0].id)}}" class="button button_delete">Delete</a>
+                            <a href="{{url_for('wine_bp.wineEdit', wineid=wine[0].id)}}" class="button button_edit">Edit </a>
+                            <a href="{{url_for('wine_bp.wineDelete', wineid=wine[0].id)}}" class="button button_delete">Delete</a>
                         {% endif %}
                     </td>
                 </tr>
