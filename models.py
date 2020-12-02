@@ -67,6 +67,14 @@ engine = create_engine('postgresql://winedbuser:winedbuser@localhost/winedb')
 
 Base.metadata.create_all(engine)
 
+########## DEBUGGING ONLY ##########
+import logging
+logging.basicConfig(filename='debugging_only.log', level=logging.DEBUG)
+logging.warning("===== LOGGING IS ON =====")
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO) 
+####################################
+
+
 # If running as a module provide session opener
 if __name__ != '__main__':
     open_db_session = sessionmaker(bind=engine)
