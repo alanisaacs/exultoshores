@@ -55,8 +55,18 @@ def wineLogout():
     return redirect(url_for('wine_bp.wineHome'))
 
 
+# Manage Users
+@auth_bp.route('/wine/usermgmt')
+def wineUserMgmt():
+    """ Manage users """
+    if login_session.get('username'):
+        return render_template('/usermgmt.html')
+    else:
+        return redirect(url_for("auth_bp.wineLogin"))
+
+
 # Create new user
-@auth_bp.route('/wine/wineNewUser', methods=['POST'])
+@auth_bp.route('/wine/wineNewUser', methods=['GET', 'POST'])
 def wineNewUser():
     """ Create new user with hashed password in db """
     if request.method == 'POST':
@@ -75,9 +85,9 @@ def wineNewUser():
         DBSession.close()
         login_session['username'] = request.form['username']
         flash("===ACCOUNT SUCCESSFULLY CREATED===", "messageSuccess")
-        return render_template('/login.html')
+        return render_template('/usermgmt.html')
     else:
-        return render_template('/error.html')
+        return redirect(url_for("auth_bp.wineLogin"))
 
 
 def hash_password(password):
