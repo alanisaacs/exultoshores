@@ -1,44 +1,40 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-    </head>
-    <body>
-        <h1>All Wines in Database</h1>
-        <h2>Select a Wine to Edit</h2>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Country</th>
-                <th>Region</th>
-                <th>Appellation</th>
-                <th>Name</th>
-                <th>Year</th>
-                <th>Price</th>
-                <th>Rating</th>
-                <th>Action</th>
-            </tr>
-            {% for wine in wines %}
-                <tr>
-                    <td>{{wine[0].id}}</td>
-                    <td>{{wine[1]}}</td>
-                    <td>{{wine[2]}}</td>
-                    <td>{{wine[0].appellation}}</td>
-                    <td>{{wine[0].name}}</td>
-                    <td>{{wine[0].year}}</td>
-                    <td>{{wine[0].price}}</td>
-                    <td>{{wine[0].rating}}</td>
-                    <td>
-                        {% if userLoggedIn %} 
-                            <a href="{{url_for('wine_bp.wineEdit', wineid=wine[0].id)}}" class="button button_edit">Edit </a>
-                            <a href="{{url_for('wine_bp.wineDelete', wineid=wine[0].id)}}" class="button button_delete">Delete</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+{% extends "wineBase.html" %}
 
-        <p><a href="/wine">Back to Wine App Home</a></p>
-    
-    </body>
-</html>
+{% block content %}
+
+<h2>All Wines in the Database</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Country</th>
+        <th>Region</th>
+        <th>Appellation</th>
+        <th>Name</th>
+        <th>Year</th>
+        <th>Price</th>
+        <th>Rating</th>
+        <th>Tasted</th>
+        <th>Action</th>
+    </tr>
+    {% for wine in wines %}
+        <tr>
+            <td>{{wine[0].id}}</td>
+            <td>{{wine[1]}}</td>
+            <td>{{wine[2]}}</td>
+            <td>{{wine[0].appellation}}</td>
+            <td>{{wine[0].name}}</td>
+            <td>{{wine[0].year}}</td>
+            <td>{{wine[0].price}}</td>
+            <td>{{wine[0].rating}}</td>
+            <td>{{wine[0].date_tasted}}</td>
+            <td>
+                {% if session.get('username') %} 
+                    <a href="{{url_for('wine_bp.wineEdit', wineid=wine[0].id)}}" class="button button_edit">Edit </a>
+                    <a href="{{url_for('wine_bp.wineDelete', wineid=wine[0].id)}}" class="button button_delete">Delete</a>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

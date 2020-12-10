@@ -1,127 +1,125 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-        <script>
-            // Display regions in dropdown associated with the country selected by user
-             function populateRegion(x) {
-                let selectedCountryID = document.getElementById('country_id').value;
-                let eid = document.getElementById('region_id');
-                eid.innerHTML = "<option value=''>--select--</option>"
-                {% for region in regions %}
-                    if ({{region.country_id}} == selectedCountryID) { 
-                        eid.innerHTML += "<option value={{region.id}}>{{region.name}}</option>"
-                    }
+{% extends "wineBase.html" %}
+
+{% block content %}
+
+
+<script>
+    // Display regions in dropdown associated with the country selected by user
+        function populateRegion(x) {
+        let selectedCountryID = document.getElementById('country_id').value;
+        let eid = document.getElementById('region_id');
+        eid.innerHTML = "<option value=''>--select--</option>"
+        {% for region in regions %}
+            if ({{region.country_id}} == selectedCountryID) { 
+                eid.innerHTML += "<option value={{region.id}}>{{region.name}}</option>"
+            }
+        {% endfor %}
+    }
+
+    // Format the local time as yyyy-MM-dd
+    function formatLocalDate() {
+        // Get datetime in local timezone
+        let d = new Date();
+        // Find the offset between local and UTC, in minutes
+        const offset = d.getTimezoneOffset();
+        // Adjust the date by substracting the offset in milliseconds
+        d  = new Date(d.getTime() - (offset*60*1000));
+        // Now convert date to ISO format and timezone;
+        // Conversion will add back the offset
+        // Resulting in local datetime formatted as ISO
+        return d.toISOString().split('T')[0];
+    }
+
+    // Warn user before leaving the page in case they have unsaved entries
+    // Current browsers won't call if nothing on page changed
+    // Flag will avoid the warning when form is submitted
+    let leavingWithoutSubmitting = true;
+    let setSubmittingFlag = () => { leavingWithoutSubmitting = false; };
+    window.addEventListener("beforeunload", function (e) {
+        if (leavingWithoutSubmitting) {
+            e.preventDefault();
+            // return value needs to be set for Chrome to work
+            // plus some old browsers show the message
+            e.returnValue = "Are you sure you want to leave the page?" +
+                "Unsaved data will be lost.";
+        }
+    });
+</script>
+
+<h2>Create a new wine in the database</h2>
+<form action="" method="post">
+    <p>
+        <label for="country_id">Country*:</label>
+            <select name="country_id" id="country_id" onchange="populateRegion()" required>
+                <option value="">--select--</option>
+                {% for country in countries %}
+                    <option value={{country.id}}>{{country.name}}</option>
                 {% endfor %}
-            }
+            </select>
+    </p>
+    <p>
+        <label for="region_id">Region*:</label>
+            <select name="region_id" id="region_id" required>
+                <option value="">--select country--</option>
+            </select>
+    </p>
+    <p>
+        <label for="appellation">Appellation:</label>
+        <input type="text" maxlength="100" name="appellation" size="30">
+    </p>
+    <p>
+        <label for="name">Name*:</label>
+        <input type="text" maxlength="1000" name="name" size="50" required>
+    </p>
+    <p>
+        <label for="year">Year:</label>
+        <input type="text" maxlength="100" name="year">
+    </p>
+    <p>
+        <label for="price">Price:</label>
+        <input type="text" maxlength="100" name="price">
+    </p>
+    <p>
+        <label for="rating">Rating (0-100):</label>
+        <input type="text" maxlength="100" name="rating">
+    </p>
+    <p>
+        <label for="abv">ABV (NN.N):</label>
+        <input type="text" maxlength="100" name="abv">
+    </p>
+    <p>
+        <label for="date_tasted">Date Tasted (YYYY-MM-DD):</label>
+        <input type="text" maxlength="100" name="date_tasted" id="date_tasted">
+    </p>
+    <p>
+        <label for="times_tasted">Times Tasted:</label>
+        <input type="text" maxlength="1000" name="times_tasted" value="1">
+    </p>
+    <p>
+        <label for="label_photo">Label Photo (name of file):</label>
+        <input type="text" maxlength="200" name="label_photo" size="30">
+    </p>
+    <p>
+        <label for="purchased_at">Purchased At:</label>
+        <input type="text" maxlength="200" name="purchased_at" size="30">
+    </p>
+    <p>
+        <label for="description">Description:</label>
+            <textarea maxlength="1000" name="description" 
+                cols="60" rows="12"></textarea>
+    </p>
+    <p>
+        <label for="sommelier_id">Sommelier ID (must be 2)</label>
+        <input type="text" maxlength="8" name="sommelier_id" value="2" readonly>
+    </p>
+    <p>
+        <button type="submit" id="submit" onclick=setSubmittingFlag()>
+            Create
+        </button>
+    </p>    
+</form>
+<script>
+    document.getElementById("date_tasted").value = formatLocalDate();
+</script>
 
-            // Format the local time as yyyy-MM-dd
-            function formatLocalDate() {
-                // Get datetime in local timezone
-                let d = new Date();
-                // Find the offset between local and UTC, in minutes
-                const offset = d.getTimezoneOffset();
-                // Adjust the date by substracting the offset in milliseconds
-                d  = new Date(d.getTime() - (offset*60*1000));
-                // Now convert date to ISO format and timezone;
-                // Conversion will add back the offset
-                // Resulting in local datetime formatted as ISO
-                return d.toISOString().split('T')[0];
-            }
-
-            // Warn user before leaving the page in case they have unsaved entries
-            // Current browsers won't call if nothing on page changed
-            // Flag will avoid the warning when form is submitted
-            let leavingWithoutSubmitting = true;
-            let setSubmittingFlag = () => { leavingWithoutSubmitting = false; };
-            window.addEventListener("beforeunload", function (e) {
-                if (leavingWithoutSubmitting) {
-                    e.preventDefault();
-                    // return value needs to be set for Chrome to work
-                    // plus some old browsers show the message
-                    e.returnValue = "Are you sure you want to leave the page?" +
-                        "Unsaved data will be lost.";
-                }
-            });
-        </script>
-    </head>
-    <body>
-        <p>Create a new wine in the database:</p>
-            <form action="" method="post">
-                <p>
-                    <label for="country_id">Country*:</label>
-                        <select name="country_id" id="country_id" onchange="populateRegion()" required>
-                            <option value="">--select--</option>
-                            {% for country in countries %}
-                                <option value={{country.id}}>{{country.name}}</option>
-                            {% endfor %}
-                        </select>
-                </p>
-                <p>
-                    <label for="region_id">Region*:</label>
-                        <select name="region_id" id="region_id" required>
-                            <option value="">--select country--</option>
-                        </select>
-                </p>
-                <p>
-                    <label for="appellation">Appellation:</label>
-                    <input type="text" maxlength="100" name="appellation" size="30">
-                </p>
-                <p>
-                    <label for="name">Name*:</label>
-                    <input type="text" maxlength="1000" name="name" size="50" required>
-                </p>
-                <p>
-                    <label for="year">Year:</label>
-                    <input type="text" maxlength="100" name="year">
-                </p>
-                <p>
-                    <label for="price">Price:</label>
-                    <input type="text" maxlength="100" name="price">
-                </p>
-                <p>
-                    <label for="rating">Rating (0-100):</label>
-                    <input type="text" maxlength="100" name="rating">
-                </p>
-                <p>
-                    <label for="abv">ABV (NN.N):</label>
-                    <input type="text" maxlength="100" name="abv">
-                </p>
-                <p>
-                    <label for="date_tasted">Date Tasted (YYYY-MM-DD):</label>
-                    <input type="text" maxlength="100" name="date_tasted" id="date_tasted">
-                </p>
-                <p>
-                    <label for="times_tasted">Times Tasted:</label>
-                    <input type="text" maxlength="1000" name="times_tasted" value="1">
-                </p>
-               <p>
-                    <label for="label_photo">Label Photo (name of file):</label>
-                    <input type="text" maxlength="200" name="label_photo" size="30">
-                </p>
-                <p>
-                    <label for="purchased_at">Purchased At:</label>
-                    <input type="text" maxlength="200" name="purchased_at" size="30">
-                </p>
-                <p>
-                    <label for="description">Description:</label>
-                        <textarea maxlength="1000" name="description" 
-                            cols="60" rows="12"></textarea>
-                </p>
-                <p>
-                    <label for="sommelier_id">Sommelier ID (must be 1)</label>
-                    <input type="text" maxlength="8" name="sommelier_id" value="1" readonly>
-                </p>
-                <p>
-                    <button type="submit" id="submit" onclick=setSubmittingFlag()>
-                        Create
-                    </button>
-                </p>    
-            </form>
-            <script>
-                document.getElementById("date_tasted").value = formatLocalDate();
-            </script>
-        <p><a href="/wine">Back to home page</a></p>
-
-    </body>
-</html>
+{% endblock %}

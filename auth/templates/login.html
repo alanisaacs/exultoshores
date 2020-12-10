@@ -1,77 +1,59 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-    </head>
-    <body>
-        <h1>The Wine App</h1>
-        <div class="subhead">
-            An Exult-O-Shores Production
-        </div>
+{% extends "wineBase.html" %}
 
-        <p>
-            <a href="/wine">Wine App Home</a> |
-            <a href="/wine/countriesRegions">Manage Countries & Regions</a> |
-            <a href="/wine/wineNew">Create a New Wine</a> |
-            <a href="/wine/table">Show Wines in a Table</a>
-        </p>
-
+{% block content %}
         
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <div class="{{ category }}">{{ message }}</div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-        
-        <h2>Already a Member? Please Log In</h2>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="{{ category }}">{{ message }}</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
 
-        <form action="" method="post">
-            <p>
-                <label for="username">Username:</label>
-                <input type="text" name="username" required>
-            </p>
-            <p>
-                <label for="password">Password:</label>
-                <input type="password" name="password" required>
-            </p>
-            <p>
-                <button type="submit">
-                    Submit
-                </button>
-            </p>
-        </form>
+<h2>Already a Member? Please Log In</h2>
 
-        <p>If you forgot your password, contact the site administrator.</p>
+<form action="" method="post">
+    <p>
+        <label for="username">Username:</label>
+        <input type="text" name="username" required>
+    </p>
+    <p>
+        <label for="password">Password:</label>
+        <input type="password" name="password" required>
+    </p>
+    <p>
+        <button type="submit">
+            Submit
+        </button>
+    </p>
+</form>
 
-        <h2>Create a New Account</h2>
+<p>If you forgot your password, contact the site administrator.</p>
 
-        <form action="/wine/wineNewUser" method="post">
-            <p>
-                <label for="username">Username:</label>
-                <input type="text" name="username" required>
-            </p>
-            <p>
-                <label for="password">Password:</label>
-                <input type="password" name="password" required>
-            </p>
-            <p>
-                <label for="email">Email:</label>
-                <input type="text" name="email">
-            </p>
-            <p>
-                <label for="picture">Picture URL:</label>
-                <input type="text" name="picture">
-            </p>
-            <p>
-                <button type="submit">
-                    Submit
-                </button>
-            </p>
-        </form>
+<h2>Create a New Account</h2>
 
-        <p><a href="/wine/logout">Log Out</a></p>
+<form action="/wine/wineNewUser" method="post">
+    <p>
+        <label for="username">Username:</label>
+        <input type="text" name="username" required>
+    </p>
+    <p>
+        <label for="password">Password:</label>
+        <input type="password" name="password" required>
+    </p>
+    <p>
+        <label for="email">Email:</label>
+        <input type="text" name="email">
+    </p>
+    <p>
+        <label for="picture">Picture URL:</label>
+        <input type="text" name="picture">
+    </p>
+    <p>
+        <button type="submit">
+            Submit
+        </button>
+    </p>
+</form>
 
-    </body>
-</html>
+{% endblock %}

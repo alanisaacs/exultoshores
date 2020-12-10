@@ -47,7 +47,7 @@ table, th, td {
 }
 
 .wineInfo {
-
+  text-align: left;
 }
 
 .wineInfoTitle {
@@ -154,6 +154,7 @@ table, th, td {
 }
 
 #main_section {
+  text-align: left;
   font-family: Garamond, serif;
 }
 
@@ -162,4 +163,8 @@ table, th, td {
   padding: 20px;
   font-size: smaller;
   color: #504e4e;
+}
+
+.moi {
+  text-align: center;
 }

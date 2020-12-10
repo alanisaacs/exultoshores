@@ -1,115 +1,95 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-        <script>
-            // Display All Wines
-            function showWines() {
-                var htmlstring = "";
-                htmlstring += "<h2>WINES</h2>";
-                {% for wine in wines %}
-                // wine is a list: [wineobject, countryname, regionname, som.username]
-                    htmlstring += "<div class=wineItem>" +
-                        "<div class=wineLabel>";
-                            {% if wine[0].label_photo %}
-                                var photo_url = "{{url_for('labels_bp.static', filename=wine[0].label_photo)}}";
-                                htmlstring += "<img src=" + photo_url + ">";
-                            {% endif %}
-                        htmlstring += "</div>" +
-                        "<div class=wineInfo>" +
-                            // Display Name and Description
-                            "<p><strong>{{wine[0].name}}</strong></p>";
-                            // replace escapes for lt & gt with actual chars
-                            // so <br> is treated as a tag not part of the string
-                            var s = "{{wine[0].description}}";
-                            var t = s.replace(/&lt;/g, "<");
-                            var u = t.replace(/&gt;/g, ">");
-                            htmlstring += "<p>" + u + "</p>";
-                            // Display Title Information
-                            htmlstring += "<div class='wineInfoTitle'>" +
-                                "{{wine[0].year}} - " +
-                                "{{wine[1]}} - " + // country name
-                                "{{wine[2]}}"; // region name
-                                var a = "{{wine[0].appellation}}";
-                                if (a != "None") { // don't show blank appellations
-                                    htmlstring += " - " + a; 
-                                }
-                            htmlstring += "</div>";
-                            // Display Second Line of Information
-                            var rating = "{{wine[0].rating}}";
-                            var ratingColor = getRatingColor(rating);
-                            htmlstring += "<div class='wineInfoLine'>" +
-                                "<span class='wineInfoRating'" +
-                                    "style=background-color:" + ratingColor + ">" +
-                                    rating + "</span> points " +
-                                "${{wine[0].price}} " +
-                                "{{wine[0].abv}} abv" + 
-                            "</div>";
-                            // console.log(ratingColor);
-                            // Display Third Line of Information
-                            htmlstring += "<div class='wineInfoLine'>";
-                                // Avoid blank date_tested values breaking display
-                                {% if wine[0].date_tasted %}
-                                    htmlstring += "First tasted on {{wine[0].date_tasted.strftime('%Y-%m-%d')}}. ";
-                                {% else %}
-                                    htmlstring += "No first taste date. ";
-                                {% endif %}
-                                htmlstring += "Times Tasted: {{wine[0].times_tasted}}" +
-                            "</div>";
-                            // Display Fourth Line of Information
-                            htmlstring += "<div class='wineInfoLine'>" +    
-                                "Purchased at {{wine[0].purchased_at}}. Entered by {{wine[3]}}. "; // sommelier name
-                                // Include Edit Button if user is logged in
-                                // Wine ID will be passed in a query string
-                                {% if userLoggedIn %} 
-                                    var url_string = "{{url_for('wine_bp.wineEdit', wineid=wine[0].id)}}";
-                                    htmlstring += "<a href=" + url_string + " class='button button_edit'>Edit</a>";
-                                {% endif %}
-                            htmlstring += "</div>" +
-                        "</div>" +
+{% extends "wineBase.html" %}
+
+{% block content %}
+
+<script>
+    // Display All Wines
+    function showWines() {
+        var htmlstring = "";
+        htmlstring += "<h2>WINES</h2>";
+        {% for wine in wines %}
+        // wine is a list: [wineobject, countryname, regionname, som.username]
+            htmlstring += "<div class=wineItem>" +
+                "<div class=wineLabel>";
+                    {% if wine[0].label_photo %}
+                        var photo_url = "{{url_for('labels_bp.static', filename=wine[0].label_photo)}}";
+                        htmlstring += "<img src=" + photo_url + ">";
+                    {% endif %}
+                htmlstring += "</div>" +
+                "<div class=wineInfo>" +
+                    // Display Name and Description
+                    "<p><strong>{{wine[0].name}}</strong></p>";
+                    // replace escapes for lt & gt with actual chars
+                    // so <br> is treated as a tag not part of the string
+                    var s = "{{wine[0].description}}";
+                    var t = s.replace(/&lt;/g, "<");
+                    var u = t.replace(/&gt;/g, ">");
+                    htmlstring += "<p>" + u + "</p>";
+                    // Display Title Information
+                    htmlstring += "<div class='wineInfoTitle'>" +
+                        "{{wine[0].year}} - " +
+                        "{{wine[1]}} - " + // country name
+                        "{{wine[2]}}"; // region name
+                        var a = "{{wine[0].appellation}}";
+                        if (a != "None") { // don't show blank appellations
+                            htmlstring += " - " + a; 
+                        }
+                    htmlstring += "</div>";
+                    // Display Second Line of Information
+                    var rating = "{{wine[0].rating}}";
+                    var ratingColor = getRatingColor(rating);
+                    htmlstring += "<div class='wineInfoLine'>" +
+                        "<span class='wineInfoRating'" +
+                            "style=background-color:" + ratingColor + ">" +
+                            rating + "</span> points " +
+                        "${{wine[0].price}} " +
+                        "{{wine[0].abv}} abv" + 
                     "</div>";
-                {% endfor %}
-                winelist.innerHTML = htmlstring;
-            }
-            // Return color for rating background
-            function getRatingColor(rating) {    
-            if (rating >= 95) {
-                return "fuchsia";
-            } else if (rating >= 90) {
-                return "springgreen";
-            } else if (rating >= 85) {
-                return "aqua";
-            } else if (rating >= 80) {
-                return "silver";
-            } else {
-                //return "#FFFF70"; //same as page background, i.e. clear   
-            }
-        }
+                    // console.log(ratingColor);
+                    // Display Third Line of Information
+                    htmlstring += "<div class='wineInfoLine'>";
+                        // Avoid blank date_tested values breaking display
+                        {% if wine[0].date_tasted %}
+                            htmlstring += "First tasted on {{wine[0].date_tasted.strftime('%Y-%m-%d')}}. ";
+                        {% else %}
+                            htmlstring += "No first taste date. ";
+                        {% endif %}
+                        htmlstring += "Times Tasted: {{wine[0].times_tasted}}" +
+                    "</div>";
+                    // Display Fourth Line of Information
+                    htmlstring += "<div class='wineInfoLine'>" +    
+                        "Purchased at {{wine[0].purchased_at}}. Entered by {{wine[3]}}. "; // sommelier name
+                        // Include Edit Button if user is logged in
+                        // Wine ID will be passed in a query string
+                        {% if session.get('username') %} 
+                            var url_string = "{{url_for('wine_bp.wineEdit', wineid=wine[0].id)}}";
+                            htmlstring += "<a href=" + url_string + " class='button button_edit'>Edit</a>";
+                        {% endif %}
+                    htmlstring += "</div>" +
+                "</div>" +
+            "</div>";
+        {% endfor %}
+        winelist.innerHTML = htmlstring;
+    }
+    // Return color for rating background
+    function getRatingColor(rating) {    
+    if (rating >= 95) {
+        return "fuchsia";
+    } else if (rating >= 90) {
+        return "springgreen";
+    } else if (rating >= 85) {
+        return "aqua";
+    } else if (rating >= 80) {
+        return "silver";
+    } else {
+        //return "#FFFF70"; //same as page background, i.e. clear   
+    }
+}
 
-        </script>
-    </head>
-    <body>
-        <h1>EOS Wine Log</h1>
-        <div class="subhead">
-            An Exult-O-Shores Production
-        </div>
+</script>
 
-        <p>
-            <a href="/wine/countriesRegions">Manage Countries & Regions</a> |
-            <a href="/wine/wineNew">Create a New Wine</a> |
-            <a href="/wine/table">Show Wines in a Table</a> |
-            {% if userLoggedIn %}
-                Welcome {{ userLoggedIn }}! |
-                <a href="/wine/logout">Log Out</a>
-            {% else %}
-                <a href="/wine/login">Log In</a>
-            {% endif %}
-            
-        </p>
-        
-        <div id="winelist">
-            <script>showWines();</script>
-        </div>
-        
-    </body>
-</html>
+<div id="winelist">
+    <script>showWines();</script>
+</div>
+
+{% endblock %}

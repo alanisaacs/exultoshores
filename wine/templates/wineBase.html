@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="EOS Wine Log">
+    <meta name="keywords" content="wine">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Exult O Shores</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div id="body_wrap">
+        <header id="main_header">
+            <div id="main_title">
+                <h1>EOS Wine Log</h1>
+            </div>
+            <nav id="nav_bar">
+                <div class="nav_item">
+                    <a href="/">EOS</a>
+                </div>
+                <div class="nav_item">
+                    <a href="/wine">Home</a>
+                </div>
+                <div class="nav_item">
+                    <a href="/wine/table">Table</a>
+                </div>
+                {% if session.get('username') %}
+                    Welcome {{ session.get('username') }}! 
+                    <div class="nav_item">
+                        <a href="/wine/wineNew">New</a>
+                    </div>
+                    <div class="nav_item">
+                        <a href="/wine/countriesRegions">MCR</a>
+                    </div>
+                    <div class="nav_item">
+                        <a href="/wine/logout">Log Out</a>
+                    </div>
+                {% else %}
+                    <div class="nav_item">
+                        <a href="/wine/login">Log In</a>
+                    </div>
+                {% endif %}
+        </header>
+
+        <section id="main_section">
+            {% block content %}
+            {% endblock %}
+        </section>
+
+        <footer id="main_footer">
+            <p>"I sound my barbaric yawp over the roofs of the world. &mdash;Whitman</p>
+            <p>Copyright&copy;2020 exultoshores.com</p>
+        </footer>
+    </div>
+
+</body>
+
+</html>

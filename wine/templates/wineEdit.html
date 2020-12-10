@@ -1,43 +1,36 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-    </head>
-    <body>
-        <h2>Edit a wine record in the database:</h2>
-        
-        <form action="/wine/wineUpdate" method="POST">
-        <table>
-            <tr>
-                <th>Field</th>
-                <th>Value</th>
-            </tr>          
-            <tr>
-                <td>Description</td>
-                <td><textarea maxlength="1000" name="description" 
-                        cols="100" rows="12">{{wineDescription}}</textarea>
-                </td>
-            </tr>           
-            {% for k in wineToEdit %}
-                <tr>
-                    <td>{{k}}</td>
-                    <td>
-                        <input type="text" maxlength="100" name="{{k}}"
-                            value="{{wineToEdit[k]}}">
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-        <p>
-            <button type="submit" id="submit">
-                Submit Changes
-            </button>
-        </p> 
-        </form>
+{% extends "wineBase.html" %}
 
+{% block content %}
 
-        <p><a href="/wine">Back to Wine App Home</a></p>
+<h2>Edit a wine record in the database</h2>
 
-    
-    </body>
-</html>
+<form action="/wine/wineUpdate" method="POST">
+<table>
+    <tr>
+        <th>Field</th>
+        <th>Value</th>
+    </tr>          
+    <tr>
+        <td>Description</td>
+        <td><textarea maxlength="1000" name="description" 
+                cols="100" rows="12">{{wineDescription}}</textarea>
+        </td>
+    </tr>           
+    {% for k in wineToEdit %}
+        <tr>
+            <td>{{k}}</td>
+            <td>
+                <input type="text" maxlength="100" name="{{k}}"
+                    value="{{wineToEdit[k]}}">
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+<p>
+    <button type="submit" id="submit">
+        Submit Changes
+    </button>
+</p> 
+</form>
+
+{% endblock %}

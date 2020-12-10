@@ -51,10 +51,7 @@ def wineHome():
         if s: # filter out null values
             s = s.replace("\r\n", "<br>")
             wine[0].description = s
-    # If user is logged in pass name to page, otherwise "None"
-    userLoggedIn = login_session.get('username')
-    return render_template('home.html',
-                           wines=wines, userLoggedIn=userLoggedIn)
+    return render_template('home.html', wines=wines)
 
 
 # Display a table of all wines
@@ -71,8 +68,7 @@ def wineTable():
     DBSession.close()
     # If user is logged in pass name to page, otherwise "None"
     userLoggedIn = login_session.get('username')
-    return render_template('table.html',
-                          wines=wines, userLoggedIn=userLoggedIn)
+    return render_template('table.html', wines=wines)
 
 
 # Display a single wine for editing
