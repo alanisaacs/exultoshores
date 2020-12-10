@@ -3,7 +3,7 @@ body {
 }
   
 h1 {
-  color: rgb(214, 73, 73);
+  color: #d64949;
   text-align: center;
   margin-block-end: 0em;
 }
@@ -38,8 +38,12 @@ table, th, td {
   padding: 5px 5px;
 }
 
-.wineLabel {
-  
+.wineLabel img {
+  width: 25%;
+  height: 25%;
+  float: left;
+  padding-right: 12px;
+  padding-bottom: 5px;
 }
 
 .wineInfo {
@@ -59,14 +63,6 @@ table, th, td {
   border: 2px solid purple;
   padding: 2px;
   margin: 2px;
-}
-
-img {
-  width: 25%;
-  height: 25%;
-  float: left;
-  padding-right: 12px;
-  padding-bottom: 5px;
 }
 
 .button {
@@ -116,4 +112,54 @@ img {
 .messageSuccess {
   color: green;
   font-weight: bold;
+}
+
+#body_wrap {
+  text-align: center;
+}
+
+#main_header {
+  padding-bottom: 30px;
+}
+
+#main_title {
+  font-family: Garamond, serif;
+  color: #d64949;
+}
+
+#nav_bar {
+  font-family: Garamond, serif;
+}
+
+.nav_item {
+  display: inline-block;
+  padding: 5px;
+}
+
+.nav_item a {
+  text-decoration: none;
+  color: #009900;
+}
+
+.nav_item a:link {
+  /* color: #d64949; */
+}
+
+.nav_item a:visited {
+  /* color: #d64949; */
+}
+
+.nav_item a:hover {
+  color: #0066ff;
+}
+
+#main_section {
+  font-family: Garamond, serif;
+}
+
+#main_footer {
+  clear: both;
+  padding: 20px;
+  font-size: smaller;
+  color: #504e4e;
 }

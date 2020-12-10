@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Exult O Shores">
+    <meta name="keywords" content="bread, wine, poetry">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Exult O Shores</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div id="body_wrap">
+        <header id="main_header">
+            <div id="main_title">
+                <h1>Exult O Shores</h1>
+            </div>
+            <nav id="nav_bar">
+                <div class="nav_item">
+                    <a href="/">Home</a>
+                </div>
+                <div class="nav_item">
+                    <a href="/wine">Wine</a>
+                </div>
+                <div class="nav_item">
+                    <a href="#">Poetry</a>
+                </div>
+                <div class="nav_item">
+                    <a href="#">Bread</a>
+                </div>
+                <div class="nav_item">
+                    <a href="#">About</a>
+                </div>
+        </header>
+
+        <section id="main_section">
+            {% block content %}
+            {% endblock %}
+        </section>
+
+        <footer id="main_footer">
+            <p>"I sound my barbaric yawp over the roofs of the world. &mdash;Whitman</p>
+            <p>Copyright&copy;2020 exultoshores.com</p>
+        </footer>
+    </div>
+
+</body>
+
+</html>
