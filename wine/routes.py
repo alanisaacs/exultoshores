@@ -66,9 +66,9 @@ def wineTable():
                         Region, Wine.region_id==Region.id).order_by(
                         desc(Wine.id)).all()
     DBSession.close()
-    # If user is logged in pass name to page, otherwise "None"
-    userLoggedIn = login_session.get('username')
-    return render_template('table.html', wines=wines)
+    # Pass number of wines to the template for display
+    numWines = len(wines)
+    return render_template('table.html', wines=wines, numWines=numWines)
 
 
 # Display a single wine for editing
@@ -146,7 +146,7 @@ def wineUpdate():
         return redirect(url_for('wine_bp.wineHome'))
     else:
         # Route should only be called with POST
-        return render_template('error.html')
+        return redirect(url_for("auth_bp.wineLogin"))
 
 
 # Show counties and regions with create, edit and delete links
@@ -185,8 +185,8 @@ def wineCountryNew():
         DBSession.close()
         return redirect(url_for('wine_bp.wineCountriesRegions'))
     else:
-        # this should never happen
-        return render_template('countriesRegions.html')
+        # Route should only be called with POST
+        return redirect(url_for("auth_bp.wineLogin"))
 
 
 # Create a new region
