@@ -3,6 +3,7 @@
 """Manage database and models for EOS"""
 
 import os
+import urllib
 
 from sqlalchemy import Column, ForeignKey, Integer, String, Float, Date
 from sqlalchemy.ext.declarative import declarative_base
@@ -65,15 +66,17 @@ class Wine(Base):
 
 
 # Start running on postgresql
+# Get db user password from environment variable and encode as URI safe
 pw = os.getenv('WINE_DB_USER_PW')
-engine = create_engine('postgresql://winedbuser:' + pw + '@localhost/winedb')
+pw_encoded = urllib.parse.quote(pw)
+engine = create_engine('postgresql://winedbuser:' + str(pw_encoded) + '@localhost/winedb')
 
 Base.metadata.create_all(engine)
 
 ########## DEBUGGING ONLY ##########
-#import logging
-#logging.warning("===== SQLALCHEMY LOGGING IS ON =====")
-#logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO) 
+import logging
+logging.warning("===== SQLALCHEMY LOGGING IS ON =====")
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO) 
 ####################################
 
 
