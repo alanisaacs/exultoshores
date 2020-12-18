@@ -2,6 +2,8 @@
 
 """Manage database and models for EOS"""
 
+import os
+
 from sqlalchemy import Column, ForeignKey, Integer, String, Float, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -63,7 +65,8 @@ class Wine(Base):
 
 
 # Start running on postgresql
-engine = create_engine('postgresql://winedbuser:winedbuser@localhost/winedb')
+pw = os.getenv('WINE_DB_USER_PW')
+engine = create_engine('postgresql://winedbuser:' + pw + '@localhost/winedb')
 
 Base.metadata.create_all(engine)
 
