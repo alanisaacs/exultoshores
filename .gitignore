@@ -5,3 +5,4 @@ test-views.py
 templates/test-home.html
 **logs/
 **sqlfiles/
+init_terminal.sh

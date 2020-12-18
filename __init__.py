@@ -2,6 +2,7 @@
 
 """Initialize Flask application framework for EOS"""
 
+import os
 from flask import Flask
 
 from auth.routes import auth_bp
@@ -22,6 +23,6 @@ app.register_blueprint(wine_bp)
 
 
 if __name__ == '__main__':
-    app.secret_key = 'sd8f7w4qotgSUF'
-    app.debug = True
+    app.env = os.environ.get('FLASK_ENV')
+    app.secret_key = os.environ.get('FLASK_SECRET_KEY')
     app.run()
