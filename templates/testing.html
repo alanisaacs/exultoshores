@@ -9,12 +9,24 @@
         <th>key</th>
         <th>value</th>
     </tr>
-    {% for k in kwargs %}
+    {% for k in envvars %}
         <tr>
             <td>{{ k }}</td>
-            <td>{{ kwargs.get(k) }}</td>
+            <td>{{ envvars.get(k) }}</td>
         </tr>
     {% endfor %}
 </table>
-
+<h3>======= FLASK CONFIGS =======</h3>
+<table>
+    <tr>
+        <th>key</th>
+        <th>value</th>
+    </tr>
+    {% for k in flask_configs %}
+        <tr>
+            <td>{{ k }}</td>
+            <td>{{ flask_configs.get(k) }}</td>
+        </tr>
+    {% endfor %}
+</table>
 {% endblock %}

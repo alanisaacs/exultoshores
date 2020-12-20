@@ -23,4 +23,6 @@ def showSiteIndex():
 def eosTesting():
     """ Display Test Results """
     envvars = os.environ
-    return render_template('testing.html', kwargs=envvars)
+    from __init__ import app
+    flask_configs = app.config
+    return render_template('testing.html', envvars=envvars, flask_configs=flask_configs)

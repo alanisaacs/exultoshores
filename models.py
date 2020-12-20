@@ -67,7 +67,6 @@ class Wine(Base):
 
 # Start running on postgresql
 # Get db user password from environment variable and encode as URI safe
-# THIS WORKS FINE LOCALLY USING ENV FROM .BASH_PROFILE
 pw = os.getenv('WINE_DB_USER_PW')
 pw_encoded = urllib.parse.quote_plus(pw)
 engine = create_engine('postgresql://winedbuser:' + pw_encoded + '@localhost/winedb')
@@ -75,9 +74,9 @@ engine = create_engine('postgresql://winedbuser:' + pw_encoded + '@localhost/win
 Base.metadata.create_all(engine)
 
 ########## DEBUGGING ONLY ##########
-# import logging
-# logging.warning("===== SQLALCHEMY LOGGING IS ON =====")
-# logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO) 
+import logging
+logging.warning("===== SQLALCHEMY LOGGING IS ON =====")
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO) 
 ####################################
 
 
