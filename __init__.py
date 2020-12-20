@@ -25,4 +25,5 @@ app.register_blueprint(wine_bp)
 if __name__ == '__main__':
     app.env = os.environ.get('FLASK_ENV')
     app.secret_key = os.environ.get('FLASK_SECRET_KEY')
+    app.testing = os.environ.get('FLASK_TESTING')
     app.run()
