@@ -22,7 +22,13 @@ def showSiteIndex():
 @home_bp.route('/testing')
 def eosTesting():
     """ Display Test Results """
-    envvars = os.environ
-    from __init__ import app
-    flask_configs = app.config
-    return render_template('testing.html', envvars=envvars, flask_configs=flask_configs)
+    if bool(os.getenv('EOS_TEST_MODE')):
+        envvars = os.environ
+        sorted_envvars_keys = sorted(os.environ)
+        from __init__ import app
+        flask_configs = app.config
+        return render_template('testing.html', 
+            envvars=envvars, sorted_envvars_keys=sorted_envvars_keys,
+            flask_configs=flask_configs)
+    else:
+        return "Testing not enabled"

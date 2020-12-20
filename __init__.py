@@ -21,9 +21,9 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(labels_bp)
 app.register_blueprint(wine_bp)
 
+# Set Flask app configs from environment variables
+app.env = os.environ.get('FLASK_ENV')
+app.secret_key = os.environ.get('FLASK_SECRET_KEY')
 
 if __name__ == '__main__':
-    app.env = os.environ.get('FLASK_ENV')
-    app.secret_key = os.environ.get('FLASK_SECRET_KEY')
-    app.testing = os.environ.get('FLASK_TESTING')
     app.run()
