@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>======= TESTING =======</h2>
+<h3>======= OS.ENVIRON =======</h3>
+<table>
+    <tr>
+        <th>key</th>
+        <th>value</th>
+    </tr>
+    {% for k in kwargs %}
+        <tr>
+            <td>{{ k }}</td>
+            <td>{{ kwargs.get(k) }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
