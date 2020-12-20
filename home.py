@@ -22,7 +22,7 @@ def showSiteIndex():
 @home_bp.route('/testing')
 def eosTesting():
     """ Display Test Results """
-    if bool(os.getenv('EOS_TEST_MODE')):
+    if os.getenv('EOS_TEST_MODE') == 'True':
         envvars = os.environ
         sorted_envvars_keys = sorted(os.environ)
         from __init__ import app
