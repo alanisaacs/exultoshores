@@ -28,7 +28,7 @@
             <td>{{wine[0].rating}}</td>
             <td>{{wine[0].date_tasted}}</td>
             <td>
-                {% if session.get('username') %} 
+                {% if current_user.is_authenticated %} 
                     <a href="{{url_for('wine_bp.wineEdit', wineid=wine[0].id)}}" class="button button_edit">Edit </a>
                     <a href="{{url_for('wine_bp.wineDelete', wineid=wine[0].id)}}" class="button button_delete">Delete</a>
                 {% endif %}

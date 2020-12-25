@@ -61,7 +61,7 @@
                         "Purchased at {{wine[0].purchased_at}}. Entered by {{wine[3]}}. "; // sommelier name
                         // Include Edit Button if user is logged in
                         // Wine ID will be passed in a query string
-                        {% if session.get('username') %} 
+                        {% if current_user.is_authenticated %} 
                             var url_string = "{{url_for('wine_bp.wineEdit', wineid=wine[0].id)}}";
                             htmlstring += "<a href=" + url_string + " class='button button_edit'>Edit</a>";
                         {% endif %}

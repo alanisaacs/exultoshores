@@ -4,6 +4,7 @@
 
 import os
 import urllib.parse
+from flask_login import UserMixin
 
 from sqlalchemy import Column, ForeignKey, Integer, String, Float, Date
 from sqlalchemy.ext.declarative import declarative_base
@@ -15,10 +16,9 @@ from sqlalchemy.orm import sessionmaker
 Base = declarative_base()
 
 
-class Sommelier(Base):
+class Sommelier(UserMixin, Base):
     """Registered user information"""
     __tablename__ = 'sommelier'
-
     id = Column(Integer, primary_key=True)
     username = Column(String(80), nullable=False)
     password = Column(String(1024))
@@ -71,12 +71,11 @@ pw = os.getenv('WINE_DB_USER_PW')
 pw_encoded = urllib.parse.quote_plus(pw)
 engine = create_engine('postgresql://winedbuser:' + pw_encoded + '@localhost/winedb')
 
-Base.metadata.create_all(engine)
 
 ########## DEBUGGING ONLY ##########
-import logging
-logging.warning("===== SQLALCHEMY LOGGING IS ON =====")
-logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO) 
+# import logging
+# logging.warning("===== SQLALCHEMY LOGGING IS ON =====")
+# logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO) 
 ####################################
 
 
@@ -89,4 +88,6 @@ if __name__ != '__main__':
 
 # If running as a script create models only
 if __name__ == '__main__':
+    # ONLY NEED TO CREATE TABLES??? OTHERWISE DOES NOTHING?
+    Base.metadata.create_all(engine)
     print("Models created.")

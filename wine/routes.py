@@ -9,6 +9,7 @@ from flask import (Blueprint,
                    request,
                    session as login_session,
                    url_for)
+from flask_login import login_required
 from sqlalchemy import (asc,
                         desc,
                         null,
@@ -73,6 +74,7 @@ def wineTable():
 
 # Display a single wine for editing
 @wine_bp.route('/wine/wineEdit')
+@login_required
 def wineEdit():
     """Display a single wine for editing"""
     # Display wine for editing
@@ -105,6 +107,7 @@ def wineEdit():
 
 # Update wine record with values from wineEdit form view
 @wine_bp.route('/wine/wineUpdate', methods=['GET', 'POST'])
+@login_required
 def wineUpdate():
     """Update a wine record"""
     if request.method == 'POST':
@@ -151,6 +154,7 @@ def wineUpdate():
 
 # Show counties and regions with create, edit and delete links
 @wine_bp.route('/wine/countriesRegions', methods=['GET', 'POST'])
+@login_required
 def wineCountriesRegions():
     """Manage countries and regions"""
     DBSession = open_db_session()
@@ -175,6 +179,7 @@ def wineCountriesRegions():
 
 # Create a new country
 @wine_bp.route('/wine/countryNew', methods=['GET', 'POST'])
+@login_required
 def wineCountryNew():
     """Create a new country"""
     if request.method == 'POST':
@@ -191,6 +196,7 @@ def wineCountryNew():
 
 # Create a new region
 @wine_bp.route('/wine/regionNew', methods=['GET', 'POST'])
+@login_required
 def wineRegionNew():
     """Create a new region"""
     DBSession = open_db_session()
@@ -210,6 +216,7 @@ def wineRegionNew():
 
 # Add a wine to the database
 @wine_bp.route('/wine/wineNew', methods=['GET', 'POST'])
+@login_required
 def wineNew():
     """Create a new wine"""
     DBSession = open_db_session()
@@ -252,6 +259,7 @@ def wineNew():
 
 # Delete an unassociated (no regions or wines) country
 @wine_bp.route('/wine/countryDelete', methods=['GET', 'POST'])
+@login_required
 def wineCountryDelete():
     """Delete a country"""
     if request.method == 'POST':
@@ -268,6 +276,7 @@ def wineCountryDelete():
 
 # Delete an unassociated (no wines) region
 @wine_bp.route('/wine/regionDelete', methods=['GET', 'POST'])
+@login_required
 def wineRegionDelete():
     """Delete a region"""
     if request.method == 'POST':
@@ -284,6 +293,7 @@ def wineRegionDelete():
 
 # Delete a wine from the wine table
 @wine_bp.route('/wine/wineDelete')
+@login_required
 def wineDelete():
     """Delete a wine"""
     # Fetch wine's ID from query_string

@@ -9,6 +9,10 @@ from flask import (Blueprint,
                    request,
                    session as login_session,
                    url_for)
+from flask_login import (login_required,
+                         login_user,
+                         logout_user)
+
 
 from models import (open_db_session,
                     Sommelier)
@@ -29,18 +33,22 @@ def wineLogin():
     # Simplest flow
     # Validate submission
     if request.method == 'POST':
-        # get Sommelier associated with user in db
+        # Get Sommelier associated with user in db
         DBSession = open_db_session()
         som = DBSession.query(Sommelier).filter_by(username = request.form['username']).one_or_none()
         DBSession.close()
-        # confirm password matches hashed version
+        # Show error if username not found
+        if not som:
+            flash("Username not found! Please try again.", "messageError")
+            return render_template('/login.html')
+        # Confirm password matches hashed version
         pwMatch = check_password(som.password, request.form['password'])
         if pwMatch:
-            login_session['username'] = request.form['username']
-            flash("===LOGIN SUCCESSFUL===", "messageSuccess")
-            return render_template('/login.html')
+            login_user(som)
+            flash("Login successful!", "messageSuccess")
+            return redirect(url_for('wine_bp.wineHome'))
         else:
-            flash("===LOGIN FAILED! PLEASE TRY AGAIN===", "messageError")
+            flash("Incorrect password! Please try again.", "messageError")
             return render_template('login.html')
     # Display form
     else:
@@ -49,42 +57,50 @@ def wineLogin():
 
 # Log out user
 @auth_bp.route('/wine/logout')
+@login_required
 def wineLogout():
     """ Remove the username from the session if it's there """
-    login_session.pop('username', None)
+    logout_user()
+    flash('Log out successful!', 'messageSuccess')
     return redirect(url_for('wine_bp.wineHome'))
 
 
 # Manage Users
 @auth_bp.route('/wine/usermgmt')
+@login_required
 def wineUserMgmt():
     """ Manage users """
-    if login_session.get('username'):
-        return render_template('/usermgmt.html')
-    else:
-        return redirect(url_for("auth_bp.wineLogin"))
+    return render_template('/usermgmt.html')
 
 
 # Create new user
 @auth_bp.route('/wine/wineNewUser', methods=['GET', 'POST'])
+@login_required
 def wineNewUser():
     """ Create new user with hashed password in db """
     if request.method == 'POST':
-        # hash password with salt
+        DBSession = open_db_session()
+        # Make sure requested username is unique
+        username = request.form['username']
+        user_exists = DBSession.query(Sommelier).filter_by(
+            username=username).first()
+        if user_exists:
+            flash('Username is taken. Please choose another.', 'messageError')
+            DBSession.close()
+            return redirect(url_for('auth_bp.wineUserMgmt'))
+        # Hash password with salt
         hashed_pw = hash_password(request.form['password'])
         # create new user in database
         newuser = Sommelier(
-            username = request.form['username'],
+            username = username,
             password = hashed_pw,
             email = request.form['email'],
             picture = request.form['picture']
         )
-        DBSession = open_db_session()
         DBSession.add(newuser)
         DBSession.commit()
         DBSession.close()
-        login_session['username'] = request.form['username']
-        flash("===ACCOUNT SUCCESSFULLY CREATED===", "messageSuccess")
+        flash("Account successfully created.", "messageSuccess")
         return render_template('/usermgmt.html')
     else:
         return redirect(url_for("auth_bp.wineLogin"))

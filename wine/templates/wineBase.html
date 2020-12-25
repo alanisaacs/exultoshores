@@ -26,8 +26,11 @@
                 <div class="nav_item">
                     <a href="/wine/table">Table</a>
                 </div>
-                {% if session.get('username') %}
-                    Welcome {{ session.get('username') }}! 
+                <!-- OLDWAY
+                if session.get('username')
+                    Welcome session.get('username') !  -->
+                {% if current_user.is_authenticated %}
+                    Welcome {{ current_user.username }}!
                     <div class="nav_item">
                         <a href="/wine/wineNew">New</a>
                     </div>
@@ -37,14 +40,25 @@
                     <div class="nav_item">
                         <a href="/wine/logout">Log Out</a>
                     </div>
-                {% else %}
+                    {% else %}
                     <div class="nav_item">
                         <a href="/wine/login">Log In</a>
                     </div>
                 {% endif %}
+            </nav>
         </header>
-
+        
         <section id="main_section">
+            <div class="flash_messages">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            
             {% block content %}
             {% endblock %}
         </section>

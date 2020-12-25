@@ -104,14 +104,21 @@ table, th, td {
   color: #979797;
 }
 
-.messageError {
-  color: red;
+.flash_messages {
+  /* padding: 15px; */
   font-weight: bold;
 }
 
+.messageError {
+  padding: 15px;
+  background-color: #fa8072;
+  /* color: red; */
+}
+
 .messageSuccess {
-  color: green;
-  font-weight: bold;
+  padding: 15px;
+  background-color: #7fff00;
+  /* color: green; */
 }
 
 #body_wrap {
@@ -119,7 +126,7 @@ table, th, td {
 }
 
 #main_header {
-  padding-bottom: 30px;
+  padding-bottom: 15px;
 }
 
 #main_title {
