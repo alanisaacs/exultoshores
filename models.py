@@ -73,9 +73,9 @@ engine = create_engine('postgresql://winedbuser:' + pw_encoded + '@localhost/win
 
 
 ########## DEBUGGING ONLY ##########
-# import logging
-# logging.warning("===== SQLALCHEMY LOGGING IS ON =====")
-# logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO) 
+import logging
+logging.warning("===== SQLALCHEMY LOGGING IS ON =====")
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO) 
 ####################################
 
 
