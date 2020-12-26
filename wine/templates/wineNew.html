@@ -109,8 +109,8 @@
                 cols="60" rows="12"></textarea>
     </p>
     <p>
-        <label for="sommelier_id">Sommelier ID (must be 2)</label>
-        <input type="text" maxlength="8" name="sommelier_id" value="2" readonly>
+        <label for="sommelier_id">Sommelier ID</label>
+        <input type="text" maxlength="8" name="sommelier_id" value="{{ current_user.id }}" readonly>
     </p>
     <p>
         <button type="submit" id="submit" onclick=setSubmittingFlag()>
