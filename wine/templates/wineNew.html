@@ -76,41 +76,41 @@
         <input type="text" maxlength="100" name="year">
     </p>
     <p>
-        <label for="price">Price:</label>
-        <input type="text" maxlength="100" name="price">
-    </p>
-    <p>
-        <label for="rating">Rating (0-100):</label>
-        <input type="text" maxlength="100" name="rating">
-    </p>
-    <p>
         <label for="abv">ABV (NN.N):</label>
         <input type="text" maxlength="100" name="abv">
+    </p>
+    <p>
+        <label for="price">Price:</label>
+        <input type="text" maxlength="100" name="price">
     </p>
     <p>
         <label for="date_tasted">Date Tasted (YYYY-MM-DD):</label>
         <input type="text" maxlength="100" name="date_tasted" id="date_tasted">
     </p>
     <p>
-        <label for="times_tasted">Times Tasted:</label>
-        <input type="text" maxlength="1000" name="times_tasted" value="1">
+        <label for="purchased_at">Purchased At:</label>
+        <input type="text" maxlength="200" name="purchased_at" size="30">
     </p>
     <p>
         <label for="label_photo">Label Photo (name of file):</label>
         <input type="text" maxlength="200" name="label_photo" size="30">
     </p>
     <p>
-        <label for="purchased_at">Purchased At:</label>
-        <input type="text" maxlength="200" name="purchased_at" size="30">
-    </p>
-    <p>
         <label for="description">Description:</label>
-            <textarea maxlength="1000" name="description" 
-                cols="60" rows="12"></textarea>
+        <textarea maxlength="1000" name="description" 
+        cols="60" rows="12"></textarea>
     </p>
     <p>
-        <label for="sommelier_id">Sommelier ID</label>
-        <input type="text" maxlength="8" name="sommelier_id" value="{{ current_user.id }}" readonly>
+        <label for="rating">Rating (0-100):</label>
+        <input type="text" maxlength="100" name="rating">
+    </p>
+    <p>
+        <!-- <label for="times_tasted">Times Tasted:</label> -->
+        <input type="hidden" maxlength="100" name="times_tasted" value="1">
+    </p>
+    <p>
+        <!-- <label for="sommelier_id">Sommelier ID</label> -->
+        <input type="hidden" maxlength="8" name="sommelier_id" value="{{ current_user.id }}" readonly>
     </p>
     <p>
         <button type="submit" id="submit" onclick=setSubmittingFlag()>

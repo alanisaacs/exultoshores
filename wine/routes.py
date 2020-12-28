@@ -94,24 +94,24 @@ def wineEdit():
     wineDict.pop('_sa_instance_state')
     # treat description separately to display on top of page
     wineDescription = wineDict.pop('description')
-    # remove ids (id, country_id, region_id, sommelier_id)
-    # use a copy as a dict cannot be changed during iteration
+    # Make some tweaks to the data
     for w in wineDict.copy():
-        if w.find('id') != -1:
-            wineDict.pop(w)
     # display any None (null) values as blank spaces
     # then it is easy to convert them to NULL again
     # on their way back to the database
     # (see newwine view)
-    for w in wineDict:
         if wineDict[w] == None:
             wineDict[w] = ""
-    # Sort by key
+    # remove ids (wine id, country_id, region_id, sommelier_id)
+    # use a copy as a dict cannot be changed during iteration
+        if w.find('id') != -1:
+            wineDict.pop(w)
+    # Sort by key (requires building new dictionary)
     sorted_dict = {}
     sorted_keys = sorted(wineDict)
     for k in sorted_keys:
         sorted_dict[k]=wineDict[k]
-    return render_template('wineEdit.html', 
+    return render_template('wineEdit.html', wineid=wineid,
         wineToEdit=sorted_dict, wineDescription=wineDescription)
 
 
@@ -132,8 +132,9 @@ def wineUpdate():
         DBSession = open_db_session()
         # QUERY the wine record by id
         # note the result is itself a query
+        wineid = request.args.get('wineid')
         wineToUpdate = DBSession.query(Wine).\
-            filter(Wine.id==request.form['id'])
+            filter(Wine.id==wineid)
         # update everything in the form
         # TODO: only update changed items
         for i in fields:
@@ -143,7 +144,7 @@ def wineUpdate():
         DBSession.commit()
         # QUERY again wine by id, closing transaction this time
         wineToEdit = DBSession.query(Wine).\
-            filter(Wine.id == request.form['id']).\
+            filter(Wine.id == wineid).\
             one_or_none()
         DBSession.close()
         # copy to dict like in showOneWine
