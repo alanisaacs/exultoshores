@@ -45,7 +45,6 @@
                         "${{wine[0].price}} " +
                         "{{wine[0].abv}} abv" + 
                     "</div>";
-                    // console.log(ratingColor);
                     // Display Third Line of Information
                     htmlstring += "<div class='wineInfoLine'>";
                         // Avoid blank date_tested values breaking display
@@ -57,6 +56,11 @@
                         htmlstring += "Times Tasted: {{wine[0].times_tasted}}" +
                     "</div>";
                     // Display Fourth Line of Information
+                    htmlstring += "<div class='wineInfoLine'>";
+                        // Avoid blank date_tested values breaking display
+                        htmlstring += "{{ wine[0].categories }} wine made from {{ wine[0].varietals }}." +
+                    "</div>";
+                    // Display Fifth Line of Information
                     htmlstring += "<div class='wineInfoLine'>" +    
                         "Purchased at {{wine[0].purchased_at}}. Entered by {{wine[3]}}. "; // sommelier name
                         // Include Edit Button if user is logged in

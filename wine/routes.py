@@ -257,7 +257,9 @@ def wineNew():
             label_photo=fields['label_photo'],
             purchased_at=fields['purchased_at'],
             description=fields['description'],
-            sommelier_id=fields['sommelier_id']
+            sommelier_id=fields['sommelier_id'],
+            categories=fields['categories'],
+            varietals=fields['varietals']
             )
         DBSession.add(newWine)
         DBSession.commit()

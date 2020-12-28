@@ -57,6 +57,8 @@ class Wine(Base):
     times_tasted = Column(Integer)
     label_photo = Column(String(128))
     purchased_at = Column(String(64))
+    categories = Column(String(100))
+    varietals = Column(String(100))
     country_id = Column(Integer, ForeignKey('country.id'), nullable=False)
     country = relationship(Country)
     region_id = Column(Integer, ForeignKey('region.id'), nullable=False)
