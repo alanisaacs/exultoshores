@@ -1,4 +1,5 @@
 body {
+  /* Extend background color to entire canvas */
   background-color: #ffff70;
 }
   
@@ -30,6 +31,57 @@ table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
   padding: 10px;
+}
+
+#body_wrap {
+  text-align: center;
+}
+
+#main_header {
+  padding-bottom: 15px;
+}
+
+#main_title {
+  font-family: Garamond, serif;
+  color: #d64949;
+}
+
+#nav_bar {
+  font-family: Garamond, serif;
+}
+
+.nav_item {
+  display: inline-block;
+  padding: 5px;
+}
+
+.nav_item a {
+  text-decoration: none;
+  color: #009900;
+}
+
+.nav_item a:link {
+  /* color: #d64949; */
+}
+
+.nav_item a:visited {
+  /* color: #d64949; */
+}
+
+.nav_item a:hover {
+  color: #0066ff;
+}
+
+#main_section {
+  text-align: left;
+  font-family: Garamond, serif;
+}
+
+#main_footer {
+  clear: both;
+  padding: 20px;
+  font-size: smaller;
+  color: #504e4e;
 }
 
 .wineItem {
@@ -119,57 +171,6 @@ table, th, td {
   padding: 15px;
   background-color: #7fff00;
   /* color: green; */
-}
-
-#body_wrap {
-  text-align: center;
-}
-
-#main_header {
-  padding-bottom: 15px;
-}
-
-#main_title {
-  font-family: Garamond, serif;
-  color: #d64949;
-}
-
-#nav_bar {
-  font-family: Garamond, serif;
-}
-
-.nav_item {
-  display: inline-block;
-  padding: 5px;
-}
-
-.nav_item a {
-  text-decoration: none;
-  color: #009900;
-}
-
-.nav_item a:link {
-  /* color: #d64949; */
-}
-
-.nav_item a:visited {
-  /* color: #d64949; */
-}
-
-.nav_item a:hover {
-  color: #0066ff;
-}
-
-#main_section {
-  text-align: left;
-  font-family: Garamond, serif;
-}
-
-#main_footer {
-  clear: both;
-  padding: 20px;
-  font-size: smaller;
-  color: #504e4e;
 }
 
 .moi {

@@ -1,8 +1,5 @@
 **.venv/
 **.vscode/
 **__pycache__/
-test-views.py
-templates/test-home.html
+**test/
 **logs/
-**sqlfiles/
-init_terminal.sh

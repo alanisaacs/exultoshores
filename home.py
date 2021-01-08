@@ -32,3 +32,10 @@ def eosTesting():
             flask_configs=flask_configs)
     else:
         return "Testing not enabled"
+
+
+# Display About page
+@home_bp.route('/about')
+def showAbout():
+    """Display About page"""
+    return render_template('about.html')
