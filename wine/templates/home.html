@@ -6,7 +6,7 @@
     // Display All Wines
     function showWines() {
         var htmlstring = "";
-        htmlstring += "<h2>WINES</h2>";
+        htmlstring += "<div class=bar_header>WINES</div>";
         {% for wine in wines %}
         // wine is a list: [wineobject, countryname, regionname, som.username]
             htmlstring += "<div class=wineItem>" +

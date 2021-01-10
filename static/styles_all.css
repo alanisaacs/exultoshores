@@ -1,37 +1,12 @@
-body {
-  /* Extend background color to entire canvas */
-  background-color: #ffff70;
-}
-  
-h1 {
-  color: #d64949;
-  text-align: center;
-  margin-block-end: 0em;
-}
-
-h2 {
-  color: darkblue;
-  background-color: darkgrey;
-  padding: 3px 10px;
-  margin: 5px;
-  font-size: 1.2em;
-}
-
-h3 {
-  
-}
-
-.subhead {
-  color: green;  
-  text-align: center;
-  font-style: italic;
-}
+/* ======= Generic Styles for All Apps ======= */
 
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
   padding: 10px;
 }
+
+/* ======= Page Layout ======= */
 
 #body_wrap {
   text-align: center;
@@ -41,13 +16,28 @@ table, th, td {
   padding-bottom: 15px;
 }
 
-#main_title {
+#main_section {
   font-family: Garamond, serif;
+  text-align: left;
+}
+
+#main_footer {
+  clear: both;
+  color: #504e4e;
+  font-size: smaller;
+  padding: 20px;
+}
+
+/* ======= Title and nav bar ======= */
+
+#main_title {
   color: #d64949;
+  margin-block-end: 0em;
+  text-align: center;
 }
 
 #nav_bar {
-  font-family: Garamond, serif;
+
 }
 
 .nav_item {
@@ -56,8 +46,8 @@ table, th, td {
 }
 
 .nav_item a {
-  text-decoration: none;
   color: #009900;
+  text-decoration: none;
 }
 
 .nav_item a:link {
@@ -72,60 +62,34 @@ table, th, td {
   color: #0066ff;
 }
 
-#main_section {
-  text-align: left;
-  font-family: Garamond, serif;
+/* ======= Subheaders ======= */
+
+.bar_header {
+  background-color: #c0c0c0;
+  color: #0000cd;
+  font-family:Arial, Helvetica, sans-serif;
+  font-size: 1.2em;
+  font-weight:bold;
+  margin: 15px 0px;
+  padding: 3px 10px;
 }
 
-#main_footer {
-  clear: both;
-  padding: 20px;
-  font-size: smaller;
-  color: #504e4e;
+.subhead {
+  color: green;  
+  font-style: italic;
+  text-align: center;
 }
 
-.wineItem {
-  border-top: 3px solid rgb(216, 105, 105);
-  clear: left;
-  padding: 5px 5px;
-}
-
-.wineLabel img {
-  width: 25%;
-  height: 25%;
-  float: left;
-  padding-right: 12px;
-  padding-bottom: 5px;
-}
-
-.wineInfo {
-  text-align: left;
-}
-
-.wineInfoTitle {
-  margin: 3px;
-  font-weight: bold;
-}
-
-.wineInfoLine {
-  margin: 3px;
-}
-
-.wineInfoRating {
-  border: 2px solid purple;
-  padding: 2px;
-  margin: 2px;
-}
-
+/* ======= Form buttons ======= */
 .button {
-  color: white;
   background-color: black;
-  padding: 0px 6px;
   border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0px 6px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
-  cursor: pointer;
 }
 
 .button_edit {
@@ -156,6 +120,9 @@ table, th, td {
   color: #979797;
 }
 
+
+/* ======= Flash Messages from Flask ======= */
+
 .flash_messages {
   /* padding: 15px; */
   font-weight: bold;
@@ -171,8 +138,4 @@ table, th, td {
   padding: 15px;
   background-color: #7fff00;
   /* color: green; */
-}
-
-.moi {
-  text-align: center;
 }

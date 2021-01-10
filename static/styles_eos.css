@@ -1,0 +1,48 @@
+/* ======= Styles for Exult O Shores ======= */
+
+/* ======= Site Background Color ======= */
+
+body {
+    /* Extend background color to entire canvas */
+    background-color: #ffff70;
+}
+
+/* ======= Home page image ======= */
+.moi {
+    text-align: center;
+}
+  
+/* ======= Wine App ======= */
+
+.wineItem {
+    border-top: 3px solid rgb(216, 105, 105);
+    clear: left;
+    padding: 5px 5px;
+}
+  
+.wineLabel img {
+    float: left;
+    height: 25%;
+    padding-bottom: 5px;
+    padding-right: 12px;
+    width: 25%;
+}
+  
+.wineInfo {
+    text-align: left;
+}
+  
+.wineInfoTitle {
+    font-weight: bold;
+    margin: 3px;
+}
+  
+.wineInfoLine {
+    margin: 3px;
+}
+  
+.wineInfoRating {
+    border: 2px solid purple;
+    margin: 2px;
+    padding: 2px;
+}

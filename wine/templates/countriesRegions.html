@@ -17,7 +17,7 @@
     }
 </script>
 
-<h2>Existing Countries and Regions</h2>
+<div class=bar_header>Existing Countries and Regions</div>
 <table>
     <tr>
         <th>Country</th>
@@ -37,14 +37,14 @@
     {% endfor %}
 </table>
 
-<h2>Create a New Country</h2>
+<div class=bar_header>Create a New Country</div>
     <form action="/wine/countryNew" method = "post">
         <label for="name">Name:</label>
         <input type ="text" maxlength="100" name="name" required>
         <button type="submit" id="submit">Create Country</button>
     </form>
 
-<h2>Delete a Country</h2>
+<div class=bar_header>Delete a Country</div>
     <div class="subhead">Only countries without associated regions or wines can be deleted.</div>
     <form action="/wine/countryDelete" method = "post">
         <label for="country_id">Name:</label>
@@ -56,7 +56,7 @@
             <button type="submit" id="submit">Delete Country</button>
     </form>
 
-<h2>Create a New Region</h2>
+<div class=bar_header>Create a New Region</div>
     <form action="/wine/regionNew" method = "post">
         <p>
             <label for="country_id">Country:</label>
@@ -71,7 +71,7 @@
         </p>    
     </form>
 
-<h2>Delete a Region</h2>
+<div class=bar_header>Delete a Region</div>
     <div class="subhead">Only regions without associated wines can be deleted.</div>
     <form action="/wine/regionDelete" method = "post">
         <p>
