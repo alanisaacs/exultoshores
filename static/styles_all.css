@@ -13,7 +13,7 @@ table, th, td {
 }
 
 #main_header {
-  padding-bottom: 15px;
+  display: block;
 }
 
 #main_section {
@@ -31,8 +31,10 @@ table, th, td {
 /* ======= Title and nav bar ======= */
 
 #main_title {
-  color: #d64949;
-  margin-block-end: 0em;
+  /* Color in site-specific styles */
+  font-size: 2em;
+  font-weight: bold;
+  margin: 5px 0px;
   text-align: center;
 }
 
@@ -46,20 +48,20 @@ table, th, td {
 }
 
 .nav_item a {
-  color: #009900;
+  /* Color in site-specific styles */
   text-decoration: none;
 }
 
+.nav_item a:hover {
+  /* Color in site-specific styles */
+}
+
 .nav_item a:link {
-  /* color: #d64949; */
+  /* none */
 }
 
 .nav_item a:visited {
-  /* color: #d64949; */
-}
-
-.nav_item a:hover {
-  color: #0066ff;
+  /* none */
 }
 
 /* ======= Subheaders ======= */
@@ -124,18 +126,16 @@ table, th, td {
 /* ======= Flash Messages from Flask ======= */
 
 .flash_messages {
-  /* padding: 15px; */
+  margin-top: 15px;
   font-weight: bold;
 }
 
 .messageError {
   padding: 15px;
   background-color: #fa8072;
-  /* color: red; */
 }
 
 .messageSuccess {
   padding: 15px;
   background-color: #7fff00;
-  /* color: green; */
 }

@@ -1,14 +1,42 @@
 /* ======= Styles for Exult O Shores ======= */
+/* ======= Extending styles_all.css ======= */
+
+/* ======= Site Color Scheme ======= */
+
+:root {
+    --body-background-color: #ffff70;
+    --main-title-color: #d64949;
+    --nav-item-color: #009900;
+    --nav-item-hover-color: #0066ff;
+}
 
 /* ======= Site Background Color ======= */
 
 body {
     /* Extend background color to entire canvas */
-    background-color: #ffff70;
+    /* background-color: #ffff70; */
+    background-color: var(--body-background-color);
+}
+
+/* ======= Page Layout ======= */
+
+/* ======= Title and nav bar ======= */
+
+#main_title {
+    color: var(--main-title-color);
+}
+
+.nav_item a {
+    color: var(--nav-item-color);
+  }
+
+.nav_item a:hover {
+    color: var(--nav-item-hover-color);
 }
 
 /* ======= Home page image ======= */
 .moi {
+    margin-top: 10px;
     text-align: center;
 }
   
