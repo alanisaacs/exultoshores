@@ -7,9 +7,10 @@
     function showWines() {
         var htmlstring = "";
         htmlstring += "<div class=bar_header>WINES</div>";
-        {% for wine in wines %}
         // wine is a list: [wineobject, countryname, regionname, som.username]
-            htmlstring += "<div class=wineItem>" +
+        {% for wine in wines %}
+            // put id in div so item can be displayed directly
+            htmlstring += "<div class=wineItem id='{{ wine[0].id }}'>" + 
                 "<div class=wineLabel>";
                     {% if wine[0].label_photo %}
                         var photo_url = "{{url_for('labels_bp.static', filename=wine[0].label_photo)}}";

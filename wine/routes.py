@@ -12,6 +12,7 @@ from flask import (Blueprint,
 from flask_login import login_required
 from sqlalchemy import (asc,
                         desc,
+                        func,
                         null,
                         update)
 
@@ -116,51 +117,33 @@ def wineEdit():
 
 
 # Update wine record with values from wineEdit form view
-@wine_bp.route('/wine/wineUpdate', methods=['GET', 'POST'])
+@wine_bp.route('/wine/wineUpdate', methods=['POST'])
 @login_required
 def wineUpdate():
     """Update a wine record"""
-    if request.method == 'POST':
-        # Convert blank strings in form to None (NULL)
-        # TODO: consolidate with new wine view
-        fields = {}
-        for i, j in request.form.items():
-            if j:
-                fields[i] = j
-            else:
-                fields[i] = None
-        DBSession = open_db_session()
-        # QUERY the wine record by id
-        # note the result is itself a query
-        wineid = request.args.get('wineid')
-        wineToUpdate = DBSession.query(Wine).\
-            filter(Wine.id==wineid)
-        # update everything in the form
-        # TODO: only update changed items
-        for i in fields:
-            wineToUpdate.update({
-                i: fields[i]
-            })
-        DBSession.commit()
-        # QUERY again wine by id, closing transaction this time
-        wineToEdit = DBSession.query(Wine).\
-            filter(Wine.id == wineid).\
-            one_or_none()
-        DBSession.close()
-        # copy to dict like in showOneWine
-        # TODO: consolidate into function
-        wineDict = {}
-        wineDict = (vars(wineToEdit))
-        wineDict.pop('_sa_instance_state')
-        # TODO: also consolidate this
-        for w in wineDict:
-            if wineDict[w] == None:
-                wineDict[w] = ""
-        wineDescription = wineDict.pop('description')
-        return redirect(url_for('wine_bp.wineHome'))
-    else:
-        # Route should only be called with POST
-        return redirect(url_for("auth_bp.wineLogin"))
+    # Convert blank strings in form to None (NULL)
+    # TODO: consolidate with new wine view
+    fields = {}
+    for i, j in request.form.items():
+        if j:
+            fields[i] = j
+        else:
+            fields[i] = None
+    DBSession = open_db_session()
+    # QUERY the wine record by id
+    # note the result is itself a query
+    wineid = request.args.get('wineid')
+    wineToUpdate = DBSession.query(Wine).\
+        filter(Wine.id==wineid)
+    # update everything in the form
+    # TODO: only update changed items
+    for i in fields:
+        wineToUpdate.update({
+            i: fields[i]
+        })
+    DBSession.commit()
+    DBSession.close()
+    return redirect(url_for('wine_bp.wineHome', _anchor=wineid))
 
 
 # Show counties and regions with create, edit and delete links
@@ -262,9 +245,12 @@ def wineNew():
             varietals=fields['varietals']
             )
         DBSession.add(newWine)
+        # Get the id of the new wine just created
+        # So it can be passed to home page as anchor
+        wineid = DBSession.query(func.max(Wine.id)).scalar()
         DBSession.commit()
         DBSession.close()
-        return redirect(url_for('wine_bp.wineHome'))
+        return redirect(url_for('wine_bp.wineHome', _anchor=wineid))
     else:
         DBSession.close()
         return render_template('wineNew.html', countries=countries, regions=regions)
