@@ -64,6 +64,17 @@ table, th, td {
   /* none */
 }
 
+/* ======= Single article view ======= */
+.article {
+  padding: 3px 10% 3px;
+}
+
+.article > h1 {
+  /* color variable defined in site css */
+  color: var(--main-title-color);
+}
+
+
 /* ======= Subheaders ======= */
 
 .bar_header {
@@ -83,6 +94,7 @@ table, th, td {
 }
 
 /* ======= Form buttons ======= */
+
 .button {
   background-color: black;
   border-radius: 4px;
