@@ -22,7 +22,11 @@
             <td>{{wine[1]}}</td>
             <td>{{wine[2]}}</td>
             <td>{{wine[0].appellation}}</td>
-            <td>{{wine[0].name}}</td>
+            <td>
+                <a href="{{ url_for('wine_bp.wineHome', _anchor=wine[0].id) }}">
+                    {{wine[0].name}}
+                </a>
+            </td>
             <td>{{wine[0].year}}</td>
             <td>{{wine[0].price}}</td>
             <td>{{wine[0].rating}}</td>
