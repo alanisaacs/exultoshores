@@ -3,7 +3,7 @@ function show_footer() {
     document.getElementById("main_footer").innerHTML = HTMLString;
 }
 
-function sort_table() {
+function activate_table_sorting() {
     let asc = true;         // Start ascending as direction
     let last_col_id = -1;   // Track last column clicked
     // Select all the TH elements in the document and listen for clicks on them
@@ -37,8 +37,8 @@ function sort_table() {
             if (asc) {
                 valrows = valrows.sort();
             } else {
-                //valrows = valrows.reverse();
-                //may fail so use compare function instead
+                // valrows = valrows.reverse(); may fail
+                // so use compare function instead
                 valrows.sort((a,b) => {
                     if (a < b) {
                         return 1;
