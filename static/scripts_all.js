@@ -21,33 +21,32 @@ function activate_table_sorting() {
             let valrows = [];
             trs.forEach(tr => {
                 let a = [];
-                a.push(tr.children[col_id].innerText);   //val of cell
-                a.push(tr.rowIndex-1);  //rowIndex starts at 1 not 0
+                //val of cell at a[0]; sort will be case insensitive
+                a.push(tr.children[col_id].innerText.toLowerCase());
+                //rowIndex at a[1]; minus one because rowIndex starts at 1
+                a.push(tr.rowIndex-1); 
                 valrows.push(a);
             });
             // If clicking same column as last time, reverse direction
-            if (col_id == last_col_id) { 
-                asc = !asc;
-            } else {
-                // If clicking on new column, direction is ascending
-                asc = true;
-            };
+            // If clicking on new column, direction is ascending
+            asc = (col_id == last_col_id) ? !asc : true;
             last_col_id = col_id;
             // Sort valrows by val depending on direction
-            if (asc) {
-                valrows = valrows.sort();
-            } else {
-                // valrows = valrows.reverse(); may fail
-                // so use compare function instead
-                valrows.sort((a,b) => {
-                    if (a < b) {
-                        return 1;
-                    } else if (a > b) {
-                        return -1;
-                    return 0;
-                    }
-                })
-            }
+            // a & b are each a list, [val, row]
+            valrows.sort((a,b) => {
+                let x = a[0];
+                let y = b[0];
+                // If comparing numbers, just subtract
+                if (!isNaN(x) && !isNaN(y) && x != '' && y != '') {
+                    return asc ? x - y : y - x;
+                // Also have blank strings sort after chars
+                } else if (x > y || x == '') {
+                    return asc ? 1 : -1;
+                } else if (x < y || y == '') {
+                    return asc ? -1 : 1;
+                }
+                return 0;
+                });
             // Create a list of rows in sorted order by rowIndex
             let newtrs = [];
             valrows.forEach(vr => {

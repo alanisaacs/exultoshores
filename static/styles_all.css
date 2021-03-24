@@ -6,6 +6,11 @@ table, th, td {
   padding: 10px;
 }
 
+table.tablesort th {
+  text-decoration:underline; 
+  cursor:pointer;
+}
+
 /* ======= Page Layout ======= */
 
 #body_wrap {
