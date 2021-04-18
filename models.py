@@ -89,7 +89,7 @@ if __name__ != '__main__':
     # DBSession = openDBSession()
 
 # If running as a script create models only
-if __name__ == '__main__':
+#if __name__ == '__main__':
     # ONLY NEED TO CREATE TABLES??? OTHERWISE DOES NOTHING?
-    Base.metadata.create_all(engine)
-    print("Models created.")
+    #Base.metadata.create_all(engine)
+    #print("Models created.")
