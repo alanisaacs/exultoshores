@@ -44,6 +44,24 @@
                 "Unsaved data will be lost.";
         }
     });
+
+    // Replace certain characters with tags
+    // convert_chars function is in scripts_all.js
+    function processDescription() {
+        alert("processing")
+        let desc = document.getElementById("description");
+        d.value = "setting the description";
+        alert(d.value)
+        alert(`value = ${d.value}, innerHTML = ${d.innerHTML}`);
+    }
+
+    // Functions to run before submitting the data
+    function onSubmission() {
+        setSubmittingFlag();
+        alert("about to process desc")
+        processDescription();
+    }
+    
 </script>
 
 <div class=bar_header>Create a new wine in the database</div>
@@ -92,7 +110,7 @@
         <input type="text" maxlength="200" name="purchased_at" size="30">
     </p>
     <p>
-        <label for="price">Price:</label>
+        <label for="price">Price: $ </label>
         <input type="text" maxlength="100" name="price">
     </p>
     <p>
@@ -121,7 +139,7 @@
         <input type="hidden" maxlength="8" name="sommelier_id" value="{{ current_user.id }}" readonly>
     </p>
     <p>
-        <button type="submit" id="submit" onclick=setSubmittingFlag()>
+        <button type="submit" id="submit" onclick=onSubmission()>
             Create
         </button>
     </p>    

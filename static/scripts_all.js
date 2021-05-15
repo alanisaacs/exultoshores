@@ -1,7 +1,13 @@
+// JavaScript for all sites
+
+// Framework
+
 function show_footer() {
 	let	HTMLString = '<p>"I sound my barbaric yawp over the roofs of the world." &mdash;Whitman</p><p>Copyright&copy;2021 exultoshores.com</p>';
     document.getElementById("main_footer").innerHTML = HTMLString;
 }
+
+// Tables
 
 function activate_table_sorting() {
     let asc = true;         // Start ascending as direction
@@ -56,4 +62,19 @@ function activate_table_sorting() {
             newtrs.forEach(tr => table.appendChild(tr));
         })
     ) 
+}
+
+// Text
+
+// Format text by converting certain characters
+function convert_chars(text) {
+	let s = text;
+    // Treat underscores around words as <em> tags
+	if (s) {    // Avoid errors when text is null
+		// Replace space+underscore+character
+		s = s.replace(/(\s)_(\w)/g, '$1<em>$2');
+		// Replace character+underscore+space/punctuation
+		s = s.replace(/(\w)_([\s,.;&)<])/g, '$1</em>$2');
+	}
+	return s;
 }
