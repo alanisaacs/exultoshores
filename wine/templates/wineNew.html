@@ -45,20 +45,16 @@
         }
     });
 
-    // Replace certain characters with tags
+    // Markup certain characters in the description
     // convert_chars function is in scripts_all.js
     function processDescription() {
-        alert("processing")
         let desc = document.getElementById("description");
-        d.value = "setting the description";
-        alert(d.value)
-        alert(`value = ${d.value}, innerHTML = ${d.innerHTML}`);
+        desc.value = convert_chars(desc.value);
     }
 
     // Functions to run before submitting the data
     function onSubmission() {
         setSubmittingFlag();
-        alert("about to process desc")
         processDescription();
     }
     
@@ -123,7 +119,7 @@
     </p>
     <p>
         <label for="description">Description:</label>
-        <textarea maxlength="1000" name="description" 
+        <textarea maxlength="1000" name="description" id="description"
             cols="60" rows="12"></textarea>
     </p>
     <p>

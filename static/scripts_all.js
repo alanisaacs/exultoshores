@@ -69,12 +69,14 @@ function activate_table_sorting() {
 // Format text by converting certain characters
 function convert_chars(text) {
 	let s = text;
-    // Treat underscores around words as <em> tags
 	if (s) {    // Avoid errors when text is null
+        // Treat underscores around words as <em> tags
 		// Replace space+underscore+character
 		s = s.replace(/(\s)_(\w)/g, '$1<em>$2');
 		// Replace character+underscore+space/punctuation
 		s = s.replace(/(\w)_([\s,.;&)<])/g, '$1</em>$2');
+        // Replace double hyphens with em dashes
+        s = s.replace(/--/g, '—')
 	}
 	return s;
 }

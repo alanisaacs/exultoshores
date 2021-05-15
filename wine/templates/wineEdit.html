@@ -2,6 +2,15 @@
 
 {% block content %}
 
+<script>
+    function onSubmission() {
+        // Markup description
+        // convert_chars is in scripts_all.js
+        let desc = document.getElementById("description");
+        desc.value = convert_chars(desc.value);
+    }
+</script>
+
 <div class=bar_header>Edit a wine record in the database</div>
 
 <form action="/wine/wineUpdate?wineid={{wineid}}" method="POST">
@@ -12,7 +21,7 @@
     </tr>          
     <tr>
         <td>Description</td>
-        <td><textarea maxlength="1000" name="description" 
+        <td><textarea maxlength="1000" name="description" id="description"
                 cols="100" rows="12">{{wineDescription}}</textarea>
         </td>
     </tr>           
@@ -27,7 +36,7 @@
     {% endfor %}
 </table>
 <p>
-    <button type="submit" id="submit">
+    <button type="submit" id="submit" onclick=onSubmission()>
         Submit Changes
     </button>
 </p> 
