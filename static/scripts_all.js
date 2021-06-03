@@ -66,8 +66,9 @@ function activate_table_sorting() {
 
 // Text
 
-// Format text by converting certain characters
-function convert_chars(text) {
+// Find certain characters user can enter as markup
+// and convert them to UTF-8 characters or html tags
+function convertUserMarkup(text) {
 	let s = text;
 	if (s) {    // Avoid errors when text is null
         // Treat underscores around words as <em> tags

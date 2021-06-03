@@ -46,10 +46,10 @@
     });
 
     // Markup certain characters in the description
-    // convert_chars function is in scripts_all.js
+    // convertUserMarkup function is in scripts_all.js
     function processDescription() {
         let desc = document.getElementById("description");
-        desc.value = convert_chars(desc.value);
+        desc.value = convertUserMarkup(desc.value);
     }
 
     // Functions to run before submitting the data
