@@ -6,7 +6,6 @@
     // Display All Wines
     function showWines() {
         var htmlstring = "";
-        htmlstring += "<div class=bar_header>WINES</div>";
         // wine is a list: [wineobject, countryname, regionname, som.username]
         {% for wine in wines %}
             // put id in div so item can be displayed directly
@@ -65,7 +64,9 @@
                     "</div>";
                     // Display Fifth Line of Information
                     htmlstring += "<div class='wineInfoLine'>" +    
-                        "Purchased at {{wine[0].purchased_at}}. Entered by {{wine[3]}}. "; // sommelier name
+                        "Purchased at {{wine[0].purchased_at}}";
+                        // OMIT: " Entered by {{wine[3]}}. "; 
+                        //     (sommelier name)
                         // Include Edit Button if user is logged in
                         // Wine ID will be passed in a query string
                         {% if current_user.is_authenticated %} 
@@ -94,6 +95,18 @@
 }
 
 </script>
+
+<header id=mainHeader><h1>Wines</h1></header>
+
+<section id=controlWrap class=defaultWrap
+    style="display: none">
+    <div id=controlBar class=defaultBar>Control the View</div>
+    <div id=controlBox class=defaultBox>
+        <p>
+        <em>Soon you'll be able to sort the wines here</em>
+        </p>
+    </div>
+</section>
 
 <div id="winelist">
     <script>showWines();</script>

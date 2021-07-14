@@ -60,7 +60,10 @@
     
 </script>
 
-<div class=bar_header>Create a new wine in the database</div>
+<header id=mainHeader>
+	<h1>Create a new wine in the database</h1>
+</header>
+
 <form action="" method="post">
     <p>
         <label for="country_id">Country*:</label>
@@ -118,9 +121,10 @@
         <input type="text" maxlength="100" name="date_tasted" id="date_tasted">
     </p>
     <p>
-        <label for="description">Description:</label>
+        <label for="description" style="vertical-align: top">
+            Description:</label>
         <textarea maxlength="1000" name="description" id="description"
-            cols="60" rows="12"></textarea>
+            cols="70" rows="19"></textarea>
     </p>
     <p>
         <label for="rating">Rating (0-100):</label>

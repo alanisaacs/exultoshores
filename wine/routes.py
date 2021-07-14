@@ -152,10 +152,14 @@ def wineUpdate():
 def wineCountriesRegions():
     """Manage countries and regions"""
     DBSession = open_db_session()
-    countries = DBSession.query(Country).order_by(asc(Country.name)).all()
-    regions = DBSession.query(Region).order_by(asc(Region.name)).all()
-    deletableCountries = DBSession.query(Country).join(Region, full = True).filter(Region.country_id == None).all()
-    deletableRegions = DBSession.query(Region).join(Wine, full = True).filter(Wine.region_id == None).all()
+    countries = DBSession.query(Country).\
+        order_by(asc(Country.name)).all()
+    regions = DBSession.query(Region).\
+        order_by(asc(Region.name)).all()
+    deletableCountries = DBSession.query(Country).join(Region, 
+        full = True).filter(Region.country_id == None).all()
+    deletableRegions = DBSession.query(Region).join(Wine,
+        full = True).filter(Wine.region_id == None).all()
     if request.method == 'POST':
         newCountry = Country(name=request.form['name'])
         DBSession.add(newCountry)

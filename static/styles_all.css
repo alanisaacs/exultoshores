@@ -1,5 +1,213 @@
 /* ======= Generic Styles for All Apps ======= */
 
+/* ======= Default Typography ====== */
+
+:root {
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+/* ======= Media settings for different size viewports ======= */
+
+@media only screen and (max-width: 540px) {
+  /* === Narrow === */
+  #bodyWrap {
+    margin: 10px;
+  }
+  img {
+    display: block;
+    float: none;
+    margin: 1em auto 0em auto;
+    height: 266.8px;
+    width: 200px;
+  }
+}
+
+@media only screen and (min-width: 540px) {
+  /* === Medium === */
+  #bodyWrap {
+    margin: 0px 10%;
+  }
+  img {
+    float: right;
+    height: 333.5px;
+    margin: 1em 1em 1em 1em;
+    width: 250px;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  /* === Wide === */
+  #bodyWrap {
+    margin: auto;
+    width: 700px;
+  }
+  img {
+    float: right;
+    height: 400.2px;
+    margin: 1em 1em 1em 1em;
+    width: 300px;
+  }
+}
+
+/* ======= Site Background Color ======= */
+/* Color variables are specified in site-specific css */
+
+body {
+  /* Extend background color to entire canvas */
+  background-color: var(--body-background-color);
+}
+
+/* ======= Page Layout ======= */
+
+header {
+  font-family: "Libre Baskerville", Garamond, "Times New Roman", serif;
+}
+
+main {
+  font-family: "Spectral", Garamond, "Times New Roman", serif;
+}
+
+footer {
+  clear: both;
+  color: #504e4e;
+  font-size: x-small;
+  margin-top: 200px;
+  padding: 20px;
+  text-align: center;
+}
+
+/* ======= Title and nav bar ======= */
+
+#siteTitle {
+  color: var(--main-title-color);
+  font-size: 1.7rem;
+  font-weight: bold;
+  padding: .5rem;
+  text-align: center;
+}
+
+nav {
+  border-bottom: 1px solid grey;
+  font-family: "Open Sans", Garamond, "Times New Roman", serif;
+  text-align: center;
+}
+
+nav ul {
+  margin-block-start: .5rem;
+  margin-block-end: 1rem;
+  padding-inline-start: 0px;
+}
+
+nav li {
+  display: inline-block;
+  padding: 0px 8px;
+  text-decoration: none;
+}
+
+nav a {
+  /* Colors in site-specific styles */
+  color: var(--nav-item-color);
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: var(--nav-item-hover-color);
+}
+
+nav a:active {
+  color: var(--main-title-color);
+}
+
+/* ======= Main Headers ======= */
+
+#mainHeader {
+  /* Placeholder */
+}
+
+main h1, main h2, main h3 {
+  font-family: "Libre Baskerville", Garamond, "Times New Roman", serif;
+  font-weight: bold;
+  padding: 6px 0px;
+}
+
+main h1 {
+  color: var(--main-title-color);
+  font-size: 2.2rem;
+  margin-block-start: 1rem;
+  margin-block-end: 1rem;
+}
+
+main h2 {
+  font-size: 1.5rem;
+  margin-block-start: 2rem;
+  margin-block-end: 0rem;
+}
+
+main h3 {
+  font-size: 0.9rem;
+  margin-block-start: 0rem;
+  margin-block-end: -0.5rem;
+}
+
+/* ======= Single article view ======= */
+
+article {
+  /* Placeholder */
+}
+
+/* ======= Standard database record display ======= */
+
+.defaultWrap {
+  /* Placeholder */
+}
+
+.defaultBar {
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: smaller;
+  padding: 6px 6px;
+}
+
+.defaultBox {
+  padding: 4px 6px;
+}
+
+#controlWrap {
+  border: 1px solid black;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: smaller;
+}
+
+#controlBar {
+  background-color: grey;
+  color: honeydew;
+  padding: 6px 6px;
+}
+
+#controlBox {
+  background-color: #f0ce8e;
+  padding: 4px 6px;
+}
+
+/* ======= Flash Messages from Flask ======= */
+
+.flash_messages {
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.messageError {
+  padding: 15px;
+  background-color: #fa8072;
+}
+
+.messageSuccess {
+  padding: 15px;
+  background-color: #7fff00;
+}
+
+/* ======= Tables ======= */
+
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
@@ -11,75 +219,14 @@ table.tablesort th {
   cursor:pointer;
 }
 
-/* ======= Page Layout ======= */
-
-#body_wrap {
-  text-align: center;
+table.fullscreen {
+  position: absolute;
+  left: 1px;
 }
 
-#main_header {
-  display: block;
-}
-
-#main_section {
-  font-family: Garamond, serif;
-  text-align: left;
-}
-
-#main_footer {
-  clear: both;
-  color: #504e4e;
-  font-size: x-small;
-  margin-top: 200px;
-  padding: 20px;
-}
-
-/* ======= Title and nav bar ======= */
-
-#main_title {
-  /* Color in site-specific styles */
-  font-size: 2em;
-  font-weight: bold;
-  margin: 5px 0px;
-  text-align: center;
-}
-
-#nav_bar {
-
-}
-
-.nav_item {
-  display: inline-block;
-  padding: 8px;
-}
-
-.nav_item a {
-  /* Color in site-specific styles */
-  text-decoration: none;
-}
-
-.nav_item a:hover {
-  /* Color in site-specific styles */
-}
-
-.nav_item a:link {
-  /* none */
-}
-
-.nav_item a:visited {
-  /* none */
-}
-
-/* ======= Single article view ======= */
-.article {
-  padding: 3px 10% 3px;
-}
-
-.article > h1 {
-  /* color variable defined in site css */
-  color: var(--main-title-color);
-}
-
+/* ===================================================== */
+/* BELOW HERE CAN BE DELETED ONCE NO ONE DEPENDS ON THEM */
+/* ===================================================== */
 
 /* ======= Subheaders ======= */
 
@@ -100,21 +247,11 @@ table.tablesort th {
   text-align: center;
 }
 
-/* ======= Flash Messages from Flask ======= */
-
-.flash_messages {
-  margin-top: 15px;
-  font-weight: bold;
+#main_footer {
+  clear: both;
+  color: #504e4e;
+  font-size: x-small;
+  margin-top: 200px;
+  padding: 20px;
+  text-align: center;
 }
-
-.messageError {
-  padding: 15px;
-  background-color: #fa8072;
-}
-
-.messageSuccess {
-  padding: 15px;
-  background-color: #7fff00;
-}
-
-/* test */

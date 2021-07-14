@@ -4,8 +4,9 @@
 
 <script>
     function populateRegionToDelete(x) {
-        // Display regions in dropdown associated with the country selected by user
-        // Only show regions that have no wines associated with them
+        // Display regions in dropdown associated with the country 
+        // selected by user. Only show regions that have no wines
+        // associated with them
         let selectedCountryID = document.getElementById('country_id').value;
         let eid = document.getElementById('region_id');
         eid.innerHTML = "<option value=''>--select--</option>"
@@ -17,7 +18,13 @@
     }
 </script>
 
-<div class=bar_header>Existing Countries and Regions</div>
+<header id=mainHeader>
+	<h1>Manage Countries and Regions</h1>
+</header>
+
+<section id=manageCountriesRegions>
+
+<h2>Existing Countries and Regions</h2>
 <table>
     <tr>
         <th>Country</th>
@@ -37,16 +44,18 @@
     {% endfor %}
 </table>
 
-<div class=bar_header>Create a New Country</div>
+<h2>Create a New Country</h2>
     <form action="/wine/countryNew" method = "post">
         <label for="name">Name:</label>
         <input type ="text" maxlength="100" name="name" required>
         <button type="submit" id="submit">Create Country</button>
     </form>
 
-<div class=bar_header>Delete a Country</div>
-    <div class="subhead">Only countries without associated regions or wines can be deleted.</div>
-    <form action="/wine/countryDelete" method = "post">
+<h2>Delete a Country</h2>
+    <p style="font-style: italic">
+        Only countries without associated regions or wines
+         can be deleted. None may appear in the dropdown.</p>
+    <form action="/wine/countryDelete" method="post">
         <label for="country_id">Name:</label>
             <select name="country_id">
                 {% for country in deletableCountries %}
@@ -56,7 +65,7 @@
             <button type="submit" id="submit">Delete Country</button>
     </form>
 
-<div class=bar_header>Create a New Region</div>
+<h2>Create a New Region</h2>
     <form action="/wine/regionNew" method = "post">
         <p>
             <label for="country_id">Country:</label>
@@ -71,12 +80,14 @@
         </p>    
     </form>
 
-<div class=bar_header>Delete a Region</div>
-    <div class="subhead">Only regions without associated wines can be deleted.</div>
+<h2>Delete a Region</h2>
+    <p style="font-style: italic">Only regions without associated 
+        wines can be deleted. None may appear in the dropdown.</p>
     <form action="/wine/regionDelete" method = "post">
         <p>
             <label for="country_id">Country:</label>
-                <select name="country_id" id="country_id" onchange="populateRegionToDelete()">
+                <select name="country_id" id="country_id" 
+                    onchange="populateRegionToDelete()">
                     <option value="none">--select--</option>
                     {% for country in countries %}
                     <option value={{country.id}}>{{country.name}}</option>
@@ -89,5 +100,7 @@
             <button type="submit" id="submit">Delete Region</button>
         </p>    
     </form>
+
+</section>
 
 {% endblock %}

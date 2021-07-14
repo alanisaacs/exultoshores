@@ -7,42 +7,45 @@
     <meta name="keywords" content="bread, wine, poetry">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Exult O Shores</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles_all.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles_eos.css') }}">
-	<script src="{{ url_for('static', filename='scripts_all.js') }}"></script>
+    <link rel="stylesheet" 
+        href="{{ url_for('static', filename='styles_all.css') }}">
+    <link rel="stylesheet" 
+        href="{{ url_for('static', filename='styles_eos.css') }}">
+	<link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Spectral|Libre+Baskerville|Open+Sans">
+    <script src="{{ url_for('static', filename='scripts_all.js') }}"></script>
 </head>
 
 <body>
-    <div id="body_wrap">
-        <header id="main_header">
-            <div id="main_title">
-                Exult O Shores
-            </div>
-            <nav id="nav_bar">
-                <div class="nav_item">
+    <div id="bodyWrap">
+        <header id="siteTitle">Exult O Shores</header>
+        <nav>
+            <ul>
+                <li>
                     <a href="/">EOS</a>
-                </div>
-                <div class="nav_item">
+                </li>
+                <li>
                     <a href="http://alongthelonging.com">Poetry</a>
-                </div>
-                <div class="nav_item">
+                </li>
+                <li>
                     <a href="http://theflailingbaker.com">Bread</a>
-                </div>
-                <div class="nav_item">
+                </li>
+                <li>
                     <a href="/wine">Wine</a>
-                </div>
-                <div class="nav_item">
+                </li>
+                <li>
                     <a href="/about">About</a>
-                </div>
-        </header>
+                </li>
+            </ul>
+        </nav>
 
-        <section id="main_section">
+        <main>
             {% block content %}
             {% endblock %}
-        </section>
+        </main>
 
-        <footer id="main_footer">
-			<script>show_footer()</script>
+        <footer id=pageFooter>
+			<script>showPageFooter()</script>
          </footer>
     </div>
 

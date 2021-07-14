@@ -4,79 +4,113 @@
 /* ======= Site Color Scheme ======= */
 
 :root {
-    --body-background-color: #ffff70;
-    --main-title-color: #d64949;
-    --nav-item-color: #009900;
-    --nav-item-hover-color: #0066ff;
+  --body-background-color: #ffff80;
+  --main-title-color: #d64444;
+  --nav-item-color: #006666;
+  --nav-item-hover-color: #0066ff;
 }
 
-/* ======= Site Background Color ======= */
+/* ======= Home and About page images ======= */
 
-body {
-    /* Extend background color to entire canvas */
-    background-color: var(--body-background-color);
+.hero {
+  margin-top: 10px;
 }
 
-/* ======= Page Layout ======= */
-
-/* ======= Title and nav bar ======= */
-
-#main_title {
-    color: var(--main-title-color);
+.hero img {
+  /* Image hero.jpg dimensions are 900 x 1200 */
+  border-radius: 5%;
+  height: auto;
+  margin: 0em;
+  width: 100%;
 }
 
-.nav_item a {
-    color: var(--nav-item-color);
-  }
+/* ======= About page image ======= */
 
-.nav_item a:hover {
-    color: var(--nav-item-hover-color);
-}
-
-/* ======= Home page image ======= */
 .moi {
-    margin-top: 10px;
-    text-align: center;
+  text-align: center;
+}
+
+.moi img {
+  /* Image moi.jpg dimensions are 612 x 612 */
+  border-radius: 5%;
+  display: inline-block;
+  float: none;
+  height: auto;
+  margin: 0em;
+  width: 50%;
+}
+
+@media only screen and (max-width: 540px) {
+  /* Narrow screens: Make about about page image a littler larger */
+  .moi img {
+    width: 60%;
+  }
 }
   
 /* ======= Wine App ======= */
 
+/* === Media settings for different size viewports === */
+
+@media only screen and (max-width: 540px) {
+  .wineItem {
+    /* Keep the label image from overflowing the next item
+       when there isn't much text: label height + 40 */
+    min-height: 306.8px;
+  }
+}
+
+@media only screen and (min-width: 540px) {
+  .wineItem {
+      min-height: 373.5px;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  .wineItem {
+      min-height: 440.2px;
+  }
+}
+
+/* === Wine app home page display === */
+
 .wineItem {
-    border-top: 3px solid rgb(216, 105, 105);
-    clear: left;
-    padding: 5px 5px;
+  border-top: 3px solid rgb(216, 105, 105);
+  clear: left;
+  padding: 5px 5px;
 }
 
 .wineName {
-    font-size: 1.2em;
-    font-weight: bold;
+  font-size: 1.2em;
+  font-weight: bold;
 }
   
 .wineLabel img {
-    float: left;
-    height: 25%;
-    padding-bottom: 5px;
-    padding-right: 12px;
-    width: 25%;
+  margin-bottom: 5px;
 }
   
 .wineInfo {
-    text-align: left;
+  text-align: left;
 }
   
 .wineInfoTitle {
-    font-weight: bold;
-    margin: 3px;
+  font-weight: bold;
+  margin: 3px;
 }
   
 .wineInfoLine {
-    margin: 3px;
+  margin: 3px;
 }
   
 .wineInfoRating {
-    border: 2px solid purple;
-    margin: 2px;
-    padding: 2px;
+  border: 2px solid purple;
+  margin: 2px;
+  padding: 2px;
+}
+
+/* === Other pages in the wine app === */
+
+#manageCountriesRegions h2 {
+  margin-bottom: 1.5rem;
 }
 
 /* ======= Edit and delete buttons ======= */

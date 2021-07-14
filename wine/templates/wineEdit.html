@@ -11,7 +11,9 @@
     }
 </script>
 
-<div class=bar_header>Edit a wine record in the database</div>
+<header id=mainHeader>
+	<h1>Edit a wine record in the database</h1>
+</header>
 
 <form action="/wine/wineUpdate?wineid={{wineid}}" method="POST">
 <table>
@@ -22,7 +24,7 @@
     <tr>
         <td>Description</td>
         <td><textarea maxlength="1000" name="description" id="description"
-                cols="100" rows="12">{{wineDescription}}</textarea>
+                cols="70" rows="24">{{wineDescription}}</textarea>
         </td>
     </tr>           
     {% for k in wineToEdit %}
