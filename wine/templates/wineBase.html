@@ -38,9 +38,11 @@
                         <a href="/wine/countriesRegions">MCR</a>
                     </li>
                     <li>
+                        Welcome {{ current_user.username }}!
+                    </li>
+                    <li>
                         <a href="/wine/logout">Log Out</a>
                     </li>
-                    Welcome {{ current_user.username }}!
                     {% else %}
                     <li>
                         <a href="/wine/login">Log In</a>

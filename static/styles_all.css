@@ -65,7 +65,7 @@ header {
 }
 
 main {
-  font-family: "Spectral", Garamond, "Times New Roman", serif;
+  font-family: Spectral, Garamond, "Times New Roman", serif;
 }
 
 footer {
@@ -117,6 +117,21 @@ nav a:hover {
 
 nav a:active {
   color: var(--main-title-color);
+}
+
+/* ======= Home and About page images ======= */
+
+.hero {
+  margin-top: 10px;
+}
+
+.hero img {
+  /* Image hero.jpg dimensions are 900 x 1200 */
+  border-radius: 5%;
+  float: none;
+  height: auto;
+  margin: 0em;
+  width: 100%;
 }
 
 /* ======= Main Headers ======= */
@@ -191,19 +206,24 @@ article {
 
 /* ======= Flash Messages from Flask ======= */
 
-.flash_messages {
-  margin-top: 15px;
+#notifications {
   font-weight: bold;
+  margin-top: 15px;
+}
+
+.message {
+  background-color: #72f1fa;
+  padding: 15px;
 }
 
 .messageError {
-  padding: 15px;
   background-color: #fa8072;
+  padding: 15px;
 }
 
 .messageSuccess {
-  padding: 15px;
   background-color: #7fff00;
+  padding: 15px;
 }
 
 /* ======= Tables ======= */
@@ -222,36 +242,4 @@ table.tablesort th {
 table.fullscreen {
   position: absolute;
   left: 1px;
-}
-
-/* ===================================================== */
-/* BELOW HERE CAN BE DELETED ONCE NO ONE DEPENDS ON THEM */
-/* ===================================================== */
-
-/* ======= Subheaders ======= */
-
-.bar_header {
-  background-color: var(--body-background-color);
-  border-bottom: 1px solid #c0c0c0;
-  color: var(--main-title-color);
-  font-family: Garamond, serif;
-  font-size: 1.5em;
-  font-weight:bold;
-  margin: 15px 0px;
-  padding: 3px 10px;
-}
-
-.subhead {
-  color: green;  
-  font-style: italic;
-  text-align: center;
-}
-
-#main_footer {
-  clear: both;
-  color: #504e4e;
-  font-size: x-small;
-  margin-top: 200px;
-  padding: 20px;
-  text-align: center;
 }

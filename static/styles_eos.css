@@ -10,20 +10,6 @@
   --nav-item-hover-color: #0066ff;
 }
 
-/* ======= Home and About page images ======= */
-
-.hero {
-  margin-top: 10px;
-}
-
-.hero img {
-  /* Image hero.jpg dimensions are 900 x 1200 */
-  border-radius: 5%;
-  height: auto;
-  margin: 0em;
-  width: 100%;
-}
-
 /* ======= About page image ======= */
 
 .moi {
