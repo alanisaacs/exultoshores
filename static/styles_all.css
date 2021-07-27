@@ -239,7 +239,8 @@ table.tablesort th {
   cursor:pointer;
 }
 
-table.fullscreen {
-  position: absolute;
+.posLeftOfVP {
   left: 1px;
+  margin-right: 2px;
+  position: absolute;
 }

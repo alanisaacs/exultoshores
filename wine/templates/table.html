@@ -3,25 +3,26 @@
 {% block content %}
 
 <header id=mainHeader>
-	<h1>All Wines in the Database [ {{ numWines }} ]</h1>
+    <h1>All Wines in the Database [ {{ numWines }} ]</h1>
 </header>
 
-<table class="tablesort fullscreen">
-    <tr>
-        <th>ID</th>
-        <th>Country</th>
-        <th>Region</th>
-        <th>Appellation</th>
-        <th>Name</th>
-        <th>Year</th>
-        <th>Price</th>
-        <th>Rating</th>
-        <th>Tasted</th>
-        <th>Categories</th>
-        <th>Varietals</th>
-        <th>Action</th>
-    </tr>
-    {% for wine in wines %}
+<div class=posLeftOfVP>
+    <table class="tablesort">
+        <tr>
+            <th>ID</th>
+            <th>Country</th>
+            <th>Region</th>
+            <th>Appellation</th>
+            <th>Name</th>
+            <th>Year</th>
+            <th>Price</th>
+            <th>Rating</th>
+            <th>Tasted</th>
+            <th>Categories</th>
+            <th>Varietals</th>
+            <th>Action</th>
+        </tr>
+        {% for wine in wines %}
         <tr>
             <td>{{wine[0].id}}</td>
             <td>{{wine[1]}}</td>
@@ -39,18 +40,26 @@
             <td>{{wine[0].categories}}</td>
             <td>{{wine[0].varietals}}</td>
             <td>
-                {% if current_user.is_authenticated %} 
-                    <a href="{{url_for('wine_bp.wineEdit', wineid=wine[0].id)}}" 
-                        class="button button_edit">Edit </a>
-                    <a href="{{url_for('wine_bp.wineDelete', wineid=wine[0].id)}}" 
-                        class="button button_delete">Delete</a>
+                {% if current_user.is_authenticated %}
+                <a href="{{url_for('wine_bp.wineEdit', wineid=wine[0].id)}}" class="button button_edit">Edit </a>
+                <a href="{{url_for('wine_bp.wineDelete', wineid=wine[0].id)}}" class="button button_delete">Delete</a>
                 {% endif %}
             </td>
         </tr>
-    {% endfor %}
-</table>
+        {% endfor %}
+    </table>
+
+</div>
 
 <script>
+    // Move the footer so it is a child of the div around the table
+    // Otherwise the footer will render on top of the table
+    // because the table is absolute positioned
+    window.addEventListener('DOMContentLoaded', () => {
+        const pf = document.getElementById('pageFooter');
+        const tableWrapper = document.querySelector('.posLeftOfVP');
+        tableWrapper.appendChild(pf);
+    });
     // Enable sorting by clicking on table headers
     activate_table_sorting();
 </script>
