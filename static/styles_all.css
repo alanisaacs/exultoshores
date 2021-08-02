@@ -240,6 +240,7 @@ table.tablesort th {
 }
 
 .posLeftOfVP {
+  /* For fullscreen mode, as for large tables */
   left: 1px;
   margin-right: 2px;
   position: absolute;
