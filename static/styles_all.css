@@ -171,38 +171,42 @@ article {
   /* Placeholder */
 }
 
-/* ======= Standard database record display ======= */
+/* ======= Controls above database records ======= */
 
-.defaultWrap {
-  /* Placeholder */
-}
-
-.defaultBar {
+.controlWrap {
   font-family: "Open Sans", Arial, Helvetica, sans-serif;
   font-size: smaller;
-  padding: 6px 6px;
 }
 
-.defaultBox {
-  padding: 4px 6px;
+.controlBtnWrap {
+  text-align: right;
 }
 
-#controlWrap {
+.controlBtn {
+	border: 1px solid #999999;
+	color: #555555;
+  /* float: right; */
+  margin-left: 1rem;
+	font-size: small;
+	padding: 1px 6px;
+}
+
+.controlBox {
+  background-color: #999999;
   border: 1px solid black;
-  font-family: "Open Sans", Arial, Helvetica, sans-serif;
-  font-size: smaller;
+  border-radius: 5px;
+  margin: 4px 6px;
 }
 
-#controlBar {
-  background-color: grey;
+.controlBar {
   color: honeydew;
-  padding: 6px 6px;
+  padding: .1rem 1rem;
 }
 
-#controlBox {
-  background-color: #f0ce8e;
-  padding: 4px 6px;
+.controlTray {
+  padding: 10px;
 }
+
 
 /* ======= Flash Messages from Flask ======= */
 
