@@ -203,7 +203,7 @@ article {
 }
 
 .controlTray {
-  padding: 10px;
+  padding: 10px 0px;
 }
 
 
@@ -229,7 +229,7 @@ article {
   padding: 15px;
 }
 
-/* ======= Tables ======= */
+/* ======= Default Tables ======= */
 
 table, th, td {
   border: 1px solid black;
@@ -247,4 +247,28 @@ table.tablesort th {
   left: 1px;
   margin-right: 2px;
   position: absolute;
+}
+
+/* ======= Default Buttons ======= */
+
+button {
+	background-color: var(--body-background-color);
+	border: 2px solid var(--nav-item-color);
+	border-radius: 7px;
+	color: var(--nav-item-color); 
+	cursor: pointer;
+	display: inline-block;
+	margin: 2px;
+	padding: 6px 6px;
+	text-align: center;
+	text-decoration: none;
+}
+
+button:hover {
+	background-color: #cefdce;
+}
+
+button:active {
+	background-color: #85fa85;
+	color: plum;
 }
