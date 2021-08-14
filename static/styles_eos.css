@@ -11,6 +11,9 @@
   --dark-zone-color: #89738c;
 	--btn-background-color: #cce6ff;
 	--btn-color: #404040;
+  --btn-hover-bckg-color:  #cefdce;
+	--btn-active-bckg-color: #85fa85;
+	--btn-active-color: #c969c9;
 }
 
 /* ======= About page image ======= */
