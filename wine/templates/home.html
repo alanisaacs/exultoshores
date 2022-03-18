@@ -38,15 +38,17 @@
                         }
                     htmlstring += "</div>";
                     // Display Second Line of Information
+                    // Colorize rating
                     var rating = "{{wine[0].rating}}";
                     var ratingColor = getRatingColor(rating);
                     htmlstring += "<div class='wineInfoLine'>" +
                         "<span class='wineInfoRating'" +
                             "style=background-color:" + ratingColor + ">" +
-                            rating + "</span> points " +
-                        "${{wine[0].price}} " +
-                        "{{wine[0].abv}} abv" + 
-                    "</div>";
+                            rating + "</span> points ";
+                    // Add price with two digits after decimal
+                    htmlstring += "$" + parseFloat("{{wine[0].price}}").toFixed(2);
+                    // Add abv (has one digit after decimal by default)
+                    htmlstring += " {{wine[0].abv}} abv</div>";
                     // Display Third Line of Information
                     htmlstring += "<div class='wineInfoLine'>";
                         // Avoid blank date_tested values breaking display
@@ -64,14 +66,16 @@
                     "</div>";
                     // Display Fifth Line of Information
                     htmlstring += "<div class='wineInfoLine'>" +    
-                        "Purchased at {{wine[0].purchased_at}}";
+                        "Purchased at {{wine[0].purchased_at}}  ";
                         // OMIT: " Entered by {{wine[3]}}. "; 
                         //     (sommelier name)
+                        // Add button to go to top of page
+                        htmlstring += " <a href='#top' class='button button_top'>top&uarr;</a>";
                         // Include Edit Button if user is logged in
                         // Wine ID will be passed in a query string
                         {% if current_user.is_authenticated %} 
                             var url_string = "{{url_for('wine_bp.wineEdit', wineid=wine[0].id)}}";
-                            htmlstring += "<a href=" + url_string + " class='button button_edit'>Edit</a>";
+                            htmlstring += " <a href=" + url_string + " class='button button_edit'>Edit</a>";
                         {% endif %}
                     htmlstring += "</div>" +
                 "</div>" +
@@ -103,7 +107,7 @@
     <div id=controlBar class=defaultBar>Control the View</div>
     <div id=controlBox class=defaultBox>
         <p>
-        <em>Soon you'll be able to sort the wines here</em>
+        <em>Eventually you'll be able to sort the wines here</em>
         </p>
     </div>
 </section>

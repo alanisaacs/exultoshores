@@ -105,7 +105,7 @@
   margin-bottom: 1.5rem;
 }
 
-/* ======= Edit and delete buttons ======= */
+/* ======= Buttons ======= */
 /* These are just classes for anchor tages */
 
 .button {
@@ -145,4 +145,22 @@
   .button_delete:active {
     background-color: #303030;
     color: #979797;
+  }
+
+  .button_top {
+    background-color: #ffffbb; 
+    border: 1px solid grey;
+    color: purple; 
+    font-size: smaller;
+    font-variant: small-caps;
+    padding: 0px 3px;
+  }
+  
+  .button_top:hover {
+    background-color: plum;
+  }
+  
+  .button_top:active {
+    background-color: purple;
+    color: plum;
   }

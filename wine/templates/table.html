@@ -16,6 +16,7 @@
             <th>Name</th>
             <th>Year</th>
             <th>Price</th>
+            <th>ABV</th>
             <th>Rating</th>
             <th>Tasted</th>
             <th>Categories</th>
@@ -34,7 +35,8 @@
                 </a>
             </td>
             <td>{{wine[0].year}}</td>
-            <td>{{wine[0].price}}</td>
+            <td>${{wine[0].price}}</td>
+            <td>{{wine[0].abv}}</td>
             <td>{{wine[0].rating}}</td>
             <td>{{wine[0].date_tasted}}</td>
             <td>{{wine[0].categories}}</td>
@@ -62,6 +64,22 @@
     });
     // Enable sorting by clicking on table headers
     activate_table_sorting();
+    // Scan table for prices with ".0" instead of ".00" and fix
+    t = document.querySelector('table');
+    let counter = 0;
+    let priceColNum = 0;
+    for (cell of t.rows[0].cells) {
+        if (cell.innerText === "Price") {
+            priceColNum = counter;
+            break;
+        }
+        counter++;
+    }
+    for (row of t.rows){
+        if (row.cells[priceColNum].innerText.match(/.0$/)){
+            row.cells[priceColNum].innerText += "0";
+        }
+    }
 </script>
 
 {% endblock %}
