@@ -198,7 +198,8 @@ def wineCountryNew():
 def wineRegionNew():
     """Create a new region"""
     DBSession = open_db_session()
-    countries = DBSession.query(Country).order_by(asc(Country.name)).all()
+    countries = DBSession.query(Country).\
+        order_by(asc(Country.name)).all()
     if request.method == 'POST':
         newRegion = Region(
             country_id=request.form['country_id'],
@@ -211,6 +212,42 @@ def wineRegionNew():
         DBSession.close()
         return render_template('countriesRegions.html')
 
+
+# Rename a country
+@wine_bp.route('/wine/countryRename', methods=['GET', 'POST'])
+@login_required
+def wineCountryRename():
+    """Rename a country"""
+    if request.method == 'POST':
+        countryID = request.form['country_id']
+        DBSession = open_db_session()
+        DBSession.query(Country).\
+            filter_by(id=countryID).\
+            update({'name': request.form['newname']})
+        DBSession.commit()
+        DBSession.close()
+        return redirect(url_for('wine_bp.wineCountriesRegions'))
+    else:
+        return render_template('countriesRegions.html')
+
+
+# Rename a region
+@wine_bp.route('/wine/regionRename', methods=['GET', 'POST'])
+@login_required
+def wineRegionRename():
+    """Rename a region"""
+    if request.method == 'POST':
+        regionID = request.form['region_id']
+        DBSession = open_db_session()
+        DBSession.query(Region).\
+            filter_by(id=regionID).\
+            update({'name': request.form['newname']})
+        DBSession.commit()
+        DBSession.close()
+        return redirect(url_for('wine_bp.wineCountriesRegions'))
+    else:
+        return render_template('countriesRegions.html')
+        
 
 # Add a wine to the database
 @wine_bp.route('/wine/wineNew', methods=['GET', 'POST'])

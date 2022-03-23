@@ -3,6 +3,18 @@
 {% block content %}
 
 <script>
+    // For renaming regions: Display regions in dropdown associated 
+    // with the country selected by user
+    function populateRegion(x) {
+        let selectedCountryID = document.getElementById('rr_country_id').value;
+        let eid = document.getElementById('rr_region_id');
+        eid.innerHTML = "<option value=''>--select--</option>"
+        {% for region in regions %}
+            if ({{region.country_id}} == selectedCountryID) { 
+                eid.innerHTML += "<option value={{region.id}}>{{region.name}}</option>"
+            }
+        {% endfor %}
+    }
     function populateRegionToDelete(x) {
         // Display regions in dropdown associated with the country 
         // selected by user. Only show regions that have no wines
@@ -51,20 +63,6 @@
         <button type="submit" id="submit">Create Country</button>
     </form>
 
-<h2>Delete a Country</h2>
-    <p style="font-style: italic">
-        Only countries without associated regions or wines
-         can be deleted. None may appear in the dropdown.</p>
-    <form action="/wine/countryDelete" method="post">
-        <label for="country_id">Name:</label>
-            <select name="country_id">
-                {% for country in deletableCountries %}
-                    <option value={{country.id}}>{{country.name}}</option>
-                {% endfor %}
-            </select>
-            <button type="submit" id="submit">Delete Country</button>
-    </form>
-
 <h2>Create a New Region</h2>
     <form action="/wine/regionNew" method = "post">
         <p>
@@ -80,6 +78,54 @@
         </p>    
     </form>
 
+<h2>Rename a Country</h2>
+    <form action="/wine/countryRename" method="post">
+        <label for="country_id">Current Name:</label>
+            <select name="country_id">
+                {% for country in countries %}
+                    <option value={{country.id}}>{{country.name}}</option>
+                {% endfor %}
+            </select>
+        <br><label for="newname">New Name:</label>
+            <input type ="text" maxlength="100" name="newname" required>
+        <button type="submit" id="submit">Rename Country</button>
+    </form>
+
+<h2>Rename a Region</h2>
+    <form action="/wine/regionRename" method = "post">
+        <p>
+            <label for="country_id">Country:</label>
+                <select name="country_id" id="rr_country_id" 
+                    onchange="populateRegion()">
+                    <option value="none">--select--</option>
+                    {% for country in countries %}
+                    <option value={{country.id}}>{{country.name}}</option>
+                {% endfor %}
+                </select>
+            <label for="region_id">Region:</label>
+                <select name="region_id" id="rr_region_id">
+                    <option value="none">--select country first--</option>
+                </select>
+            <br><label for="newname">New Name:</label>
+                <input type ="text" maxlength="100" name="newname" required>
+            <button type="submit" id="submit">Rename Region</button>
+        </p>    
+    </form>
+
+<h2>Delete a Country</h2>
+    <p style="font-style: italic">
+        Only countries without associated regions or wines
+         can be deleted. None may appear in the dropdown.</p>
+    <form action="/wine/countryDelete" method="post">
+        <label for="country_id">Name:</label>
+            <select name="country_id">
+                {% for country in deletableCountries %}
+                    <option value={{country.id}}>{{country.name}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" id="submit">Delete Country</button>
+    </form>
+
 <h2>Delete a Region</h2>
     <p style="font-style: italic">Only regions without associated 
         wines can be deleted. None may appear in the dropdown.</p>
@@ -91,11 +137,11 @@
                     <option value="none">--select--</option>
                     {% for country in countries %}
                     <option value={{country.id}}>{{country.name}}</option>
-                {% endfor %}
+                    {% endfor %}
                 </select>
             <label for="region_id">Region:</label>
                 <select name="region_id" id="region_id">
-                    <option value="none">--select country--</option>
+                    <option value="none">--select country first--</option>
                 </select>
             <button type="submit" id="submit">Delete Region</button>
         </p>    
