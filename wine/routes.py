@@ -1,5 +1,6 @@
 """Create web views for EOS Wine Log"""
 
+from itertools import count
 import sys
 
 from flask import (Blueprint,
@@ -73,6 +74,74 @@ def wineTable():
     return render_template('table.html', wines=wines, numWines=numWines)
 
 
+@wine_bp.route('/wine/stats')
+def wineStats():
+    """Show statistics on the wines in the database"""
+    DBSession = open_db_session()
+    #### QUERY FOR NUMBER OF WINES BY COUNTRY ####
+    # SELECT country.name, COUNT(wine.country_id) 
+    # FROM wine 
+    # JOIN country ON wine.country_id=country.id 
+    # GROUP BY country.name ORDER BY count DESC;
+    wines_by_country = DBSession.query(
+                        Country.name, func.count(Wine.country_id)).\
+                        join(Wine, Wine.country_id==Country.id).\
+                        group_by(Country.name).\
+                        order_by(desc(func.count(Wine.country_id)),\
+                            Country.name).\
+                        all()
+    wines_by_region = DBSession.query(
+                        Region.name, func.count(Wine.region_id)).\
+                        join(Wine, Wine.region_id==Region.id).\
+                        group_by(Region.name).\
+                        order_by(desc(func.count(Wine.region_id)),\
+                            Region.name).\
+                        all()
+    wines_by_appellation = DBSession.query(
+                        Wine.appellation, func.count(Wine.appellation)).\
+                        group_by(Wine.appellation).\
+                        order_by(desc(func.count(Wine.appellation)),\
+                            Wine.appellation).\
+                        all()
+    wines_by_category = DBSession.query(
+                        Wine.categories, func.count(Wine.categories)).\
+                        group_by(Wine.categories).\
+                        order_by(desc(func.count(Wine.categories)),\
+                            Wine.categories).\
+                        all()
+    wines_by_rating = DBSession.query(
+                        Wine.rating, func.count(Wine.rating)).\
+                        group_by(Wine.rating).\
+                        order_by(desc(Wine.rating)).\
+                        all()
+    wines_by_abv = DBSession.query(
+                        Wine.abv, func.count(Wine.abv)).\
+                        group_by(Wine.abv).\
+                        order_by(Wine.abv).\
+                        all()
+    wines_by_year = DBSession.query(
+                        Wine.year, func.count(Wine.year)).\
+                        group_by(Wine.year).\
+                        order_by(Wine.year).\
+                        all()
+    wines_by_varietals = DBSession.query(
+                        Wine.varietals, func.count(Wine.varietals)).\
+                        group_by(Wine.varietals).\
+                        order_by(desc(func.count(Wine.varietals)),\
+                            Wine.varietals).\
+                        all()
+    DBSession.close()
+    return render_template('stats.html',\
+        wines_by_country=wines_by_country,\
+        wines_by_region=wines_by_region,\
+        wines_by_appellation=wines_by_appellation,\
+        wines_by_category=wines_by_category,\
+        wines_by_rating=wines_by_rating,\
+        wines_by_abv=wines_by_abv,\
+        wines_by_year=wines_by_year,\
+        wines_by_varietals=wines_by_varietals)
+    
+    
 # Display a single wine for editing
 @wine_bp.route('/wine/wineEdit')
 @login_required

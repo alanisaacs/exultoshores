@@ -105,6 +105,11 @@
   margin-bottom: 1.5rem;
 }
 
+.statsBox {
+  float: left;
+  margin: 10px;
+}
+
 /* ======= Buttons ======= */
 /* These are just classes for anchor tages */
 

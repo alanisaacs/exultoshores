@@ -1,0 +1,151 @@
+{% extends "wineBase.html" %}
+
+{% block content %}
+
+<header id=mainHeader>
+    <h1>Wine Log Statistics</h1>
+</header>
+
+<div class="statsBox">
+    <h2>By Country</h2>
+    <table class="tablesort">
+        <tr>
+            <th>Country</th>
+            <th>Total</th>
+        </tr>
+        {% for row in wines_by_country %}
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="statsBox">
+    <h2>By Region</h2>
+    <table class="tablesort">
+        <tr>
+            <th>Region</th>
+            <th>Total</th>
+        </tr>
+        {% for row in wines_by_region %}
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="statsBox">
+    <h2>By Appellation</h2>
+    <table class="tablesort">
+        <tr>
+            <th>Appellation</th>
+            <th>Total</th>
+        </tr>
+        {% for row in wines_by_appellation %}
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="statsBox">
+    <h2>By Category</h2>
+    <table class="tablesort">
+        <tr>
+            <th>Category</th>
+            <th>Total</th>
+        </tr>
+        {% for row in wines_by_category %}
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="statsBox">
+    <h2>By Rating</h2>
+    <table class="tablesort">
+        <tr>
+            <th>Rating</th>
+            <th>Total</th>
+        </tr>
+        {% for row in wines_by_rating %}
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="statsBox">
+    <h2>By ABV</h2>
+    <table class="tablesort">
+        <tr>
+            <th>ABV</th>
+            <th>Total</th>
+        </tr>
+        {% for row in wines_by_abv %}
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="statsBox">
+    <h2>By Year</h2>
+    <table class="tablesort">
+        <tr>
+            <th>Year</th>
+            <th>Total</th>
+        </tr>
+        {% for row in wines_by_year %}
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="statsBox">
+    <h2>By Varietals</h2>
+    <table class="tablesort">
+        <tr>
+            <th>Varietals</th>
+            <th>Total</th>
+        </tr>
+        {% for row in wines_by_varietals %}
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<script>
+    // Enable sorting by clicking on table headers
+    activate_table_sorting();
+    // Scan table for prices with ".0" instead of ".00" and fix
+    t = document.querySelector('table');
+    let counter = 0;
+    let priceColNum = 0;
+    for (cell of t.rows[0].cells) {
+        if (cell.innerText === "Price") {
+            priceColNum = counter;
+            break;
+        }
+        counter++;
+    }
+    for (row of t.rows){
+        if (row.cells[priceColNum].innerText.match(/.0$/)){
+            row.cells[priceColNum].innerText += "0";
+        }
+    }
+</script>
+
+{% endblock %}
