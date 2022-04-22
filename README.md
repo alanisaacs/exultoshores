@@ -2,7 +2,7 @@
 > Exult, O shores, and ring, O bells! 
 —Walt Whitman
 
-This repository contains code for my primary website, [exultoshores.com](http://exultoshores.com). It's an umbrella site with links to my other sites, [alongthelonging.com](http://alongthelonging.com) and [theflailingbaker.com](http://theflailingbaker.com). Most of the code here relates to database of wines I've been enjoying.
+This repository contains code for my primary website, [exultoshores.com](http://exultoshores.com). It's an umbrella site with links to my other sites, [alongthelonging.com](http://alongthelonging.com) and [theflailingbaker.com](http://theflailingbaker.com). Most of the code here relates to a database of wines I've been enjoying.
 
 ## Contents
 
