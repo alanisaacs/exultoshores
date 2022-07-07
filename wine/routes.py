@@ -130,6 +130,8 @@ def wineStats():
                         order_by(desc(func.count(Wine.varietals)),\
                             Wine.varietals).\
                         all()
+    total_num_wines = DBSession.query(
+                        Wine.year).count()
     DBSession.close()
     return render_template('stats.html',\
         wines_by_country=wines_by_country,\
@@ -139,7 +141,8 @@ def wineStats():
         wines_by_rating=wines_by_rating,\
         wines_by_abv=wines_by_abv,\
         wines_by_year=wines_by_year,\
-        wines_by_varietals=wines_by_varietals)
+        wines_by_varietals=wines_by_varietals,\
+        total_num_wines=total_num_wines)
     
     
 # Display a single wine for editing
