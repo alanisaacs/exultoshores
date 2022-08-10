@@ -12,9 +12,11 @@ from flask import (Blueprint,
                    url_for)
 from flask_login import login_required
 from sqlalchemy import (asc,
+                        cast,
                         desc,
                         func,
                         null,
+                        Numeric,
                         update)
 
 from models import (Base,
@@ -78,13 +80,29 @@ def wineTable():
 def wineStats():
     """Show statistics on the wines in the database"""
     DBSession = open_db_session()
-    #### QUERY FOR NUMBER OF WINES BY COUNTRY ####
-    # SELECT country.name, COUNT(wine.country_id) 
-    # FROM wine 
+    #### QUERY FOR STATS BY COUNTRY ####
+    # Country Table creates object with four columns:
+    # name, number of wines, average rating, average price, average abv
+    # Note rating and abv are type "real" which has to be cast 
+    # as Numeric for the round function to work
+    # IN SQL:
+    # SELECT 
+    #     country.name, 
+    #     COUNT(wine.country_id),
+	#     ROUND(AVG(wine.rating),2) AS rating, 
+	#     ROUND(AVG(wine.price::NUMERIC), 2) AS price, 
+	#     ROUND(AVG(wine.ABV::NUMERIC), 2) as abv 
+	# FROM wine 
     # JOIN country ON wine.country_id=country.id 
-    # GROUP BY country.name ORDER BY count DESC;
+    # GROUP BY country.name 
+    # ORDER BY name DESC; 
     wines_by_country = DBSession.query(
-                        Country.name, func.count(Wine.country_id)).\
+                        Country.name, func.count(Wine.country_id),\
+                            func.round(func.avg(Wine.rating), 1),\
+                            func.round(cast(
+                                func.avg(Wine.price), Numeric), 2),\
+                            func.round(cast(
+                                func.avg(Wine.abv), Numeric), 1)).\
                         join(Wine, Wine.country_id==Country.id).\
                         group_by(Country.name).\
                         order_by(desc(func.count(Wine.country_id)),\

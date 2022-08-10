@@ -12,11 +12,17 @@
         <tr>
             <th>Country</th>
             <th>Total</th>
+            <th>Avg Rating</th>
+            <th>Avg Price</th>
+            <th>Avg ABV</th>
         </tr>
         {% for row in wines_by_country %}
         <tr>
             <td>{{row[0]}}</td>
             <td>{{row[1]}}</td>
+            <td>{{row[2]}}</td>
+            <td>${{row[3]}}</td>
+            <td>{{row[4]}}%</td>
         </tr>
         {% endfor %}
     </table>
