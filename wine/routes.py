@@ -109,14 +109,24 @@ def wineStats():
                             Country.name).\
                         all()
     wines_by_region = DBSession.query(
-                        Region.name, func.count(Wine.region_id)).\
+                        Region.name, func.count(Wine.region_id),\
+                            func.round(func.avg(Wine.rating), 1),\
+                            func.round(cast(
+                                func.avg(Wine.price), Numeric), 2),\
+                            func.round(cast(
+                                func.avg(Wine.abv), Numeric), 1)).\
                         join(Wine, Wine.region_id==Region.id).\
                         group_by(Region.name).\
                         order_by(desc(func.count(Wine.region_id)),\
                             Region.name).\
                         all()
     wines_by_appellation = DBSession.query(
-                        Wine.appellation, func.count(Wine.appellation)).\
+                        Wine.appellation, func.count(Wine.appellation),\
+                            func.round(func.avg(Wine.rating), 1),\
+                            func.round(cast(
+                                func.avg(Wine.price), Numeric), 2),\
+                            func.round(cast(
+                                func.avg(Wine.abv), Numeric), 1)).\
                         group_by(Wine.appellation).\
                         order_by(desc(func.count(Wine.appellation)),\
                             Wine.appellation).\
@@ -143,7 +153,12 @@ def wineStats():
                         order_by(Wine.year).\
                         all()
     wines_by_varietals = DBSession.query(
-                        Wine.varietals, func.count(Wine.varietals)).\
+                        Wine.varietals, func.count(Wine.varietals),\
+                            func.round(func.avg(Wine.rating), 1),\
+                            func.round(cast(
+                                func.avg(Wine.price), Numeric), 2),\
+                            func.round(cast(
+                                func.avg(Wine.abv), Numeric), 1)).\
                         group_by(Wine.varietals).\
                         order_by(desc(func.count(Wine.varietals)),\
                             Wine.varietals).\

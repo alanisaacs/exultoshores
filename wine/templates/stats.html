@@ -21,8 +21,8 @@
             <td>{{row[0]}}</td>
             <td>{{row[1]}}</td>
             <td>{{row[2]}}</td>
-            <td>${{row[3]}}</td>
-            <td>{{row[4]}}%</td>
+            <td>{{row[3]}}</td>
+            <td>{{row[4]}}</td>
         </tr>
         {% endfor %}
     </table>
@@ -33,11 +33,17 @@
         <tr>
             <th>Region</th>
             <th>Total</th>
+            <th>Avg Rating</th>
+            <th>Avg Price</th>
+            <th>Avg ABV</th>
         </tr>
         {% for row in wines_by_region %}
         <tr>
             <td>{{row[0]}}</td>
             <td>{{row[1]}}</td>
+            <td>{{row[2]}}</td>
+            <td>{{row[3]}}</td>
+            <td>{{row[4]}}</td>
         </tr>
         {% endfor %}
     </table>
@@ -48,12 +54,39 @@
         <tr>
             <th>Appellation</th>
             <th>Total</th>
+            <th>Avg Rating</th>
+            <th>Avg Price</th>
+            <th>Avg ABV</th>
         </tr>
         {% for row in wines_by_appellation %}
         <tr>
             <td>{{row[0]}}</td>
             <td>{{row[1]}}</td>
+            <td>{{row[2]}}</td>
+            <td>{{row[3]}}</td>
+            <td>{{row[4]}}</td>
         </tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="statsBox">
+    <h2>By Varietals</h2>
+    <table class="tablesort">
+        <tr>
+            <th>Varietals</th>
+            <th>Total</th>
+            <th>Avg Rating</th>
+            <th>Avg Price</th>
+            <th>Avg ABV</th>
+        </tr>
+        {% for row in wines_by_varietals %}
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+            <td>{{row[2]}}</td>
+            <td>{{row[3]}}</td>
+            <td>{{row[4]}}</td>
+         </tr>
         {% endfor %}
     </table>
 </div>
@@ -110,21 +143,6 @@
             <th>Total</th>
         </tr>
         {% for row in wines_by_year %}
-        <tr>
-            <td>{{row[0]}}</td>
-            <td>{{row[1]}}</td>
-        </tr>
-        {% endfor %}
-    </table>
-</div>
-<div class="statsBox">
-    <h2>By Varietals</h2>
-    <table class="tablesort">
-        <tr>
-            <th>Varietals</th>
-            <th>Total</th>
-        </tr>
-        {% for row in wines_by_varietals %}
         <tr>
             <td>{{row[0]}}</td>
             <td>{{row[1]}}</td>
