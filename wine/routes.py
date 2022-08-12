@@ -16,7 +16,7 @@ from sqlalchemy import (asc,
                         desc,
                         func,
                         null,
-                        Numeric,
+                        Numeric, nullslast,
                         update)
 
 from models import (Base,
@@ -80,6 +80,8 @@ def wineTable():
 def wineStats():
     """Show statistics on the wines in the database"""
     DBSession = open_db_session()
+    total_num_wines = DBSession.query(
+                        Wine.id).count()
     #### QUERY FOR STATS BY COUNTRY ####
     # Country Table creates object with four columns:
     # name, number of wines, average rating, average price, average abv
@@ -163,10 +165,20 @@ def wineStats():
                         order_by(desc(func.count(Wine.varietals)),\
                             Wine.varietals).\
                         all()
-    total_num_wines = DBSession.query(
-                        Wine.year).count()
+    # NULL values are not counted by func.count, so "None" appears
+    # in tables with count = 0. To fix this,
+    # create a dictionary to pass null counts for each column
+    # to the page; insert into tables using JavaScript
+    null_counts = {}
+    null_counts['abv'] = total_num_wines - DBSession.query(
+                            func.count(Wine.abv)).scalar()
+    null_counts['appellation'] = total_num_wines - DBSession.query(
+                            func.count(Wine.appellation)).scalar()
+    null_counts['year'] = total_num_wines - DBSession.query(
+                            func.count(Wine.year)).scalar()
     DBSession.close()
     return render_template('stats.html',\
+        total_num_wines=total_num_wines,\
         wines_by_country=wines_by_country,\
         wines_by_region=wines_by_region,\
         wines_by_appellation=wines_by_appellation,\
@@ -175,8 +187,7 @@ def wineStats():
         wines_by_abv=wines_by_abv,\
         wines_by_year=wines_by_year,\
         wines_by_varietals=wines_by_varietals,\
-        total_num_wines=total_num_wines)
-    
+        null_counts=null_counts)    
     
 # Display a single wine for editing
 @wine_bp.route('/wine/wineEdit')

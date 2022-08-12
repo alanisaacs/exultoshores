@@ -50,7 +50,7 @@
 </div>
 <div class="statsBox">
     <h2>By Appellation</h2>
-    <table class="tablesort">
+    <table class="tablesort" id="appellation">
         <tr>
             <th>Appellation</th>
             <th>Total</th>
@@ -122,7 +122,7 @@
 </div>
 <div class="statsBox">
     <h2>By ABV</h2>
-    <table class="tablesort">
+    <table class="tablesort" id="abv">
         <tr>
             <th>ABV</th>
             <th>Total</th>
@@ -137,7 +137,7 @@
 </div>
 <div class="statsBox">
     <h2>By Year</h2>
-    <table class="tablesort">
+    <table class="tablesort" id="year">
         <tr>
             <th>Year</th>
             <th>Total</th>
@@ -152,6 +152,14 @@
 </div>
 
 <script>
+    // Correct "0" counts of "None" values
+    {% for i in null_counts %}
+        for (row of document.getElementById('{{i}}').rows) {
+            if (row.cells[0].innerText === "None") {
+                row.cells[1].innerText = {{null_counts[i]}};
+            };
+        };
+    {% endfor %}
     // Enable sorting by clicking on table headers
     activate_table_sorting();
     // Scan table for prices with ".0" instead of ".00" and fix
@@ -170,6 +178,7 @@
             row.cells[priceColNum].innerText += "0";
         }
     }
+
 </script>
 
 {% endblock %}
