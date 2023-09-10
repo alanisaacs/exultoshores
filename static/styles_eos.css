@@ -49,17 +49,36 @@
        when there isn't much text: label height + 40 */
     min-height: 306.8px;
   }
+  .wineLabel img {
+    display: block;
+    float: none;
+    margin: 1em auto 0em auto;
+    height: 266.8px;
+    width: 200px;
+  }
 }
 
 @media only screen and (min-width: 540px) {
   .wineItem {
       min-height: 373.5px;
   }
+  .wineLabel img {
+    float: right;
+    height: 333.5px;
+    margin: 1em 1em 1em 1em;
+    width: 250px;
+  }
 }
 
 @media only screen and (min-width: 900px) {
   .wineItem {
       min-height: 440.2px;
+  }
+  .wineLabel img {
+    float: right;
+    height: 400.2px;
+    margin: 1em 1em 1em 1em;
+    width: 300px;
   }
 }
 
